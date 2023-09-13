@@ -167,7 +167,7 @@ write_rds(dissent_scores, "output/dissent-scores.rds")
 
 # verify that just-created version matches old version
 new <- read_csv("output/dissent-scores.csv")
-dv <- read_csv("dv/dissent-scores.csv")
+dv <- read_csv("https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv")
 
 all.equal(new, dv)
 ```

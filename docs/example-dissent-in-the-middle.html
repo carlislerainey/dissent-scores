@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Dissent Scores (Alpha-Release) - Example: Law of Coercive Responsiveness</title>
+<title>Dissent Scores - Example: Law of Coercive Responsiveness</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -114,7 +114,7 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Dissent Scores (Alpha-Release)</span>
+    <span class="navbar-title">Dissent Scores</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -245,7 +245,7 @@ $ ccode         &lt;dbl&gt; 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 
 $ v2x_polyarchy &lt;dbl&gt; 0.028, 0.028, 0.028, 0.028, 0.028, 0.028, 0.028, 0.028, …</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># download latest version of dissent scores</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>gh_url <span class="ot">&lt;-</span> <span class="st">"output/dissent-scores.csv"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>gh_url <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv"</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dissent_scores <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(gh_url) <span class="sc">|&gt;</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

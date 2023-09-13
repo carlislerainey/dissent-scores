@@ -16,7 +16,7 @@ project:
     - about-us.qmd
 
 website:
-  title: "Dissent Scores (Alpha-Release)"
+  title: "Dissent Scores"
   google-analytics: "G-F57WQLHH67"
   navbar:
     left:

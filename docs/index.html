@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Dissent Scores (Alpha-Release) - The Dissent Scores Project</title>
+<title>Dissent Scores - The Dissent Scores Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -114,7 +114,7 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Dissent Scores (Alpha-Release)</span>
+    <span class="navbar-title">Dissent Scores</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -237,11 +237,11 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This is an alpha release of the paper and data set. We plan to releases finalized version with DOIs near the end of September, but we wanted to share it widely to help us catch any obvious mistakes. For this alpha release, the data are hosted on GitHub. Future versions will posted to Dataverse.</p>
+<p>This is an <strong>alpha release</strong> of the paper and data set. We plan to release a finalized version with proper DOIs near the end of September, but we wanted to share it widely first to help us catch any obvious mistakes. For this alpha release, the data are hosted on GitHub. Future versions will posted to Dataverse.</p>
 </div>
 </div>
 <p>The Dissent Scores Project provides a standardized, public, ready-to-use data set with a measure of dissent at the country-year level.</p>
-<p>On this webpage, we supply the preprint for our project, the data sets, and a careful description of how we wrangled the IDEA data into our dissent scores.</p>
+<p>On this webpage, we supply the preprint describing the data, the data sets, and a careful description of how we wrangled the IDEA data into our dissent scores.</p>
 <p>To create these dissent scores, we follow the standard practice in the literature and use the number of dissent events reported in events data sets. However, we make two improvements.</p>
 <ol type="1">
 <li>First, we adjust for variation in media scrutiny by using the rate of dissent events—the number of dissent events compared to the total number of events reported in the data set.</li>
@@ -272,7 +272,7 @@ Important
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># read csv directly from github</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gh_url <span class="ot">&lt;-</span> <span class="st">"output/dissent-scores.csv"</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>gh_url <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv"</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dissent <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(gh_url) <span class="sc">|&gt;</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -296,7 +296,7 @@ $ se_dissent_score    &lt;dbl&gt; 0.04107096, 0.04241524, 0.03997557, 0.03736980
 </section>
 <section id="cite-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="cite-the-data">Cite the Data</h2>
-<p>We will release a final version around the end of September (we’re hoping to correct any errors quickly after this alpha release). At that point, we’ll give the data set and paper DOIs.</p>
+<p>We will release a final version around the end of September (we’re hoping to correct any errors quickly after this alpha release). At that point, we’ll give the data set and paper proper DOIs.</p>
 </section>
 <section id="improve-the-data-and-method" class="level2">
 <h2 class="anchored" data-anchor-id="improve-the-data-and-method">Improve the Data and Method</h2>

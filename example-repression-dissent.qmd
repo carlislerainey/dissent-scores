@@ -28,7 +28,7 @@ hrp_scores <- get_dataframe_by_name(
   glimpse()
 
 # download latest version of dissent scores
-gh_url <- "output/dissent-scores.csv"
+gh_url <- "https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv"
 dissent_scores <- read_csv(gh_url) |>
   glimpse()
 

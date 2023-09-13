@@ -3,12 +3,12 @@ title: "The Dissent Scores Project"
 ---
 
 ::: callout-important
-This is an alpha release of the paper and data set. We plan to releases finalized version with DOIs near the end of September, but we wanted to share it widely to help us catch any obvious mistakes. For this alpha release, the data are hosted on GitHub. Future versions will posted to Dataverse.
+This is an **alpha release** of the paper and data set. We plan to release a finalized version with proper DOIs near the end of September, but we wanted to share it widely first to help us catch any obvious mistakes. For this alpha release, the data are hosted on GitHub. Future versions will posted to Dataverse.
 :::
 
 The Dissent Scores Project provides a standardized, public, ready-to-use data set with a measure of dissent at the country-year level.
 
-On this webpage, we supply the preprint for our project, the data sets, and a careful description of how we wrangled the IDEA data into our dissent scores.
+On this webpage, we supply the preprint describing the data, the data sets, and a careful description of how we wrangled the IDEA data into our dissent scores.
 
 To create these dissent scores, we follow the standard practice in the literature and use the number of dissent events reported in events data sets. However, we make two improvements.
 
@@ -23,7 +23,7 @@ We supply the country-year dissent scores in an easy-to-use format, but also des
 #| echo: false
 library(tidyverse)
 
-gh_url <- "output/dissent-scores.csv"
+gh_url <- "https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv"
 dissent <- read_csv(gh_url) 
 
 coi <- c("United States", "Japan", "Brazil", "Cape Verde")
@@ -67,14 +67,14 @@ The data for this alpha release are hosted on GitHub and can easily be downloade
 library(tidyverse)
 
 # read csv directly from github
-gh_url <- "output/dissent-scores.csv"
+gh_url <- "https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv"
 dissent <- read_csv(gh_url) |>
   glimpse()
 ```
 
 ## Cite the Data
 
-We will release a final version around the end of September (we're hoping to correct any errors quickly after this alpha release). At that point, we'll give the data set and paper DOIs.
+We will release a final version around the end of September (we're hoping to correct any errors quickly after this alpha release). At that point, we'll give the data set and paper proper DOIs.
 
 ## Improve the Data and Method
 

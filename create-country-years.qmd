@@ -1,0 +1,368 @@
+---
+title: "Create the Country-Year Observations"
+freeze: true
+---
+
+The IDEA events data range from 1990 to 2004. Within that time frame, we use the [Correlates of War State Membershi](https://correlatesofwar.org/wp-content/uploads/system2016.csv) data set to define the country-years in the data set. There is good correspondence between the IDEA data and COW definitions.
+
+To create the country-years in the final data set, we proceed in several steps:
+
+1.  First, use {countrycode} to bluntly assign COW codes assuming that the IDEA alpha code corresponds to the COW alpha code. This is correct in about 85% of cases.
+2.  Second, use the COW `statenme` variable and {countrycode}'s `country.name` variable to triple check the match.
+3.  Third, resolve any mismatches between the country names. (There is one inconsequential mismatch.)
+4.  Fourth, resolve the ambiguous matches from {countrycode}, of which there are a few. Almost all of these are straightforward.
+5.  Fifth, check that all (or most) IDEA codes have a corresponding COW code. (All but two do.)
+
+## The IDEA Codes
+
+The IDEA country codes are available [here](https://doi.org/10.7910/DVN/BTMQA0/WWBEWS). The code below loads the IDEA codes as a tribble.
+
+```{r}
+#| code-fold: true
+#| message: false
+
+library(tidyverse)
+library(countrycode)
+
+# original file at https://doi.org/10.7910/DVN/BTMQA0/WWBEWS
+idea_codes <- tibble::tribble(
+                        ~idea_country_name,     ~idea_code,
+                       "Afghanistan",     "AFG",
+                           "Albania",     "ALB",
+                           "Algeria",     "ALG",
+                           "Andorra",     "AND",
+                            "Angola",     "ANG",
+               "Antigua and Barbuda",     "ANT",
+                         "Argentina",     "ARG",
+                           "Armenia",     "ARM",
+                         "Australia",     "AUL",
+                           "Austria",     "AUS",
+                        "Azerbaijan",     "AZE",
+                           "Bahrain",     "BAH",
+                          "Barbados",     "BAR",
+                           "Belgium",     "BEL",
+                             "Benin",     "BEN",
+                      "Burkina Faso",     "BFO",
+                           "Bahamas",     "BHM",
+                            "Bhutan",     "BHU",
+                           "Belarus",     "BLR",
+                            "Belize",     "BLZ",
+                        "Bangladesh",     "BNG",
+                           "Bolivia",     "BOL",
+            "Bosnia and Herzegovina",     "BOS",
+                          "Botswana",     "BOT",
+                            "Brazil",     "BRA",
+                            "Brunei",     "BRU",
+                           "Burundi",     "BUI",
+                          "Bulgaria",     "BUL",
+                          "Cambodia",     "CAM",
+                            "Canada",     "CAN",
+                          "Cameroon",     "CAO",
+                        "Cape Verde",     "CAP",
+          "Central African Republic",     "CEN",
+                              "Chad",     "CHA",
+                             "Chile",     "CHL",
+                             "China",     "CHN",
+                          "Colombia",     "COL",
+                           "Comoros",     "COM",
+             "Republic of the Congo",     "CON",
+                      "Cook Islands",     "COO",
+                        "Costa Rica",     "COS",
+                           "Croatia",     "CRO",
+                              "Cuba",     "CUB",
+                            "Cyprus",     "CYP",
+                    "Turkish Cyprus",     "CYT",
+             "Former Czechoslovakia",     "CZE",
+                    "Czech Republic",     "CZR",
+                           "Denmark",     "DEN",
+                          "Djibouti",     "DJI",
+                          "Dominica",     "DMI",
+                "Dominican Republic",     "DOM",
+                           "Vietnam",     "DRV",
+                           "Ecuador",     "ECU",
+                             "Egypt",     "EGY",
+                 "Equatorial Guinea",     "EQG",
+                           "Eritrea",     "ERI",
+                           "Estonia",     "EST",
+                          "Ethiopia",     "ETH",
+                           "Finland",     "FIN",
+                              "Fiji",     "FJI",
+                        "Micronesia",     "FMS",
+                           "Germany",     "FRG",
+                            "France",     "FRN",
+                             "Gabon",     "GAB",
+                            "Gambia",     "GAM",
+             "East and West Germany", "GDR/FRG",
+                             "Ghana",     "GHA",
+                     "Guinea Bissau",     "GNB",
+                            "Greece",     "GRC",
+                           "Georgia",     "GRG",
+                           "Grenada",     "GRN",
+                         "Guatemala",     "GUA",
+                            "Guinea",     "GUI",
+                            "Guyana",     "GUY",
+                             "Haiti",     "HAI",
+                          "Honduras",     "HON",
+                           "Hungary",     "HUN",
+                           "Iceland",     "ICE",
+                             "India",     "IND",
+                         "Indonesia",     "INS",
+                           "Ireland",     "IRE",
+                              "Iran",     "IRN",
+                              "Iraq",     "IRQ",
+                            "Israel",     "ISR",
+                             "Italy",     "ITA",
+                     "Cote d Ivoire",     "IVO",
+                           "Jamaica",     "JAM",
+                            "Jordan",     "JOR",
+                             "Japan",     "JPN",
+                             "Kenya",     "KEN",
+                          "Kiribati",     "KIR",
+                            "Kuwait",     "KUW",
+                        "Kyrgyzstan",     "KYR",
+                        "Kazakhstan",     "KZK",
+                              "Laos",     "LAO",
+                            "Latvia",     "LAT",
+                           "Liberia",     "LBR",
+                           "Lebanon",     "LEB",
+                           "Lesotho",     "LES",
+                             "Libya",     "LIB",
+                     "Liechtenstein",     "LIE",
+                         "Lithuania",     "LIT",
+                        "Luxembourg",     "LUX",
+                        "Mauritania",     "MAA",
+                         "Macedonia",     "MAC",
+                          "Maldives",     "MAD",
+                        "Madagascar",     "MAG",
+                          "Malaysia",     "MAL",
+                         "Mauritius",     "MAS",
+                            "Malawi",     "MAW",
+                            "Monaco",     "MCO",
+                            "Mexico",     "MEX",
+                           "Moldova",     "MLD",
+                              "Mali",     "MLI",
+                             "Malta",     "MLT",
+                          "Mongolia",     "MON",
+                           "Morocco",     "MOR",
+                             "Burma",     "MYA",
+                        "Mozambique",     "MZM",
+                           "Namibia",     "NAM",
+                             "Nauru",     "NAU",
+                             "Nepal",     "NEP",
+                       "New Zealand",     "NEW",
+                         "Nicaragua",     "NIC",
+                           "Nigeria",     "NIG",
+                             "Niger",     "NIR",
+                              "Niue",     "NIU",
+                            "Norway",     "NOR",
+                       "Netherlands",     "NTH",
+                              "Oman",     "OMA",
+                   "Paracel Islands",     "PAC",
+                          "Pakistan",     "PAK",
+                         "Palestine",     "PAL",
+                            "Panama",     "PAN",
+                          "Paraguay",     "PAR",
+                             "Palau",     "PAU",
+                              "Peru",     "PER",
+                       "Philippines",     "PHI",
+                  "Papua New Guinea",     "PNG",
+                            "Poland",     "POL",
+                          "Portugal",     "POR",
+                       "North Korea",     "PRK",
+             "North and South Korea", "PRK/ROK",
+                       "Puerto Rico",     "PTR",
+                             "Qatar",     "QAT",
+                       "South Korea",     "ROK",
+                           "Romania",     "RUM",
+                            "Russia",     "RUS",
+                            "Rwanda",     "RWA",
+                      "South Africa",     "SAF",
+                       "El Salvador",     "SAL",
+             "Sao Tome and Principe",     "SAO",
+                      "Saudi Arabia",     "SAU",
+                           "Senegal",     "SEN",
+             "Serbia and Montenegro",     "SER",
+                        "Seychelles",     "SEY",
+                      "Sierra Leone",     "SIE",
+                         "Singapore",     "SIN",
+                          "Slovakia",     "SLO",
+                          "Slovenia",     "SLV",
+                        "San Marino",     "SMO",
+                   "Solomon Islands",     "SOL",
+                           "Somalia",     "SOM",
+                   "Spratly Islands",     "SPL",
+                             "Spain",     "SPN",
+                         "Sri Lanka",     "SRI",
+             "Saint Kitts and Nevis",     "STK",
+                       "Saint Lucia",     "STL",
+  "Saint Vincent and the Grenadines",     "STV",
+                             "Sudan",     "SUD",
+                          "Suriname",     "SUR",
+                         "Swaziland",     "SWA",
+                            "Sweden",     "SWD",
+                       "Switzerland",     "SWZ",
+                             "Syria",     "SYR",
+                        "Tajikistan",     "TAJ",
+                            "Taiwan",     "TAW",
+                          "Tanzania",     "TAZ",
+                          "Thailand",     "THI",
+                      "Turkmenistan",     "TKM",
+                              "Togo",     "TOG",
+                             "Tonga",     "TON",
+               "Trinidad and Tobago",     "TRI",
+                           "Tunisia",     "TUN",
+                            "Turkey",     "TUR",
+                            "Tuvalu",     "TUV",
+              "United Arab Emirates",     "UAE",
+                            "Uganda",     "UGA",
+                    "United Kingdom",     "UK_",
+                           "Ukraine",     "UKR",
+                           "Uruguay",     "URU",
+                     "United States",     "USA",
+                        "Uzbekistan",     "UZB",
+                           "Vanuatu",     "VAN",
+                           "Vatican",     "VAT",
+                         "Venezuela",     "VEN",
+                    "Western Sahara",     "WSA",
+                             "Samoa",     "WSM",
+             "North and South Yemen", "YAR/YPR",
+                             "Yemen",     "YEM",
+                 "Former Yugoslavia",     "YUG",
+  "Democratic Republic of the Congo",     "ZAI",
+                            "Zambia",     "ZAM",
+                          "Zimbabwe",     "ZIM"
+  )
+```
+
+## Match IDEA Codes to COW Codes
+
+The IDEA codes *mostly* match alpha COW codes.[^1] The code below uses the {countrycode} package to add numeric COW codes, {countrycode}'s own `country.name` variable, and the COW `statenme` variable.
+
+[^1]: This is the returns the highest percent matched using `countrycode::guess_field()`.
+
+```{r}
+cc_joined <- idea_codes |>
+  mutate(ccode = countrycode(sourcevar = idea_code,
+                           origin = "cowc", 
+                           destination = "cown"), 
+         cc_country_name = countrycode(sourcevar = idea_code,
+                           origin = "cowc", 
+                           destination = "country.name")) |>
+  left_join(distinct(read_csv("data/states2016.csv") |> 
+              select(ccode, cow_country_name = statenme))) |>
+  glimpse()
+```
+
+## Check the Unambiguous Matches
+
+```{r}
+#| echo: false
+#| eval: true
+tmp <- cc_joined |> 
+  filter(!is.na(ccode)) |>
+  mutate(name_match = idea_country_name == cc_country_name &
+           idea_country_name == cow_country_name) |>
+  filter(name_match == TRUE)
+```
+
+All three `*_country_name` variables match exactly for `r sum(tmp$name_match)` countries. We consider these `ccode` values for these countries correct.
+
+The countries shown below are those that {countrycode} matched unambiguously, but whose names did NOT exactly match across the three sources.
+
+```{r}
+#| code-fold: true
+
+cc_joined |> 
+  filter(!is.na(ccode)) |>
+  mutate(name_match = idea_country_name == cc_country_name &
+           idea_country_name == cow_country_name) |>
+  filter(name_match == FALSE) |>
+  kableExtra::kable()
+```
+
+With the exception of the code PAL, these are all correct matches, but the three data sets use slightly different spellings for the three countries. Because Palestine is not in the COW systems data, it is not included in our country-year data set.
+
+## Resolve the Ambiguous Matches
+
+`countrycode()` failed to unambigously match `r sum(is.na(cc_joined$ccode))` countries, shown below
+
+```{r}
+cc_joined |>
+  filter(is.na(ccode)) |> 
+  select(starts_with("idea")) 
+```
+
+For each of these cases, we made a judgment about what COW code to use. In the tribble below, we manually assign COW codes to the IDEA codes.
+
+```{r}
+cow_manual <- tibble::tribble(
+  ~idea_country_name,                ~idea_code, ~ccode,
+  "Antigua and Barbuda",            "ANT", 58,
+  "Cook Islands",                   "COO", NA,
+  "Cote d Ivoire",                 "IVO", 437,
+  "Democratic Republic of the Congo","ZAI", 490,
+  "Dominica",                       "DMI", 54,
+  "East Germany",                   "GDR", 265,
+  "West Germany",                   "FRGpre", 260,   # <- manually edited the IDEA codes to distinguish ccodes 255 and 260
+  "Fiji",                           "FJI", 950,
+  "Germany",                        "FRG", 255,
+  "Micronesia",                     "FMS", 987,
+  "Monaco",                         "MCO", 221,
+  "Niue",                           "NIU", NA,
+  "North Korea",                    "PRK", 731,
+  "South Korea",                    "ROK", 732,
+  "South Yemen",          "YPR", 680,
+  "North Yemen",          "YAR", 678,
+  "Palau",                          "PAU", 986,
+  "Paracel Islands",                "PAC", NA,
+  "Puerto Rico",                    "PTR", NA,
+  "Romania",                        "RUM", 360,
+  "Saint Kitts and Nevis",          "STK", 60,
+  "Saint Lucia",                    "STL", 56,
+  "Saint Vincent and the Grenadines","STV", 57,
+  "San Marino",                     "SMO", 331,
+  "Sao Tome and Principe",          "SAO", 403,
+  "Serbia and Montenegro",          "SER", NA,
+  "Spratly Islands",                "SPL", NA,
+  "Turkish Cyprus",                 "CYT", NA,
+  "United Kingdom",                 "UK_", 200,
+  "Vatican",                        "VAT", 327,
+  "Western Sahara",                 "WSA", NA,
+)
+```
+
+Note that the IDEA code uses FRG for both pre-1990 West Germany and post-1990 Germany. The COW code uses codes 260 and 255 to distinguish these countries. The IDEA data uses FRG for both, so we collapse COW code 260 into 255 in our data set. This affects the year 1990 only.
+
+## Creating the Empty Country-Year Data Set
+
+Using the `cc_joined` and `cow_manual` data sets, we create a data set that links the IDEA codes to COW codes
+
+```{r}
+empty_country_years <- read_csv("data/system2016.csv") |>
+  select(year, ccode) |>
+  filter(year >= 1990 & year <= 2004) |>
+  left_join(select(cc_joined, ccode, idea_code)) |>
+  left_join(select(cow_manual, ccode, idea_code2 = idea_code)) |>
+  mutate(idea_code = ifelse(is.na(idea_code), idea_code2, idea_code)) |>
+  select(-idea_code2) |>
+  glimpse() 
+```
+
+## What COW countries don't exist in the IDEA data?
+
+```{r}
+empty_country_years |>
+  filter(is.na(idea_code)) |>
+  select(ccode) |>
+  distinct()
+```
+
+IDEA codes merge into all the COW countries except for 983 (Marshall Islands) and 860 (East Timor). As best we can tell, these countries are absent from the IDEA data.
+
+Now we write the empty country-year data set to file.
+
+```{r}
+empty_country_years %>%
+  filter(!(ccode %in% c(983, 860))) %>%
+  write_csv("output/empty-country-years.csv") 
+```

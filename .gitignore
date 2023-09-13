@@ -1,0 +1,17 @@
+/.quarto/
+.Rproj.user
+.DS_Store
+data/king-lowe-2008/1990-1994-data-(n=2_679_938).txt
+data/king-lowe-2008/1995-1999-data-(n=4_108_102).txt
+data/king-lowe-2008/2000-2004-data-(n=3464898).txt
+data/king-lowe-2008/levels-of-source-_-target.txt
+data/king-lowe-2008/names-of-source-_-target.txt
+data/king-lowe-2008/sectors-of-source-_-target.txt
+data/states2016.csv
+data/system2016.csv
+output/empty-country-years.csv
+output/idea-all-events.csv
+output/idea-counts.csv
+output/idea-dissent-events.csv
+output/murdie-bhasin-events.csv
+src/dissent

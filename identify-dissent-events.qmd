@@ -1,0 +1,232 @@
+---
+title: "Identify the Dissent Events"
+freeze: true
+---
+
+From Murdie and and Bhasin (2011):
+
+> To create the new measures, we relied on the IDEA framework (Bond et al. 2003). IDEA is a data set of all daily events in Reuters Global News Service. These data were organized in a "who" did "what" to "whom" manner for each particular event, over 10 million events in the complete data set (King and Lowe 2003).
+
+> For our variables, we isolated events where... (1) a domestic group or individual is the "who," (2) the "what" is either violent or nonviolent protest, and (3) the "whom" is either a state agent or a state physical office. As mentioned earlier, violent protests are protests with the threat or use of force. Attacking a government official or office, destroying government property, or a bombing of a government official's home are all examples of violent protest. Conversely, protest marches, demonstrations, boycotts, and sit-ins are some of the many examples of nonviolent protest.
+
+Their online replication materials (SI) are available in `Murdie Bhasin JCR Online Replication Materials 05.13.10.doc` and from http://journals.sagepub.com/doi/suppl/10.1177/0022002710374715.
+
+We proceed in several steps:
+
+1.  Load the raw idea data.
+2.  Create a data frame for the "what"---the actions that we consider dissent.
+3.  From the raw data, filter out all events that are dissent events using the definition above.
+
+## Load Raw IDEA Data
+
+The raw IDEA data are available for download on [Dataverse](http://hdl.handle.net/1902.1/FYXLAWZRIA) (King and Lowe 2003).
+
+```{r}
+#| message: false
+
+# load packages
+library(tidyverse)
+
+# read data from 1990-1994
+idea90_raw <- read_tsv("data/king-lowe-2008/1990-1994-data-(n=2_679_938).txt")
+
+# read data from 1995-1999
+idea95_raw <- read_tsv("data/king-lowe-2008/1995-1999-data-(n=4_108_102).txt")
+
+# read data from 2000-2004 and wrangle to match previous data sets
+idea00_raw <- read_tsv("data/king-lowe-2008/2000-2004-data-(n=3464898).txt") %>%
+  setNames(toupper(names(.))) |>
+  rename(EVENTDAT = EVENTDATE,
+         EVENTFOR = EVENTFORM,
+         SRCSECTO = SRCSECTOR,
+         TGTSECTO = TGTSECTOR)
+
+# bind three datasets together and wrangle for consistent capitalization
+idea_raw <- bind_rows(idea90_raw, idea95_raw) |>
+  bind_rows(idea00_raw) |>
+  mutate(SRCNAME = toupper(SRCNAME),
+         TGTNAME = toupper(TGTNAME),
+         PLACE = toupper(PLACE)) |> 
+  # update IDEA codes to distinguish West Germany from Germany; 3 October 1990
+  mutate(PLACE = ifelse(mdy(EVENTDAT) < ymd("1990-10-03") & PLACE == "FRG", "FRGpre", PLACE)) %>%
+  write_csv("output/idea-all-events.csv")
+
+# load data set with description of sectors
+sector_codes <- read_csv("data/king-lowe-2008/sectors-of-source-_-target.txt", 
+                            col_names = c("TGTSECTO", "target_description"))
+
+# load data set with description of levels
+level_codes <- read_csv("data/king-lowe-2008/levels-of-source-_-target.txt", 
+                           col_names = c("SRCLEVEL", 
+                                         "source_description", 
+                                         "source_detailed_description"))
+# load data set with description of names
+names_codes <- read_csv("data/king-lowe-2008/names-of-source-_-target.txt", 
+                           col_names = c("SRCNAME", 
+                                         "name_description"))
+```
+
+## Define the "What"
+
+### Nonviolent Dissent
+
+We categorize nonviolent dissent following Murdie and Bhasin (2011). See the first table in the file `Murdie Bhasin JCR Online Replication Materials 05.13.10.doc` available for download [here](https://journals.sagepub.com/doi/suppl/10.1177/0022002710374715/suppl_file/DS_10.11770022002710374715.zip).
+
+```{r}
+#| message: false
+#| code-fold: true
+
+mb_si_nonviolent <- tibble::tribble(
+  ~ACTIVITY,                           ~IDEA.CODE,   ~DEFINITION,
+  "Abduction",                        "<ABDU>",     "Abducting, hijacking and capturing of people.",
+  "Missile attack",                   "<AERI>",     "Launching of intermediate to long-range conventional ballistic missiles and aerial dropping of conventional explosive devices or bombs.",
+  "Assassination",                    "<ASSA>",     "Murder that is explicitly characterized as political killing and assassination.",
+  "Beatings",                         "<BEAT>",     "Beatings (physical assaults without the use of weapons).",
+  "Chem-bio attack",                  "<CBIO>",     "Use of chemical or biological weapons.",
+  "Unconventional weapons attack",     "<CBRU>",     "All uses of Weapons of Mass Destruction (WMD).",
+  "Armed battle",                     "<CLAS>",     "Initiation of armed hostilities or engagement between two or more armed forces, includes truce violations (use as default for war and battles).",
+  "Bodily punishment",                "<CORP>",     "The infliction of bodily injury, death or pain for the explicit purpose of punishment.",
+  "Coups and mutinies",               "<COUP>",     "Coups, mutiny and other rebellion by armed forces.",
+  "Declare war",                      "<DWAR>",     "Formal or official statement that a state of war exists.",
+  "Force Use",                        "<FORC>",     "All uses of physical force not otherwise specified.",
+  "Artillery attack",                 "<GRPG>",     "Use of short to intermediate range tank-mounted, ship-based or field guns and cannons, mortars and rocket-propelled grenades.",
+  "Hostage taking and kidnapping",    "<HTAK>",     "Hostage taking or kidnapping of people.",
+  "Hijacking",                        "<JACK>",     "All commandeerings of vehicles.",
+  "Torture",                          "<MAIM>",     "Maiming and all other reports explicitly characterized as torture.",
+  "Armed force blockade",             "<MBLO>",     "Use of armed forces to seal off a territory to prevent exit or entry of goods or personnel.",
+  "Mine explosion",                   "<MINE>",     "Land and underwater mine explosions.",
+  "Armed force occupation",           "<MOCC>",     "Use of armed forces to take over or occupy the whole or part of a territory.",
+  "Armed force threats",              "<MTHR>",     "All threats to use armed force.",
+  "Other physical force threats",      "<NMFT>",     "All threats to use non-armed, physical force.",
+  "Physical assault",                 "<PASS>",     "All uses of non-armed physical force in assaults against people not otherwise specified.",
+  "Small arms attack",                "<PEXE>",     "Shooting of small arms, light weapons and small explosives, including the use of all handguns, light machine guns, rifles and hand grenades.",
+  "Armed actions",                    "<RAID>",     "Ambiguous initiation of the use of armed forces to fire upon another armed force, population or territory.",
+  "Riot",                             "<RIOT>",     "Civil or political unrest explicitly characterized as riots, as well as behavior presented as tumultuous or mob-like. This behavior includes looting, prison uprisings, crowds setting things on fire, general fighting with police (typically by protestors).",
+  "Suicide bombing",                  "<SBOM>",     "A bombing in which the bomber perishes during detonation of the explosive.",
+  "Seize",                            "<SEIZ>",     "All seizures not otherwise specified.",
+  "Seize possession",                 "<SEZR>",     "Take control of positions or possessions.",
+  "Threaten forceful attack",          "<TATT>",     "Explicit threat to use armed forces in an attack or invasion.",
+  "Threaten forceful blockade",        "<TBLO>",     "Explicit threat to use armed ships, airplanes or forces to prevent entry or exit.",
+  "Threaten biological or chemical attack", "<TCBR>", "Explicit threat to use biological or chemical weapon against armed forces, a population or territory.",
+  "Threaten",                         "<THRT>",     "All threats, coercive warnings not otherwise specified.",
+  "Threaten nuclear attack",           "<TNUC>",     "Explicit threat to use a nuclear or radioactive weapon against armed forces, a population or territory.",
+  "Threaten forceful occupation",      "<TOCC>",     "Explicit threat to use armed forces to occupy the whole or part of a territory.",
+  "Threaten war",                     "<TWAR>",     "Explicit threat to declare a state of (military) war.",
+  "Vehicle bombing",                  "<VBOM>",     "Bombing explicitly characterized as a vehicle bombing (car bombing, etc.), except for suicide bombings, which are coded separately."
+)  %>%
+  mutate(TYPE = "Nonviolent")
+
+# create nice table
+kableExtra::kable(mb_si_nonviolent)
+```
+
+### Violent Dissent
+
+We categorize violent dissent following Murdie and Bhasin (2011). See the fsecond table in the file `Murdie Bhasin JCR Online Replication Materials 05.13.10.doc` available for download [here](https://journals.sagepub.com/doi/suppl/10.1177/0022002710374715/suppl_file/DS_10.11770022002710374715.zip).
+
+```{r}
+#| code-fold: true
+mb_si_violent <- tibble::tribble(
+  ~ACTIVITY,                         ~IDEA.CODE,   ~DEFINITION,
+  "Break relations",                 "<BREL>",     "Formal severance of ties.",
+  "Defy norms",                     "<DEFY>",     "Open defiance of laws and norms, civil disobedience.",
+  "Demonstrate",                    "<DEMO>",     "Demonstrations not otherwise specified.",
+  "Formally complain",              "<FCOM>",     "Written and institutionalized protests and appeals, and all petition drives and recalls.",
+  "Informally complain",            "<ICOM>",     "Verbal protests and rebukes, and all other informal complaints.",
+  "Protest altruism",               "<PALT>",     "Protest demonstrations that place the source (protestor) at risk for the sake of unity with the target.",
+  "Protest demonstrations",         "<PDEM>",     "All protest demonstrations not otherwise specified.",
+  "Protest procession",             "<PMAR>",     "Picketing and other parading protests.",
+  "Protest obstruction",            "<POBS>",     "Sit-ins and other non-military occupation protests.",
+  "Protest defacement",             "<PPRO>",     "Damage, sabotage and the use of graffiti to desecrate property and symbols.",
+  "Reduce routine activity",         "<REDR>",     "Reduction of routine and planned activities.",
+  "Rally support",                  "<SRAL>",     "Gatherings to express or demonstrate support, celebrations and all other public displays of confidence; includes protest vigils and commemorations.",
+  "Strikes and boycotts",           "<STRI>",     "Labor and professional sanctions reported as strikes, general strikes, walkouts, withholding of goods or services and lockouts.",
+  "Threaten to boycott or embargo", "<TBOE>",     "Threaten to boycott or impose embargoes, restrict normal interactions presented explicitly as a protest or retaliatory measure.",
+  "Threaten to reduce or break relations", "<TRBR>", "Threaten to reduce or formally sever ties.",
+  "Sanctions threat",               "<TSAN>",     "Threats of non-military, non-physical force social, economic and political sanctions.",
+  "Give ultimatum",                "<ULTI>",     "Threats conveyed explicitly as an ultimatum."
+) %>%
+  mutate(TYPE = "Violent")
+
+# create nice table
+kableExtra::kable(mb_si_nonviolent)
+```
+
+```{r}
+#| code-fold: true
+# combine into single tibble
+mb_si_df <- mb_si_violent %>%
+  bind_rows(mb_si_nonviolent) %>%
+  select(ACTIVITY, IDEA.CODE, TYPE, DEFINITION)
+
+# write to file
+write_csv(mb_si_df, "output/murdie-bhasin-events.csv")
+```
+
+## Filter Dissent Events
+
+> For our variables, we isolated events where (1) a domestic group or individual is the "who," the "what" is either violent or nonviolent protest, and the "whom" is either a state agent or a state physical office.
+
+```{r}
+#| message: false
+
+# the who
+who <- c("<GROU>", "<INDI>")
+
+# the what (created above)
+mb_events <- read_csv("output/murdie-bhasin-events.csv")
+what <- mb_events$IDEA.CODE
+
+# the whom
+state_agents <- c("<GAGE>",  # government agents
+                  "<JUDI>",  # judiciary
+                  "<DIPL>",  # diplomats
+                  "<MILI>",  # military
+                  "<NEXE>",  # national executive
+                  "<NLEG>",  # legislators
+                  "<OFFI>",  # officials
+                  "<SNOF>",  # sub-national officials
+                  "<PKOS>",  # peace-keeping forces
+                  "<POLI>")  # police
+
+# create a vector of sources and targets to drop
+names_to_drop <- c(
+  # see lines 178-195 of `RepressDissentCoding.do` from Murdie and Bhasin's SI
+  "UN", "_AFR", "_ARC","_ASA", "_CAM", "_EUR", "_NAM", "_SAM", "_WOR", 
+  # we also drop these 
+  "_AF", "_AS", "_CA", "_EU", "_WO", "ARBL", 
+  "CAS", "CASA", "EEC", "EEU", "GAZ", "MES", "MEST", "NAT", 
+  "NATO", "OAS", "OIN", "OIND", "OPA", "OSCE", "SAS", "SASA",
+  "SCA", "SEAS", "SEE", "SEEU", "WAF", "WAFR", "WBK", "WSA")  
+
+# filter dissent events
+idea <- idea_raw |>
+  filter(EVENTFOR %in% what) |>  # what: violent or non-violent protests 
+  filter(SRCLEVEL %in% who) |>  # who: group or individual 
+  filter(SRCNAME == TGTNAME) |>  # who: domestic (see lines 36-37 of `data/RepressDissentCoding.do`)
+  filter(!(SRCNAME %in% names_to_drop)) |>  # who: domestic (see lines 178-195 of `data/RepressDissentCoding.do`)
+  filter(!(TGTNAME %in% names_to_drop)) |>  # who: domestic (see lines 178-195 of `data/RepressDissentCoding.do`)
+  filter(TGTSECTO %in% state_agents)  # whom: state agent
+
+# join in additional information about sectors, levels, and names
+dissent <- idea |>
+  left_join(sector_codes) |>
+  left_join(level_codes) |>
+  left_join(names_codes) |>
+  left_join(mb_events, by = c("EVENTFOR" = "IDEA.CODE")) |>
+  select(date = EVENTDAT,
+         where = name_description,
+         what = ACTIVITY, 
+         who = source_description,
+         whom = target_description,
+         where_idea = PLACE,
+         what_idea = EVENTFOR,
+         who_idea = SRCLEVEL,
+         whom_idea = TGTSECTO) |>
+  separate(date, c("date", "time"), sep = " ", fill = "right", remove = TRUE) |>
+  mutate(date = mdy(date)) 
+  
+
+# write data file
+write_csv(dissent, "output/idea-dissent-events.csv")
+```

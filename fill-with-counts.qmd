@@ -1,0 +1,61 @@
+---
+title: "Fill the Country-Years with Counts"
+freeze: true
+---
+
+First, load the empty country-years to fill with the count data.
+
+```{r}
+#| message: false
+# load packages
+library(tidyverse)
+library(lubridate)
+
+# load data set of country-years to fill
+country_year <-  read_csv("output/empty-country-years.csv") %>%
+  glimpse()
+```
+
+Second, load the dissent events data and count the events for each country-year.
+
+```{r}
+#| message: false
+
+# load the dissent events and count for each country year
+dissent_events <- read_csv("output/idea-dissent-events.csv") %>%
+  mutate(year = year(date)) %>%
+  select(idea_code = where_idea, year) %>%
+  group_by(idea_code, year) %>%
+  summarize(n_dissent_events = n()) %>%
+  glimpse()
+```
+
+Third, load all events and count the events for each country-year.
+
+```{r}
+#| message: false
+
+# load all events and count for each country year
+all_events <- read_csv("output/idea-all-events.csv") %>%
+  separate(EVENTDAT, c("date", "time"), sep = " ", fill = "right") %>%
+  mutate(year = year(mdy(date))) %>%
+  select(idea_code = PLACE, year) %>%
+  group_by(idea_code, year) %>%
+  summarize(n_events = n()) %>%
+  glimpse()
+```
+
+Finally, join the counts with the country-year data set and replace NAs with zeros.
+
+```{r}
+#| message: false
+
+counts <- country_year |>
+  left_join(dissent_events) |>
+  left_join(all_events) %>%
+  # fill missing values with zero (i.e., no events)
+  mutate(n_events = ifelse(is.na(n_events), 0, n_events)) %>%
+  mutate(n_dissent_events = ifelse(is.na(n_dissent_events), 0, n_dissent_events)) %>%
+  write_csv("output/idea-counts.csv") %>%
+  glimpse()
+```

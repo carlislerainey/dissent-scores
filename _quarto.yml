@@ -1,0 +1,63 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - get-raw-data.qmd  
+    - create-country-years.qmd
+    - identify-dissent-events.qmd
+    - fill-with-counts.qmd
+    - compute-dissent-scores.qmd
+    - index.qmd
+    - paper.qmd
+    - data-details.qmd
+    - coverage.qmd
+    - example-repression-dissent.qmd
+    - example-dissent-in-the-middle.qmd
+    - about-us.qmd
+
+website:
+  title: "Dissent Scores (Alpha-Release)"
+  google-analytics: "G-F57WQLHH67"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - text: "Paper"
+        href: paper.qmd
+      - text: "About Us"
+        href: about-us.qmd
+      - text: "Variables"
+        href: data-details.qmd
+      - text: "Country-Years"
+        href: coverage.qmd
+      - text: "Detailed Documentation"
+        menu:
+          - text: "Step 1: Get the Raw Data"
+            href: get-raw-data.qmd          
+          - text: "Step 2: Create Country-Years"
+            href: create-country-years.qmd
+          - text: "Step 3: Identify Dissent Events"  
+            href: identify-dissent-events.qmd
+          - text: "Step 4: Fill Country-Years with Counts"
+            href: fill-with-counts.qmd
+          - text: "Step 5: Compute Dissent Scores"
+            href: compute-dissent-scores.qmd
+      - text: "Examples"  
+        menu:
+          - text: "Law of Coercive Responsiveness"
+            href: example-repression-dissent.qmd      
+          - text: "More Dissent in the Middle?"
+            href: example-dissent-in-the-middle.qmd
+    #right:
+    #  - icon: github
+    #    href: https://github.com/
+    #    aria-label: GitHub    
+
+format:
+  html:
+    theme: sandstone
+    css: styles.css
+    toc: true
+
+editor: visual
+

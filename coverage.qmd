@@ -1,0 +1,64 @@
+---
+title: "Coverage"
+---
+
+The table below shows the coverage of the data set. We have dissent scores for the countries listed below. If the coverage does not span the entire 1990-2004 time period, then the start or end year is in **bold**.
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+
+library(tidyverse)
+library(gt)
+library(scales)
+library(gtExtras)
+
+
+cov <- read_csv("output/dissent-scores.csv") |>
+  group_by(country_name, ccode, stateabb) |>
+  summarize(start = min(year), 
+            end = max(year),
+            interrupted = ifelse(end - start + 1 == n(), "No", "Yes"),
+            avg_dissent_score = round(mean(dissent_score), 2), 
+            dissent_scores_list = list(dissent_score)) %>%
+  select(`Country` = country_name,
+         `COW Code` = ccode, 
+         `COW Abbr.` = stateabb,
+         `From` = start,
+         `To` = end, 
+         `Interrupted?` = interrupted,
+         `Avg. Dissent Score` = avg_dissent_score, 
+         `Sparkline` = dissent_scores_list) %>%
+  ungroup() 
+
+cov %>%
+  gt() %>%
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_body(
+      columns = vars(`From`),
+      rows = `From` != 1990
+    )
+  ) %>%
+    tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_body(
+      columns = vars(`To`),
+      rows = `To` != 2004
+    )
+  ) %>%
+    data_color(
+    columns = vars(`Avg. Dissent Score`),
+    colors = scales::col_numeric(
+      palette = c("green", "black", "red"),
+      domain = range(cov$`Avg. Dissent Score`)
+    )
+  ) %>%
+    gt_plt_sparkline(Sparkline, type = "shaded")
+
+
+
+
+```

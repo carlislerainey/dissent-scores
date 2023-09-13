@@ -1,0 +1,43 @@
+---
+title: "Data Details"
+---
+
+## Variable Descriptions
+
+| Variable Name      | Description                                                                      |
+|--------------------|----------------------------------------------------------------------------------|
+| `release`          | The release. Current version is V0.0.9999, an alpha release for initial testing. |
+| `release_date`     | The release date. Latest version is 2023-09-13.                                  |
+| `country_name`     | The name of the country.                                                         |
+| `ccode`            | The numeric COW code for the country.                                            |
+| `stateabb`         | The 3-digit alpha COW code for the country.                                      |
+| `year`             | The year.                                                                        |
+| `n_events`         | The total number of events (dissent and not-dissent).                            |
+| `n_dissent_events` | The total number of *dissent* events in the country-year.                        |
+| `avg_pi`           | The posterior average of the parameter $\pi$ from the statistical model.         |
+| `avg_eta`          | The posterior average of the parameter $\eta$ from the statistical model.        |
+| `dissent_score`    | The dissent score. This is $\eta$ rescaled to have mean = 0 and SD = 0.5.        |
+| `se_dissent_score` | The posterior SD of the dissent score.                                           |
+
+## Summary Using `glimpse()`
+
+```{r}
+#| message: false
+
+# load packages
+library(tidyverse)
+
+# read csv directly from github
+gh_url <- "output/dissent-scores.csv"
+dissent <- read_csv(gh_url)
+
+# quick look
+glimpse(dissent)
+```
+
+## Summary Using `skim()`
+
+```{r}
+# generate numerical summaries
+skimr::skim(dissent)
+```

@@ -1,0 +1,41 @@
+---
+title: "Example: Law of Coercive Responsiveness"
+---
+
+In this example, download the V-Dem electoral democracy index, we download the dissent scores, and we plot the correlation between the two.
+
+Orienting this correlation theoretically, we quote [Muller (1985)](https://doi.org/10.2307/2095339):
+
+> An extremely repressive "closed"-regime structure offers little or no opportunity for dissident groups to engage in collective action of any kind. Moreover, the presence of an extremely repressive regime also affects the first and second variables in the political-process model, since, on the one hand, belief in the likelihood of success of collective protest probably will be low under this condition, and, on the other hand, it surely will be difficult for dissident groups to develop an effective organization. An "open" or democratic regime structure, by contrast, will offer considerable opportunity for dissident groups to participate in a variety of ways in the political process. In addition, belief in the likelihood of success of collective action should be enhanced, as well as ability to organize. In fact, under an open-regime structure, where rights of citizen participation are legally protected, violent collective action should be relatively unlikely, since there are many feasible nonviolent alternatives.
+
+> It is under a regime structure of intermediate repressiveness that collective political violence should be most likely. Organization is possible, the cost of collective action is not prohibitive, but opportunities for effective participation are restricted. Consequently, dissident groups operating in a semi-repressive environment may regard civil disobedience and violence as both a feasible and necessary strategy for pressing their claims to a share of infuence over political decisions.
+
+In brief, Muller points out that we should expect dissent in middling regimes. As an example, we show that correlation using our dissent scores and the V-Dem electoral democracy index.
+
+```{r}
+#| message: false
+#| warning: false
+
+# load packages
+library(tidyverse)
+
+# download latest vdem data
+remotes::install_github("xmarquez/democracyData")
+vdem <- democracyData::vdem_simple %>%
+  select(year, ccode = vdem_cowcode, v2x_polyarchy) %>%
+  glimpse()
+
+# download latest version of dissent scores
+gh_url <- "output/dissent-scores.csv"
+dissent_scores <- read_csv(gh_url) |>
+  glimpse()
+
+# join the two by ccode and year
+joined <- left_join(dissent_scores, vdem) |>
+  glimpse()
+
+# plot the relationship between electoral democracy index and dissent scores
+ggplot(joined, aes(x = v2x_polyarchy, y = dissent_score)) + 
+  geom_point() + 
+  geom_smooth()
+```

@@ -1,0 +1,81 @@
+---
+title: "The Dissent Scores Project"
+---
+
+::: callout-important
+This is an alpha release of the paper and data set. We plan to releases finalized version with DOIs near the end of September, but we wanted to share it widely to help us catch any obvious mistakes. For this alpha release, the data are hosted on GitHub. Future versions will posted to Dataverse.
+:::
+
+The Dissent Scores Project provides a standardized, public, ready-to-use data set with a measure of dissent at the country-year level.
+
+On this webpage, we supply the preprint for our project, the data sets, and a careful description of how we wrangled the IDEA data into our dissent scores.
+
+To create these dissent scores, we follow the standard practice in the literature and use the number of dissent events reported in events data sets. However, we make two improvements.
+
+1.  First, we adjust for variation in media scrutiny by using the rate of dissent events---the number of dissent events compared to the total number of events reported in the data set.
+2.  Second, we use a hierarchical model to partially pool these rates within and across countries to reduce the error in places with few events.
+
+We supply the country-year dissent scores in an easy-to-use format, but also describe our method and supply the computer code so that researchers can extend our method, make adjustments, compute dissent scores for alternative place-times, or apply the idea to new concepts.
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+library(tidyverse)
+
+gh_url <- "output/dissent-scores.csv"
+dissent <- read_csv(gh_url) 
+
+coi <- c("United States", "Japan", "Brazil", "Cape Verde")
+ggplot(dissent, aes(x = year, y = dissent_score, color = country_name)) + 
+  geom_line(linewidth = 1.3) + 
+  theme_bw() + 
+    gghighlight::gghighlight(country_name %in% coi, 
+                             unhighlighted_params = list(linewidth = 0.5, alpha = 0.3))
+```
+
+<!-- ## Download the Data -->
+
+<!-- ```{r} -->
+
+<!-- #| message: false -->
+
+<!-- # load packages -->
+
+<!-- library(dataverse) -->
+
+<!-- # download latest version of taiwan data set -->
+
+<!-- taiwan <- get_dataframe_by_name( -->
+
+<!--   filename = "taiwan.tab", -->
+
+<!--   dataset = "10.7910/DVN/FMLYTY",  -->
+
+<!--   server = "dataverse.harvard.edu") -->
+
+<!-- ``` -->
+
+## Download the Data
+
+The data for this alpha release are hosted on GitHub and can easily be downloaded and tested with the code below.
+
+```{r}
+#| message: false
+
+# load packages
+library(tidyverse)
+
+# read csv directly from github
+gh_url <- "output/dissent-scores.csv"
+dissent <- read_csv(gh_url) |>
+  glimpse()
+```
+
+## Cite the Data
+
+We will release a final version around the end of September (we're hoping to correct any errors quickly after this alpha release). At that point, we'll give the data set and paper DOIs.
+
+## Improve the Data and Method
+
+We offer both *data set* and a *method*. Both can be improved and/or extended! We welcome bug reports, tiny suggestions, and big criticisms. We hope that others will find this useful and help us make it better.

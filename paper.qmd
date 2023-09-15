@@ -9,15 +9,10 @@ title: "Paper"
 <a class="btn btn-primary" href="https://www.dropbox.com/scl/fi/l0husxr0fhd812uxdxti3/latent-dissent.pdf?rlkey=v89saysj2k7ecix53tbhh5v8y&dl=0" role="button">View Paper on Dropbox</a>    
 ```
 
-
 ------------------------------------------------------------------------
-
 
 ```{=html}
     <div style="text-align: center;">
         <iframe src="https://www.dropbox.com/scl/fi/l0husxr0fhd812uxdxti3/latent-dissent.pdf?rlkey=v89saysj2k7ecix53tbhh5v8y&raw=1" frameborder="0" width="800" height="1000"></iframe>
     </div>
 ```
-
-
-

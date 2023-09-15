@@ -305,47 +305,29 @@ Caused by warning:
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>mb_si_nonviolent <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>ACTIVITY,                           <span class="sc">~</span>IDEA.CODE,   <span class="sc">~</span>DEFINITION,</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Abduction"</span>,                        <span class="st">"&lt;ABDU&gt;"</span>,     <span class="st">"Abducting, hijacking and capturing of people."</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Missile attack"</span>,                   <span class="st">"&lt;AERI&gt;"</span>,     <span class="st">"Launching of intermediate to long-range conventional ballistic missiles and aerial dropping of conventional explosive devices or bombs."</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Assassination"</span>,                    <span class="st">"&lt;ASSA&gt;"</span>,     <span class="st">"Murder that is explicitly characterized as political killing and assassination."</span>,</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Beatings"</span>,                         <span class="st">"&lt;BEAT&gt;"</span>,     <span class="st">"Beatings (physical assaults without the use of weapons)."</span>,</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chem-bio attack"</span>,                  <span class="st">"&lt;CBIO&gt;"</span>,     <span class="st">"Use of chemical or biological weapons."</span>,</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Unconventional weapons attack"</span>,     <span class="st">"&lt;CBRU&gt;"</span>,     <span class="st">"All uses of Weapons of Mass Destruction (WMD)."</span>,</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed battle"</span>,                     <span class="st">"&lt;CLAS&gt;"</span>,     <span class="st">"Initiation of armed hostilities or engagement between two or more armed forces, includes truce violations (use as default for war and battles)."</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bodily punishment"</span>,                <span class="st">"&lt;CORP&gt;"</span>,     <span class="st">"The infliction of bodily injury, death or pain for the explicit purpose of punishment."</span>,</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Coups and mutinies"</span>,               <span class="st">"&lt;COUP&gt;"</span>,     <span class="st">"Coups, mutiny and other rebellion by armed forces."</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Declare war"</span>,                      <span class="st">"&lt;DWAR&gt;"</span>,     <span class="st">"Formal or official statement that a state of war exists."</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Force Use"</span>,                        <span class="st">"&lt;FORC&gt;"</span>,     <span class="st">"All uses of physical force not otherwise specified."</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Artillery attack"</span>,                 <span class="st">"&lt;GRPG&gt;"</span>,     <span class="st">"Use of short to intermediate range tank-mounted, ship-based or field guns and cannons, mortars and rocket-propelled grenades."</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hostage taking and kidnapping"</span>,    <span class="st">"&lt;HTAK&gt;"</span>,     <span class="st">"Hostage taking or kidnapping of people."</span>,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hijacking"</span>,                        <span class="st">"&lt;JACK&gt;"</span>,     <span class="st">"All commandeerings of vehicles."</span>,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Torture"</span>,                          <span class="st">"&lt;MAIM&gt;"</span>,     <span class="st">"Maiming and all other reports explicitly characterized as torture."</span>,</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed force blockade"</span>,             <span class="st">"&lt;MBLO&gt;"</span>,     <span class="st">"Use of armed forces to seal off a territory to prevent exit or entry of goods or personnel."</span>,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Mine explosion"</span>,                   <span class="st">"&lt;MINE&gt;"</span>,     <span class="st">"Land and underwater mine explosions."</span>,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed force occupation"</span>,           <span class="st">"&lt;MOCC&gt;"</span>,     <span class="st">"Use of armed forces to take over or occupy the whole or part of a territory."</span>,</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed force threats"</span>,              <span class="st">"&lt;MTHR&gt;"</span>,     <span class="st">"All threats to use armed force."</span>,</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Other physical force threats"</span>,      <span class="st">"&lt;NMFT&gt;"</span>,     <span class="st">"All threats to use non-armed, physical force."</span>,</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Physical assault"</span>,                 <span class="st">"&lt;PASS&gt;"</span>,     <span class="st">"All uses of non-armed physical force in assaults against people not otherwise specified."</span>,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Small arms attack"</span>,                <span class="st">"&lt;PEXE&gt;"</span>,     <span class="st">"Shooting of small arms, light weapons and small explosives, including the use of all handguns, light machine guns, rifles and hand grenades."</span>,</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed actions"</span>,                    <span class="st">"&lt;RAID&gt;"</span>,     <span class="st">"Ambiguous initiation of the use of armed forces to fire upon another armed force, population or territory."</span>,</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Riot"</span>,                             <span class="st">"&lt;RIOT&gt;"</span>,     <span class="st">"Civil or political unrest explicitly characterized as riots, as well as behavior presented as tumultuous or mob-like. This behavior includes looting, prison uprisings, crowds setting things on fire, general fighting with police (typically by protestors)."</span>,</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Suicide bombing"</span>,                  <span class="st">"&lt;SBOM&gt;"</span>,     <span class="st">"A bombing in which the bomber perishes during detonation of the explosive."</span>,</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Seize"</span>,                            <span class="st">"&lt;SEIZ&gt;"</span>,     <span class="st">"All seizures not otherwise specified."</span>,</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Seize possession"</span>,                 <span class="st">"&lt;SEZR&gt;"</span>,     <span class="st">"Take control of positions or possessions."</span>,</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten forceful attack"</span>,          <span class="st">"&lt;TATT&gt;"</span>,     <span class="st">"Explicit threat to use armed forces in an attack or invasion."</span>,</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten forceful blockade"</span>,        <span class="st">"&lt;TBLO&gt;"</span>,     <span class="st">"Explicit threat to use armed ships, airplanes or forces to prevent entry or exit."</span>,</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten biological or chemical attack"</span>, <span class="st">"&lt;TCBR&gt;"</span>, <span class="st">"Explicit threat to use biological or chemical weapon against armed forces, a population or territory."</span>,</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten"</span>,                         <span class="st">"&lt;THRT&gt;"</span>,     <span class="st">"All threats, coercive warnings not otherwise specified."</span>,</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten nuclear attack"</span>,           <span class="st">"&lt;TNUC&gt;"</span>,     <span class="st">"Explicit threat to use a nuclear or radioactive weapon against armed forces, a population or territory."</span>,</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten forceful occupation"</span>,      <span class="st">"&lt;TOCC&gt;"</span>,     <span class="st">"Explicit threat to use armed forces to occupy the whole or part of a territory."</span>,</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten war"</span>,                     <span class="st">"&lt;TWAR&gt;"</span>,     <span class="st">"Explicit threat to declare a state of (military) war."</span>,</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Vehicle bombing"</span>,                  <span class="st">"&lt;VBOM&gt;"</span>,     <span class="st">"Bombing explicitly characterized as a vehicle bombing (car bombing, etc.), except for suicide bombings, which are coded separately."</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>)  <span class="sc">%&gt;%</span></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TYPE =</span> <span class="st">"Nonviolent"</span>)</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co"># create nice table</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(mb_si_nonviolent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>ACTIVITY,                         <span class="sc">~</span>IDEA.CODE,   <span class="sc">~</span>DEFINITION,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Break relations"</span>,                 <span class="st">"&lt;BREL&gt;"</span>,     <span class="st">"Formal severance of ties."</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Defy norms"</span>,                     <span class="st">"&lt;DEFY&gt;"</span>,     <span class="st">"Open defiance of laws and norms, civil disobedience."</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Demonstrate"</span>,                    <span class="st">"&lt;DEMO&gt;"</span>,     <span class="st">"Demonstrations not otherwise specified."</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Formally complain"</span>,              <span class="st">"&lt;FCOM&gt;"</span>,     <span class="st">"Written and institutionalized protests and appeals, and all petition drives and recalls."</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Informally complain"</span>,            <span class="st">"&lt;ICOM&gt;"</span>,     <span class="st">"Verbal protests and rebukes, and all other informal complaints."</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest altruism"</span>,               <span class="st">"&lt;PALT&gt;"</span>,     <span class="st">"Protest demonstrations that place the source (protestor) at risk for the sake of unity with the target."</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest demonstrations"</span>,         <span class="st">"&lt;PDEM&gt;"</span>,     <span class="st">"All protest demonstrations not otherwise specified."</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest procession"</span>,             <span class="st">"&lt;PMAR&gt;"</span>,     <span class="st">"Picketing and other parading protests."</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest obstruction"</span>,            <span class="st">"&lt;POBS&gt;"</span>,     <span class="st">"Sit-ins and other non-military occupation protests."</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest defacement"</span>,             <span class="st">"&lt;PPRO&gt;"</span>,     <span class="st">"Damage, sabotage and the use of graffiti to desecrate property and symbols."</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Reduce routine activity"</span>,         <span class="st">"&lt;REDR&gt;"</span>,     <span class="st">"Reduction of routine and planned activities."</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Rally support"</span>,                  <span class="st">"&lt;SRAL&gt;"</span>,     <span class="st">"Gatherings to express or demonstrate support, celebrations and all other public displays of confidence; includes protest vigils and commemorations."</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Strikes and boycotts"</span>,           <span class="st">"&lt;STRI&gt;"</span>,     <span class="st">"Labor and professional sanctions reported as strikes, general strikes, walkouts, withholding of goods or services and lockouts."</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten to boycott or embargo"</span>, <span class="st">"&lt;TBOE&gt;"</span>,     <span class="st">"Threaten to boycott or impose embargoes, restrict normal interactions presented explicitly as a protest or retaliatory measure."</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten to reduce or break relations"</span>, <span class="st">"&lt;TRBR&gt;"</span>, <span class="st">"Threaten to reduce or formally sever ties."</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Sanctions threat"</span>,               <span class="st">"&lt;TSAN&gt;"</span>,     <span class="st">"Threats of non-military, non-physical force social, economic and political sanctions."</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Give ultimatum"</span>,                <span class="st">"&lt;ULTI&gt;"</span>,     <span class="st">"Threats conveyed explicitly as an ultimatum."</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TYPE =</span> <span class="st">"Nonviolent"</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co"># create nice table</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(mb_si_nonviolent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
@@ -359,213 +341,105 @@ Caused by warning:
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Abduction</td>
-<td style="text-align: left;">&lt;ABDU&gt;</td>
-<td style="text-align: left;">Abducting, hijacking and capturing of people.</td>
+<td style="text-align: left;">Break relations</td>
+<td style="text-align: left;">&lt;BREL&gt;</td>
+<td style="text-align: left;">Formal severance of ties.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Missile attack</td>
-<td style="text-align: left;">&lt;AERI&gt;</td>
-<td style="text-align: left;">Launching of intermediate to long-range conventional ballistic missiles and aerial dropping of conventional explosive devices or bombs.</td>
+<td style="text-align: left;">Defy norms</td>
+<td style="text-align: left;">&lt;DEFY&gt;</td>
+<td style="text-align: left;">Open defiance of laws and norms, civil disobedience.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Assassination</td>
-<td style="text-align: left;">&lt;ASSA&gt;</td>
-<td style="text-align: left;">Murder that is explicitly characterized as political killing and assassination.</td>
+<td style="text-align: left;">Demonstrate</td>
+<td style="text-align: left;">&lt;DEMO&gt;</td>
+<td style="text-align: left;">Demonstrations not otherwise specified.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Beatings</td>
-<td style="text-align: left;">&lt;BEAT&gt;</td>
-<td style="text-align: left;">Beatings (physical assaults without the use of weapons).</td>
+<td style="text-align: left;">Formally complain</td>
+<td style="text-align: left;">&lt;FCOM&gt;</td>
+<td style="text-align: left;">Written and institutionalized protests and appeals, and all petition drives and recalls.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Chem-bio attack</td>
-<td style="text-align: left;">&lt;CBIO&gt;</td>
-<td style="text-align: left;">Use of chemical or biological weapons.</td>
+<td style="text-align: left;">Informally complain</td>
+<td style="text-align: left;">&lt;ICOM&gt;</td>
+<td style="text-align: left;">Verbal protests and rebukes, and all other informal complaints.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Unconventional weapons attack</td>
-<td style="text-align: left;">&lt;CBRU&gt;</td>
-<td style="text-align: left;">All uses of Weapons of Mass Destruction (WMD).</td>
+<td style="text-align: left;">Protest altruism</td>
+<td style="text-align: left;">&lt;PALT&gt;</td>
+<td style="text-align: left;">Protest demonstrations that place the source (protestor) at risk for the sake of unity with the target.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Armed battle</td>
-<td style="text-align: left;">&lt;CLAS&gt;</td>
-<td style="text-align: left;">Initiation of armed hostilities or engagement between two or more armed forces, includes truce violations (use as default for war and battles).</td>
+<td style="text-align: left;">Protest demonstrations</td>
+<td style="text-align: left;">&lt;PDEM&gt;</td>
+<td style="text-align: left;">All protest demonstrations not otherwise specified.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Bodily punishment</td>
-<td style="text-align: left;">&lt;CORP&gt;</td>
-<td style="text-align: left;">The infliction of bodily injury, death or pain for the explicit purpose of punishment.</td>
+<td style="text-align: left;">Protest procession</td>
+<td style="text-align: left;">&lt;PMAR&gt;</td>
+<td style="text-align: left;">Picketing and other parading protests.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Coups and mutinies</td>
-<td style="text-align: left;">&lt;COUP&gt;</td>
-<td style="text-align: left;">Coups, mutiny and other rebellion by armed forces.</td>
+<td style="text-align: left;">Protest obstruction</td>
+<td style="text-align: left;">&lt;POBS&gt;</td>
+<td style="text-align: left;">Sit-ins and other non-military occupation protests.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Declare war</td>
-<td style="text-align: left;">&lt;DWAR&gt;</td>
-<td style="text-align: left;">Formal or official statement that a state of war exists.</td>
+<td style="text-align: left;">Protest defacement</td>
+<td style="text-align: left;">&lt;PPRO&gt;</td>
+<td style="text-align: left;">Damage, sabotage and the use of graffiti to desecrate property and symbols.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Force Use</td>
-<td style="text-align: left;">&lt;FORC&gt;</td>
-<td style="text-align: left;">All uses of physical force not otherwise specified.</td>
+<td style="text-align: left;">Reduce routine activity</td>
+<td style="text-align: left;">&lt;REDR&gt;</td>
+<td style="text-align: left;">Reduction of routine and planned activities.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Artillery attack</td>
-<td style="text-align: left;">&lt;GRPG&gt;</td>
-<td style="text-align: left;">Use of short to intermediate range tank-mounted, ship-based or field guns and cannons, mortars and rocket-propelled grenades.</td>
+<td style="text-align: left;">Rally support</td>
+<td style="text-align: left;">&lt;SRAL&gt;</td>
+<td style="text-align: left;">Gatherings to express or demonstrate support, celebrations and all other public displays of confidence; includes protest vigils and commemorations.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Hostage taking and kidnapping</td>
-<td style="text-align: left;">&lt;HTAK&gt;</td>
-<td style="text-align: left;">Hostage taking or kidnapping of people.</td>
+<td style="text-align: left;">Strikes and boycotts</td>
+<td style="text-align: left;">&lt;STRI&gt;</td>
+<td style="text-align: left;">Labor and professional sanctions reported as strikes, general strikes, walkouts, withholding of goods or services and lockouts.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Hijacking</td>
-<td style="text-align: left;">&lt;JACK&gt;</td>
-<td style="text-align: left;">All commandeerings of vehicles.</td>
+<td style="text-align: left;">Threaten to boycott or embargo</td>
+<td style="text-align: left;">&lt;TBOE&gt;</td>
+<td style="text-align: left;">Threaten to boycott or impose embargoes, restrict normal interactions presented explicitly as a protest or retaliatory measure.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Torture</td>
-<td style="text-align: left;">&lt;MAIM&gt;</td>
-<td style="text-align: left;">Maiming and all other reports explicitly characterized as torture.</td>
+<td style="text-align: left;">Threaten to reduce or break relations</td>
+<td style="text-align: left;">&lt;TRBR&gt;</td>
+<td style="text-align: left;">Threaten to reduce or formally sever ties.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Armed force blockade</td>
-<td style="text-align: left;">&lt;MBLO&gt;</td>
-<td style="text-align: left;">Use of armed forces to seal off a territory to prevent exit or entry of goods or personnel.</td>
+<td style="text-align: left;">Sanctions threat</td>
+<td style="text-align: left;">&lt;TSAN&gt;</td>
+<td style="text-align: left;">Threats of non-military, non-physical force social, economic and political sanctions.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Mine explosion</td>
-<td style="text-align: left;">&lt;MINE&gt;</td>
-<td style="text-align: left;">Land and underwater mine explosions.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Armed force occupation</td>
-<td style="text-align: left;">&lt;MOCC&gt;</td>
-<td style="text-align: left;">Use of armed forces to take over or occupy the whole or part of a territory.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Armed force threats</td>
-<td style="text-align: left;">&lt;MTHR&gt;</td>
-<td style="text-align: left;">All threats to use armed force.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Other physical force threats</td>
-<td style="text-align: left;">&lt;NMFT&gt;</td>
-<td style="text-align: left;">All threats to use non-armed, physical force.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Physical assault</td>
-<td style="text-align: left;">&lt;PASS&gt;</td>
-<td style="text-align: left;">All uses of non-armed physical force in assaults against people not otherwise specified.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Small arms attack</td>
-<td style="text-align: left;">&lt;PEXE&gt;</td>
-<td style="text-align: left;">Shooting of small arms, light weapons and small explosives, including the use of all handguns, light machine guns, rifles and hand grenades.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Armed actions</td>
-<td style="text-align: left;">&lt;RAID&gt;</td>
-<td style="text-align: left;">Ambiguous initiation of the use of armed forces to fire upon another armed force, population or territory.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Riot</td>
-<td style="text-align: left;">&lt;RIOT&gt;</td>
-<td style="text-align: left;">Civil or political unrest explicitly characterized as riots, as well as behavior presented as tumultuous or mob-like. This behavior includes looting, prison uprisings, crowds setting things on fire, general fighting with police (typically by protestors).</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Suicide bombing</td>
-<td style="text-align: left;">&lt;SBOM&gt;</td>
-<td style="text-align: left;">A bombing in which the bomber perishes during detonation of the explosive.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Seize</td>
-<td style="text-align: left;">&lt;SEIZ&gt;</td>
-<td style="text-align: left;">All seizures not otherwise specified.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Seize possession</td>
-<td style="text-align: left;">&lt;SEZR&gt;</td>
-<td style="text-align: left;">Take control of positions or possessions.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Threaten forceful attack</td>
-<td style="text-align: left;">&lt;TATT&gt;</td>
-<td style="text-align: left;">Explicit threat to use armed forces in an attack or invasion.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Threaten forceful blockade</td>
-<td style="text-align: left;">&lt;TBLO&gt;</td>
-<td style="text-align: left;">Explicit threat to use armed ships, airplanes or forces to prevent entry or exit.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Threaten biological or chemical attack</td>
-<td style="text-align: left;">&lt;TCBR&gt;</td>
-<td style="text-align: left;">Explicit threat to use biological or chemical weapon against armed forces, a population or territory.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Threaten</td>
-<td style="text-align: left;">&lt;THRT&gt;</td>
-<td style="text-align: left;">All threats, coercive warnings not otherwise specified.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Threaten nuclear attack</td>
-<td style="text-align: left;">&lt;TNUC&gt;</td>
-<td style="text-align: left;">Explicit threat to use a nuclear or radioactive weapon against armed forces, a population or territory.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Threaten forceful occupation</td>
-<td style="text-align: left;">&lt;TOCC&gt;</td>
-<td style="text-align: left;">Explicit threat to use armed forces to occupy the whole or part of a territory.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Threaten war</td>
-<td style="text-align: left;">&lt;TWAR&gt;</td>
-<td style="text-align: left;">Explicit threat to declare a state of (military) war.</td>
-<td style="text-align: left;">Nonviolent</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Vehicle bombing</td>
-<td style="text-align: left;">&lt;VBOM&gt;</td>
-<td style="text-align: left;">Bombing explicitly characterized as a vehicle bombing (car bombing, etc.), except for suicide bombings, which are coded separately.</td>
+<td style="text-align: left;">Give ultimatum</td>
+<td style="text-align: left;">&lt;ULTI&gt;</td>
+<td style="text-align: left;">Threats conveyed explicitly as an ultimatum.</td>
 <td style="text-align: left;">Nonviolent</td>
 </tr>
 </tbody>
@@ -582,29 +456,47 @@ Caused by warning:
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mb_si_violent <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>ACTIVITY,                         <span class="sc">~</span>IDEA.CODE,   <span class="sc">~</span>DEFINITION,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Break relations"</span>,                 <span class="st">"&lt;BREL&gt;"</span>,     <span class="st">"Formal severance of ties."</span>,</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Defy norms"</span>,                     <span class="st">"&lt;DEFY&gt;"</span>,     <span class="st">"Open defiance of laws and norms, civil disobedience."</span>,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Demonstrate"</span>,                    <span class="st">"&lt;DEMO&gt;"</span>,     <span class="st">"Demonstrations not otherwise specified."</span>,</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Formally complain"</span>,              <span class="st">"&lt;FCOM&gt;"</span>,     <span class="st">"Written and institutionalized protests and appeals, and all petition drives and recalls."</span>,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Informally complain"</span>,            <span class="st">"&lt;ICOM&gt;"</span>,     <span class="st">"Verbal protests and rebukes, and all other informal complaints."</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest altruism"</span>,               <span class="st">"&lt;PALT&gt;"</span>,     <span class="st">"Protest demonstrations that place the source (protestor) at risk for the sake of unity with the target."</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest demonstrations"</span>,         <span class="st">"&lt;PDEM&gt;"</span>,     <span class="st">"All protest demonstrations not otherwise specified."</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest procession"</span>,             <span class="st">"&lt;PMAR&gt;"</span>,     <span class="st">"Picketing and other parading protests."</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest obstruction"</span>,            <span class="st">"&lt;POBS&gt;"</span>,     <span class="st">"Sit-ins and other non-military occupation protests."</span>,</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest defacement"</span>,             <span class="st">"&lt;PPRO&gt;"</span>,     <span class="st">"Damage, sabotage and the use of graffiti to desecrate property and symbols."</span>,</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Reduce routine activity"</span>,         <span class="st">"&lt;REDR&gt;"</span>,     <span class="st">"Reduction of routine and planned activities."</span>,</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Rally support"</span>,                  <span class="st">"&lt;SRAL&gt;"</span>,     <span class="st">"Gatherings to express or demonstrate support, celebrations and all other public displays of confidence; includes protest vigils and commemorations."</span>,</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Strikes and boycotts"</span>,           <span class="st">"&lt;STRI&gt;"</span>,     <span class="st">"Labor and professional sanctions reported as strikes, general strikes, walkouts, withholding of goods or services and lockouts."</span>,</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten to boycott or embargo"</span>, <span class="st">"&lt;TBOE&gt;"</span>,     <span class="st">"Threaten to boycott or impose embargoes, restrict normal interactions presented explicitly as a protest or retaliatory measure."</span>,</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten to reduce or break relations"</span>, <span class="st">"&lt;TRBR&gt;"</span>, <span class="st">"Threaten to reduce or formally sever ties."</span>,</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Sanctions threat"</span>,               <span class="st">"&lt;TSAN&gt;"</span>,     <span class="st">"Threats of non-military, non-physical force social, economic and political sanctions."</span>,</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Give ultimatum"</span>,                <span class="st">"&lt;ULTI&gt;"</span>,     <span class="st">"Threats conveyed explicitly as an ultimatum."</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TYPE =</span> <span class="st">"Violent"</span>)</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="co"># create nice table</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(mb_si_nonviolent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>ACTIVITY,                           <span class="sc">~</span>IDEA.CODE,   <span class="sc">~</span>DEFINITION,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Abduction"</span>,                        <span class="st">"&lt;ABDU&gt;"</span>,     <span class="st">"Abducting, hijacking and capturing of people."</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Missile attack"</span>,                   <span class="st">"&lt;AERI&gt;"</span>,     <span class="st">"Launching of intermediate to long-range conventional ballistic missiles and aerial dropping of conventional explosive devices or bombs."</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Assassination"</span>,                    <span class="st">"&lt;ASSA&gt;"</span>,     <span class="st">"Murder that is explicitly characterized as political killing and assassination."</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Beatings"</span>,                         <span class="st">"&lt;BEAT&gt;"</span>,     <span class="st">"Beatings (physical assaults without the use of weapons)."</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chem-bio attack"</span>,                  <span class="st">"&lt;CBIO&gt;"</span>,     <span class="st">"Use of chemical or biological weapons."</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Unconventional weapons attack"</span>,     <span class="st">"&lt;CBRU&gt;"</span>,     <span class="st">"All uses of Weapons of Mass Destruction (WMD)."</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed battle"</span>,                     <span class="st">"&lt;CLAS&gt;"</span>,     <span class="st">"Initiation of armed hostilities or engagement between two or more armed forces, includes truce violations (use as default for war and battles)."</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bodily punishment"</span>,                <span class="st">"&lt;CORP&gt;"</span>,     <span class="st">"The infliction of bodily injury, death or pain for the explicit purpose of punishment."</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Coups and mutinies"</span>,               <span class="st">"&lt;COUP&gt;"</span>,     <span class="st">"Coups, mutiny and other rebellion by armed forces."</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Declare war"</span>,                      <span class="st">"&lt;DWAR&gt;"</span>,     <span class="st">"Formal or official statement that a state of war exists."</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Force Use"</span>,                        <span class="st">"&lt;FORC&gt;"</span>,     <span class="st">"All uses of physical force not otherwise specified."</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Artillery attack"</span>,                 <span class="st">"&lt;GRPG&gt;"</span>,     <span class="st">"Use of short to intermediate range tank-mounted, ship-based or field guns and cannons, mortars and rocket-propelled grenades."</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hostage taking and kidnapping"</span>,    <span class="st">"&lt;HTAK&gt;"</span>,     <span class="st">"Hostage taking or kidnapping of people."</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hijacking"</span>,                        <span class="st">"&lt;JACK&gt;"</span>,     <span class="st">"All commandeerings of vehicles."</span>,</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Torture"</span>,                          <span class="st">"&lt;MAIM&gt;"</span>,     <span class="st">"Maiming and all other reports explicitly characterized as torture."</span>,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed force blockade"</span>,             <span class="st">"&lt;MBLO&gt;"</span>,     <span class="st">"Use of armed forces to seal off a territory to prevent exit or entry of goods or personnel."</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Mine explosion"</span>,                   <span class="st">"&lt;MINE&gt;"</span>,     <span class="st">"Land and underwater mine explosions."</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed force occupation"</span>,           <span class="st">"&lt;MOCC&gt;"</span>,     <span class="st">"Use of armed forces to take over or occupy the whole or part of a territory."</span>,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed force threats"</span>,              <span class="st">"&lt;MTHR&gt;"</span>,     <span class="st">"All threats to use armed force."</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Other physical force threats"</span>,      <span class="st">"&lt;NMFT&gt;"</span>,     <span class="st">"All threats to use non-armed, physical force."</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Physical assault"</span>,                 <span class="st">"&lt;PASS&gt;"</span>,     <span class="st">"All uses of non-armed physical force in assaults against people not otherwise specified."</span>,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Small arms attack"</span>,                <span class="st">"&lt;PEXE&gt;"</span>,     <span class="st">"Shooting of small arms, light weapons and small explosives, including the use of all handguns, light machine guns, rifles and hand grenades."</span>,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed actions"</span>,                    <span class="st">"&lt;RAID&gt;"</span>,     <span class="st">"Ambiguous initiation of the use of armed forces to fire upon another armed force, population or territory."</span>,</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Riot"</span>,                             <span class="st">"&lt;RIOT&gt;"</span>,     <span class="st">"Civil or political unrest explicitly characterized as riots, as well as behavior presented as tumultuous or mob-like. This behavior includes looting, prison uprisings, crowds setting things on fire, general fighting with police (typically by protestors)."</span>,</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Suicide bombing"</span>,                  <span class="st">"&lt;SBOM&gt;"</span>,     <span class="st">"A bombing in which the bomber perishes during detonation of the explosive."</span>,</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Seize"</span>,                            <span class="st">"&lt;SEIZ&gt;"</span>,     <span class="st">"All seizures not otherwise specified."</span>,</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Seize possession"</span>,                 <span class="st">"&lt;SEZR&gt;"</span>,     <span class="st">"Take control of positions or possessions."</span>,</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten forceful attack"</span>,          <span class="st">"&lt;TATT&gt;"</span>,     <span class="st">"Explicit threat to use armed forces in an attack or invasion."</span>,</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten forceful blockade"</span>,        <span class="st">"&lt;TBLO&gt;"</span>,     <span class="st">"Explicit threat to use armed ships, airplanes or forces to prevent entry or exit."</span>,</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten biological or chemical attack"</span>, <span class="st">"&lt;TCBR&gt;"</span>, <span class="st">"Explicit threat to use biological or chemical weapon against armed forces, a population or territory."</span>,</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten"</span>,                         <span class="st">"&lt;THRT&gt;"</span>,     <span class="st">"All threats, coercive warnings not otherwise specified."</span>,</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten nuclear attack"</span>,           <span class="st">"&lt;TNUC&gt;"</span>,     <span class="st">"Explicit threat to use a nuclear or radioactive weapon against armed forces, a population or territory."</span>,</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten forceful occupation"</span>,      <span class="st">"&lt;TOCC&gt;"</span>,     <span class="st">"Explicit threat to use armed forces to occupy the whole or part of a territory."</span>,</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten war"</span>,                     <span class="st">"&lt;TWAR&gt;"</span>,     <span class="st">"Explicit threat to declare a state of (military) war."</span>,</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Vehicle bombing"</span>,                  <span class="st">"&lt;VBOM&gt;"</span>,     <span class="st">"Bombing explicitly characterized as a vehicle bombing (car bombing, etc.), except for suicide bombings, which are coded separately."</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>)  <span class="sc">%&gt;%</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TYPE =</span> <span class="st">"Violent"</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a><span class="co"># create nice table</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(mb_si_violent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table data-quarto-postprocess="true" class="table table-sm table-striped small">
@@ -621,211 +513,211 @@ Caused by warning:
 <td style="text-align: left;">Abduction</td>
 <td style="text-align: left;">&lt;ABDU&gt;</td>
 <td style="text-align: left;">Abducting, hijacking and capturing of people.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Missile attack</td>
 <td style="text-align: left;">&lt;AERI&gt;</td>
 <td style="text-align: left;">Launching of intermediate to long-range conventional ballistic missiles and aerial dropping of conventional explosive devices or bombs.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Assassination</td>
 <td style="text-align: left;">&lt;ASSA&gt;</td>
 <td style="text-align: left;">Murder that is explicitly characterized as political killing and assassination.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Beatings</td>
 <td style="text-align: left;">&lt;BEAT&gt;</td>
 <td style="text-align: left;">Beatings (physical assaults without the use of weapons).</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Chem-bio attack</td>
 <td style="text-align: left;">&lt;CBIO&gt;</td>
 <td style="text-align: left;">Use of chemical or biological weapons.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Unconventional weapons attack</td>
 <td style="text-align: left;">&lt;CBRU&gt;</td>
 <td style="text-align: left;">All uses of Weapons of Mass Destruction (WMD).</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Armed battle</td>
 <td style="text-align: left;">&lt;CLAS&gt;</td>
 <td style="text-align: left;">Initiation of armed hostilities or engagement between two or more armed forces, includes truce violations (use as default for war and battles).</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Bodily punishment</td>
 <td style="text-align: left;">&lt;CORP&gt;</td>
 <td style="text-align: left;">The infliction of bodily injury, death or pain for the explicit purpose of punishment.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Coups and mutinies</td>
 <td style="text-align: left;">&lt;COUP&gt;</td>
 <td style="text-align: left;">Coups, mutiny and other rebellion by armed forces.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Declare war</td>
 <td style="text-align: left;">&lt;DWAR&gt;</td>
 <td style="text-align: left;">Formal or official statement that a state of war exists.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Force Use</td>
 <td style="text-align: left;">&lt;FORC&gt;</td>
 <td style="text-align: left;">All uses of physical force not otherwise specified.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Artillery attack</td>
 <td style="text-align: left;">&lt;GRPG&gt;</td>
 <td style="text-align: left;">Use of short to intermediate range tank-mounted, ship-based or field guns and cannons, mortars and rocket-propelled grenades.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Hostage taking and kidnapping</td>
 <td style="text-align: left;">&lt;HTAK&gt;</td>
 <td style="text-align: left;">Hostage taking or kidnapping of people.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Hijacking</td>
 <td style="text-align: left;">&lt;JACK&gt;</td>
 <td style="text-align: left;">All commandeerings of vehicles.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Torture</td>
 <td style="text-align: left;">&lt;MAIM&gt;</td>
 <td style="text-align: left;">Maiming and all other reports explicitly characterized as torture.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Armed force blockade</td>
 <td style="text-align: left;">&lt;MBLO&gt;</td>
 <td style="text-align: left;">Use of armed forces to seal off a territory to prevent exit or entry of goods or personnel.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Mine explosion</td>
 <td style="text-align: left;">&lt;MINE&gt;</td>
 <td style="text-align: left;">Land and underwater mine explosions.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Armed force occupation</td>
 <td style="text-align: left;">&lt;MOCC&gt;</td>
 <td style="text-align: left;">Use of armed forces to take over or occupy the whole or part of a territory.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Armed force threats</td>
 <td style="text-align: left;">&lt;MTHR&gt;</td>
 <td style="text-align: left;">All threats to use armed force.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Other physical force threats</td>
 <td style="text-align: left;">&lt;NMFT&gt;</td>
 <td style="text-align: left;">All threats to use non-armed, physical force.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Physical assault</td>
 <td style="text-align: left;">&lt;PASS&gt;</td>
 <td style="text-align: left;">All uses of non-armed physical force in assaults against people not otherwise specified.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Small arms attack</td>
 <td style="text-align: left;">&lt;PEXE&gt;</td>
 <td style="text-align: left;">Shooting of small arms, light weapons and small explosives, including the use of all handguns, light machine guns, rifles and hand grenades.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Armed actions</td>
 <td style="text-align: left;">&lt;RAID&gt;</td>
 <td style="text-align: left;">Ambiguous initiation of the use of armed forces to fire upon another armed force, population or territory.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Riot</td>
 <td style="text-align: left;">&lt;RIOT&gt;</td>
 <td style="text-align: left;">Civil or political unrest explicitly characterized as riots, as well as behavior presented as tumultuous or mob-like. This behavior includes looting, prison uprisings, crowds setting things on fire, general fighting with police (typically by protestors).</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Suicide bombing</td>
 <td style="text-align: left;">&lt;SBOM&gt;</td>
 <td style="text-align: left;">A bombing in which the bomber perishes during detonation of the explosive.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Seize</td>
 <td style="text-align: left;">&lt;SEIZ&gt;</td>
 <td style="text-align: left;">All seizures not otherwise specified.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Seize possession</td>
 <td style="text-align: left;">&lt;SEZR&gt;</td>
 <td style="text-align: left;">Take control of positions or possessions.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Threaten forceful attack</td>
 <td style="text-align: left;">&lt;TATT&gt;</td>
 <td style="text-align: left;">Explicit threat to use armed forces in an attack or invasion.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Threaten forceful blockade</td>
 <td style="text-align: left;">&lt;TBLO&gt;</td>
 <td style="text-align: left;">Explicit threat to use armed ships, airplanes or forces to prevent entry or exit.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Threaten biological or chemical attack</td>
 <td style="text-align: left;">&lt;TCBR&gt;</td>
 <td style="text-align: left;">Explicit threat to use biological or chemical weapon against armed forces, a population or territory.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Threaten</td>
 <td style="text-align: left;">&lt;THRT&gt;</td>
 <td style="text-align: left;">All threats, coercive warnings not otherwise specified.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Threaten nuclear attack</td>
 <td style="text-align: left;">&lt;TNUC&gt;</td>
 <td style="text-align: left;">Explicit threat to use a nuclear or radioactive weapon against armed forces, a population or territory.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Threaten forceful occupation</td>
 <td style="text-align: left;">&lt;TOCC&gt;</td>
 <td style="text-align: left;">Explicit threat to use armed forces to occupy the whole or part of a territory.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Threaten war</td>
 <td style="text-align: left;">&lt;TWAR&gt;</td>
 <td style="text-align: left;">Explicit threat to declare a state of (military) war.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Vehicle bombing</td>
 <td style="text-align: left;">&lt;VBOM&gt;</td>
 <td style="text-align: left;">Bombing explicitly characterized as a vehicle bombing (car bombing, etc.), except for suicide bombings, which are coded separately.</td>
-<td style="text-align: left;">Nonviolent</td>
+<td style="text-align: left;">Violent</td>
 </tr>
 </tbody>
 </table>

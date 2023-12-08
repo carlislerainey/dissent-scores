@@ -1,0 +1,304 @@
+---
+title: "ICEWS Aggregation for Latent Dissent"
+author: "Nick Dietrich"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r, include=F}
+knitr::opts_chunk$set(warning=FALSE,message=FALSE)
+# load packages
+library(tidyverse)
+library(countrycode)
+library(kableExtra)
+```
+
+### Dissent Events
+
+[Murdie and Bassain (2011)](https://urldefense.com/v3/__http://journals.sagepub.com/doi/suppl/10.1177/0022002710374715__;!!PhOWcWs!3oRWa1NpA6pXyjcJm6YqdWwFMScMONteMbhyFgn-29dIrDEXhY0M64K38mPtTvc0YF2J_IpKtgb3GRYEF0qDYZ0m0A$ ) define a dissent event as follows:
+
+>To create the new measures, we relied on the IDEA framework (Bond et al. 2003). IDEA is a data set of all daily events in Reuters Global News Service. These data were organized in a “who” did “what” to “whom” manner for each particular event, over 10 million events in the complete data set (King and Lowe 2003). 
+
+> For our variables, we isolated events where… (1) a domestic group or individual is the “who,” (2) the “what” is either violent or nonviolent protest, and (3) the “whom” is either a state agent or a state physical office. As mentioned earlier, violent protests are protests with the threat or use of force. Attacking a government official or office, destroying government property, or a bombing of a government official’s home are all examples of violent protest. Conversely, protest marches, demonstrations, boycotts, and sit-ins are some of the many examples of nonviolent protest.
+
+We apply this definition to the [Integrated Crisis Early Warning System (ICEWS)](https://urldefense.com/v3/__https://dataverse.harvard.edu/dataverse/icews__;!!PhOWcWs!3oRWa1NpA6pXyjcJm6YqdWwFMScMONteMbhyFgn-29dIrDEXhY0M64K38mPtTvc0YF2J_IpKtgb3GRYEF0qVPZsfeA$ ) dataset to find the proportion of reported events that qualify as "dissent events" in each country-year.
+
+### Loading the ICEWS Data
+
+ICEWS event data are available on [dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/28075). Each year's events are reported in a single file. Here, I combine them into a single object of class `tbl`.
+
+```{r}
+# character vector of file names from the ICEWS repository
+file_names <- list.files("data/ICEWS")
+# subset to only the yearly data files
+file_names <- file_names[grepl("events", substr(file_names,1,6), ignore.case = TRUE)]
+# read in the data files one at a time and combine them
+icews_list <- NULL
+for(i in 1:length(file_names)){
+  icews_list[[i]] <- read_tsv(paste0("data/ICEWS/",file_names[i]))
+}
+
+# a few events are reported in multiple versions of the dataset;
+# remove these duplicates that match on every column
+icews <- do.call(rbind, icews_list) %>%
+  distinct() %>%
+  write_csv("output/combined-icews.csv")
+```
+
+### Defining Dissent Events
+
+Murdie and Bassain rely on IDEA event codes. ICEWS uses CAMEO ontology, which differs slightly. CAMEO codes used by the ICEWS dataset can be found at[https://urldefense.com/v3/__https://eventdata.parusanalytics.com/cameo.dir/CAMEO.CDB.09b5.pdf*(https:/*eventdata.parusanalytics.com/cameo.dir/CAMEO.CDB.09b5.pdf)__;XS8!!PhOWcWs!3oRWa1NpA6pXyjcJm6YqdWwFMScMONteMbhyFgn-29dIrDEXhY0M64K38mPtTvc0YF2J_IpKtgb3GRYEF0pqZ7Sphg$ .
+
+### Define the "What"
+
+Dissent events broadly fall into the categories of "Nonviolent Dissent" and "Violent Dissent."
+
+#### Nonviolent Dissent
+
+The following table shows the IDEA event codes and their corresponding CAMEO codes for nonviolent dissent events.
+
+```{r}
+mb_si_nonviolent <- tibble::tribble(
+  ~ACTIVITY,                ~IDEA.CODE,   ~DEFINITION, ~CAMEO.CODE, ~CAMEO.DEFINITION,
+  "Break relations",                 "<BREL>",     "Formal severance of ties.", "161", "Reduce or break diplomatic relations",
+  "Defy norms",                     "<DEFY>",     "Open defiance of laws and norms, civil disobedience.", "128", "Defy norms, law",
+  "Demonstrate",                    "<DEMO>",     "Demonstrations not otherwise specified.", "141, 1411-1414", "Demonstrate or rally",
+  "Formally complain",              "<FCOM>",     "Written and institutionalized protests and appeals, and all petition drives and recalls.", "114", "Complain officially",
+  "Informally complain",            "<ICOM>",     "Verbal protests and rebukes, and all other informal complaints.", "111", "Criticize or denounce",
+  "Protest altruism",               "<PALT>",     "Protest demonstrations that place the source (protestor) at risk for the sake of unity with the target.", "141, 1411-1414", "Demonstrate or rally",
+  "Protest demonstrations",         "<PDEM>",     "All protest demonstrations not otherwise specified.", "140", "Engage in political dissent, not specified below",
+  "Protest procession",             "<PMAR>",     "Picketing and other parading protests.", "141, 1411-1414", "Demonstrate or rally",
+  "Protest obstruction",            "<POBS>",     "Sit-ins and other non-military occupation protests.", "144, 1441-1444", "Obstruct passage, block",
+  "Protest defacement",             "<PPRO>",     "Damage, sabotage and the use of graffiti to desecrate property and symbols.", "171, 1711, 1712", "Seize or damage property",
+  "Reduce routine activity",         "<REDR>",     "Reduction of routine and planned activities.", "160-165, 1621-1623", "Reduce relations", 
+  "Rally support",                  "<SRAL>",     "Gatherings to express or demonstrate support, celebrations and all other public displays of confidence; includes protest vigils and commemorations.", "141, 1411-1414", "Demonstrate or rally",
+  "Strikes and boycotts",           "<STRI>",     "Labor and professional sanctions reported as strikes, general strikes, walkouts, withholding of goods or services and lockouts.", "143, 1431-1434", "Conduct strike or boycott",
+  "Threaten to boycott or embargo", "<TBOE>",     "Threaten to boycott or impose embargoes, restrict normal interactions presented explicitly as a protest or retaliatory measure.", "1312", "Threaten with sanctions, boycott, embargo",
+  "Threaten to reduce or break relations", "<TRBR>", "Threaten to reduce or formally sever ties.", "1313", "Threaten to reduce or break relations",
+  "Sanctions threat",               "<TSAN>",     "Threats of non-military, non-physical force social, economic and political sanctions.", "133", "Threaten with political dissent, protest",
+  "Give ultimatum",                "<ULTI>",     "Threats conveyed explicitly as an ultimatum.", "139", "Give ultimatum"
+) %>%
+  mutate(TYPE = "Nonviolent")
+
+# create nice table
+kableExtra::kable(mb_si_nonviolent)
+```
+
+#### Violent Dissent
+
+The following table shows the IDEA event codes and their corresponding CAMEO codes for nonviolent dissent events.
+
+```{r}
+mb_si_violent <- tibble::tribble(
+  ~ACTIVITY,                ~IDEA.CODE,   ~DEFINITION, ~CAMEO.CODE, ~CAMEO.DEFINITION,
+  "Abduction",                        "<ABDU>",     "Abducting, hijacking and capturing of people.", "181", "Abduct, hijack, or take hostage",
+  "Missile attack",                   "<AERI>",     "Launching of intermediate to long-range conventional ballistic missiles and aerial dropping of conventional explosive devices or bombs.", "195", "Employ aerial weapons",
+  "Assassination",                    "<ASSA>",     "Murder that is explicitly characterized as political killing and assassination.", "186", "Assassinate",
+  "Beatings",             "<BEAT>",     "Beatings (physical assaults without the use of weapons).", "182, 1821-1823", "Physically assault", 
+  "Chem-bio attack",                  "<CBIO>",     "Use of chemical or biological weapons.", "2041", "Use chemical, biological, or radiological weapons",
+  "Unconventional weapons attack",     "<CBRU>",     "All uses of Weapons of Mass Destruction (WMD).", "204, 2042", "Use weapons of mass destruction",
+  "Armed battle",                     "<CLAS>",     "Initiation of armed hostilities or engagement between two or more armed forces, includes truce violations (use as default for war and battles).", "193, 194, 196", "Fight with small arms and light weapons; Fight with artillery and tanks; Violate ceasefire",
+  "Bodily punishment",                "<CORP>",     "The infliction of bodily injury, death or pain for the explicit purpose of punishment.", "1822", "Torture",
+  "Coups and mutinies",               "<COUP>",     "Coups, mutiny and other rebellion by armed forces.", "", "None",
+  "Declare war",                      "<DWAR>",     "Formal or official statement that a state of war exists.", "", "None",
+  "Force Use",                        "<FORC>",     "All uses of physical force not otherwise specified.", "180", "Use unconventional violence, not specified below",
+  "Artillery attack",                 "<GRPG>",     "Use of short to intermediate range tank-mounted, ship-based or field guns and cannons, mortars and rocket-propelled grenades.", "194, 195", "Fight with artillery and tanks; Employ aerial weapons",
+  "Hostage taking and kidnapping",    "<HTAK>",     "Hostage taking or kidnapping of people.", "181", "Abduct, hijack, or take hostage",
+  "Hijacking",                        "<JACK>",     "All commandeerings of vehicles.", "181", "Abduct, hijack, or take hostage",
+  "Torture",                          "<MAIM>",     "Maiming and all other reports explicitly characterized as torture.", "1822", "Torture",
+  "Armed force blockade",             "<MBLO>",     "Use of armed forces to seal off a territory to prevent exit or entry of goods or personnel.", "191", "Impose blockade, restrict movement",
+  "Mine explosion",                   "<MINE>",     "Land and underwater mine explosions.", "", "None",
+  "Armed force occupation",           "<MOCC>",     "Use of armed forces to take over or occupy the whole or part of a territory.", "192", "Occupy territory",
+  "Armed force threats",              "<MTHR>",     "All threats to use armed force.", "1381-1385", "Threaten blockade; Threaten occupation; Threaten unconventional violence; Threaten conventional attack; Threaten attack with WMD",
+  "Other physical force threats",      "<NMFT>",     "All threats to use non-armed, physical force.", "138", "Threaten with military force, not specified below",
+  "Physical assault",                 "<PASS>",     "All uses of non-armed physical force in assaults against people not otherwise specified.", "182", "Physically assault, not specified below",
+  "Small arms attack",                "<PEXE>",     "Shooting of small arms, light weapons and small explosives, including the use of all handguns, light machine guns, rifles and hand grenades.", "193", "Fight with small arms and light weapons",
+  "Armed actions",                    "<RAID>",     "Ambiguous initiation of the use of armed forces to fire upon another armed force, population or territory.", "190", "Use conventional military force, not specified below",
+  "Riot",                             "<RIOT>",     "Civil or political unrest explicitly characterized as riots, as well as behavior presented as tumultuous or mob-like. This behavior includes looting, prison uprisings, crowds setting things on fire, general fighting with police (typically by protestors).", "145, 1451-1454", "Protest violently, riot",
+  "Suicide bombing",                  "<SBOM>",     "A bombing in which the bomber perishes during detonation of the explosive.", "1831", "Carry out suicide bombing",
+  "Seize",                            "<SEIZ>",     "All seizures not otherwise specified.", "171", "Seize or damage property, not specified below",
+  "Seize possession",                 "<SEZR>",     "Take control of positions or possessions.", "1711", "Confiscate property",
+  "Threaten forceful attack",          "<TATT>",     "Explicit threat to use armed forces in an attack or invasion.", "1384", "Threaten conventional attack",
+  "Threaten forceful blockade",        "<TBLO>",     "Explicit threat to use armed ships, airplanes or forces to prevent entry or exit.", "1381", "Threaten blockade",
+  "Threaten biological or chemical attack", "<TCBR>", "Explicit threat to use biological or chemical weapon against armed forces, a population or territory.", "1385", "Threaten attack with WMD",
+  "Threaten",                         "<THRT>",     "All threats, coercive warnings not otherwise specified.", "130", "Threaten, not specified below",
+  "Threaten nuclear attack",           "<TNUC>",     "Explicit threat to use a nuclear or radioactive weapon against armed forces, a population or territory.", "1385", "Threaten attack with WMD",
+  "Threaten forceful occupation",      "<TOCC>",     "Explicit threat to use armed forces to occupy the whole or part of a territory.", "1382", "Threaten occupation",
+  "Threaten war",                     "<TWAR>",     "Explicit threat to declare a state of (military) war.", "", "None",
+  "Vehicle bombing",                  "<VBOM>",     "Bombing explicitly characterized as a vehicle bombing (car bombing, etc.), except for suicide bombings, which are coded separately.", "1831, 1832", "Carry out car bombing; Carry out roadside bombing" 
+)  %>%
+  mutate(TYPE = "Violent")
+
+# create nice table
+kableExtra::kable(mb_si_violent)
+```
+
+### Defining "Whom"
+
+The target of a dissent event must be an agent of the state or a physical office of the state. Event targets can have multiple values in ICEWS; state-affiliated are tagged as "Government," with more specifics included as additional tags.
+
+```{r}
+whom <- c("Government",
+          "Police",
+          "Military")
+```
+
+### Identifying Dissent Events
+
+A dissent event is one in which a domestic actor uses one of the specified dissent actions against an agent of the state or a state physical office. I operationalize a "domestic actor" as one that is (1) located in the same country as the event and (2) located in the same country as the target, if the country of the target is known.
+
+```{r}
+# Helper function to parse cameo codes
+# takes: a character vector of codes to be parsed
+# returns: a numeric vector of codes
+code_parse <- function(input_vector) {
+  for(i in 1:length(input_vector)){
+    if(input_vector[i]=="") next
+      this_values <- eval(parse(text=input_vector[i]))
+      if(exists("codes_vector") == FALSE) {
+        codes_vector <- this_values
+        } else {
+      codes_vector <- c(codes_vector, this_values)
+    }
+  }
+  return(codes_vector)
+}
+
+# format the cameo code list from the tables into a numeric vector
+cameo_codes <- str_split(c(mb_si_violent$CAMEO.CODE,mb_si_nonviolent$CAMEO.CODE),",") %>% unlist() %>%
+  str_replace_all("-",":") %>% str_replace_all(" ","") %>%
+  code_parse()
+
+### Read ICEWS data
+icews <- read_csv("output/combined-icews.csv")
+
+### Identify dissent events
+icews_dissent <- icews %>%
+  # Identify events with domestic actors (who)
+  # A domestic actor is located in the same country as the action and the target (if known)
+  filter(((`Source Country`==`Target Country`)|
+                             is.na(`Target Country` == TRUE))&
+                            (`Source Country`==`Country`)) %>%
+  # Identify events with state agent targets (whom)
+  filter(sapply(lapply(`Target Sectors`,str_detect,whom),any)) %>%
+  # Identify qualifying events (what)
+  filter(`CAMEO Code`%in%cameo_codes) %>%
+  mutate(dissent_event=1) %>%
+  select(`Event ID`, `Event Date`, dissent_event)
+```
+
+After identifying dissent events, merge them back into the ICEWS data. The new variable `dissent_event` is coded 1 for dissent events and 0 for all other events.
+
+```{r}
+# merge dissent information back into the dataset.
+# note: ICEWS sometimes re-uses Event IDs;
+# it is necessary to uniquely identify events
+icews <- left_join(icews,icews_dissent,
+                   by=c('Event ID','Event Date'))
+  # events not included in the list of dissent events should have dissent_event = 0
+icews <- icews %>% 
+  mutate(dissent_event=if_else(is.na(dissent_event),0,dissent_event))
+```
+
+### Aggregate to the country-year level
+
+Calculate the total number of events and the total number of dissent events for each country-year in the dataset.
+
+```{r}
+# add a year variable
+icews <- icews %>% 
+  mutate(year=as.numeric(substr(`Event Date`,1,4)))
+
+# aggregate by country/year
+icews_aggregated <- icews %>% 
+  group_by(Country, year) %>%
+  summarize(n_events=n(),
+            n_dissent_events=sum(dissent_event,na.rm = TRUE))
+```
+
+After aggregating to the country-year level, add unique country codes to match the aggregated ICEWS data to other datasets. We use the Correlates of War (COW) country codes. ICEWS only reports countries by name, so I use the `countrycode` package to match names to COW codes.
+
+```{r}
+icews_aggregated <- icews_aggregated %>%
+  mutate(cowcode=countrycode(Country,"country.name","cown"))
+```
+
+Check the countries that were not matched unambiguously by the `countrycode` list of country names.
+
+```{r}
+missing_codes <- icews_aggregated %>%
+  filter(is.na(cowcode)) %>%
+  select(Country, cowcode)
+
+kableExtra::kable(unique(missing_codes))
+```
+
+Most of these entities are non-country entities. "NULL" is a category of ICEWS events for which the location of the event is not known precisely enough to identify a country. 
+
+For the remaining entities, check against the COW system list. Load in `system2016.csv` from COW, filter to only the years covered by the ICEWS dataset, and add country names to the COW system membership list. Then, subset to only COW countries whose codes have not been matched to an entity in the ICEWS dataset.
+
+```{r}
+cow <- read_csv("data/system2016.csv")
+cow_missing <- cow %>%
+  filter(year>=min(icews_aggregated$year)) %>%
+  mutate(name=countrycode(sourcevar=stateabb,origin="cowc",
+              destination="country.name")) %>%
+  select(stateabb,ccode,name) %>%
+  distinct() %>%
+  filter(ccode %in% icews_aggregated$cowcode == F)
+
+kableExtra::kable(cow_missing)
+```
+
+Most of the entities without matches do not meet the COW definition of a country. The exceptions are Yugoslavia and Micronesia. Yugoslavia is listed as Serbia in ICEWS. Micronesia is simply named differently between the two sources.
+
+I change the codes for those countries in the ICEWS data.
+
+```{r}
+icews_aggregated <- icews_aggregated %>%
+  mutate(cowcode=if_else(Country=="Micronesia",987,cowcode)) %>%
+  mutate(cowcode=if_else(Country=="Serbia",345,cowcode))
+```
+
+Now every COW entity has a matching code in the ICEWS data.
+
+As a final data cleaning step, ensure that every country in the dataset has an entry for each year in our time period. I accomplish this by merging the aggregated ICEWS data into the COW system list. The COW system list ends in 2016, so I extend it to match the coverage of ICEWS. I also remove country-years prior to the beginning of the ICEWS data.
+
+```{r}
+system_list <- cow %>%
+  filter(year>=min(icews_aggregated$year)) %>%
+  select(ccode,year) %>%
+  add_row(crossing(ccode=unique(cow$ccode),
+          year=2017:max(icews_aggregated$year))) %>%
+  arrange(ccode,year) 
+  
+# join aggregated ICEWS with the system list
+merged_data <- left_join(system_list,icews_aggregated,
+                         by=c("ccode"="cowcode","year"))
+
+# find the ICEWS names for each COW code
+name_df <- icews_aggregated %>% select(Country,cowcode) %>%
+  filter(is.na(cowcode)==F) %>% distinct()
+# replace missing values in country names
+merged_data <- left_join(select(merged_data,-Country),
+                         name_df,
+                         by=c("ccode"="cowcode"))
+
+# replace missing values in event counts
+merged_data <- merged_data %>%
+  mutate(n_events=if_else(is.na(n_events),
+                          0,n_events),
+         n_dissent_events=if_else(is.na(n_dissent_events),
+                                  0,n_dissent_events)) %>%
+  filter(is.na(Country) == FALSE)
+```
+
+One note of caution: ICEWS states in its documentation that it does not include all U.S.-based domestic events in its data releases. The event counts for the United States are not comparable to the counts from other countries.
+
+Finally, save the output to a new file.
+
+```{r}
+write_csv(merged_data,"output/icews-aggregated.csv")
+```
+

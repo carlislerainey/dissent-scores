@@ -9,6 +9,7 @@ data/king-lowe-2008/names-of-source-_-target.txt
 data/king-lowe-2008/sectors-of-source-_-target.txt
 data/states2016.csv
 data/system2016.csv
+data/ICEWS/
 output/empty-country-years.csv
 output/idea-all-events.csv
 output/idea-counts.csv

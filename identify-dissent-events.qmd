@@ -72,7 +72,6 @@ names_codes <- read_csv("data/king-lowe-2008/names-of-source-_-target.txt",
 
 We categorize nonviolent dissent following Murdie and Bhasin (2011). See the first table in the file `Murdie Bhasin JCR Online Replication Materials 05.13.10.doc` available for download [here](https://journals.sagepub.com/doi/suppl/10.1177/0022002710374715/suppl_file/DS_10.11770022002710374715.zip).
 
-
 ```{r}
 #| code-fold: true
 mb_si_nonviolent <- tibble::tribble(
@@ -100,8 +99,6 @@ mb_si_nonviolent <- tibble::tribble(
 # create nice table
 kableExtra::kable(mb_si_nonviolent)
 ```
-
-
 
 ### Violent Dissent
 

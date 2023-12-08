@@ -16,7 +16,7 @@ library(scales)
 library(gtExtras)
 
 
-cov <- read_csv("output/dissent-scores.csv") |>
+cov <- read_csv("output/dissent-scores.csv") |> 
   group_by(country_name, ccode, stateabb) |>
   summarize(start = min(year), 
             end = max(year),
@@ -32,6 +32,8 @@ cov <- read_csv("output/dissent-scores.csv") |>
          `Avg. Dissent Score` = avg_dissent_score, 
          `Sparkline` = dissent_scores_list) %>%
   ungroup() 
+
+
 
 cov %>%
   gt() %>%
@@ -57,8 +59,4 @@ cov %>%
     )
   ) %>%
     gt_plt_sparkline(Sparkline, type = "shaded")
-
-
-
-
 ```

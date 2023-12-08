@@ -1,5 +1,5 @@
 ---
-title: "Compute Dissent Scores"
+title: "Compute Dissent Scores Using ICEWS Source Data"
 freeze: true
 ---
 
@@ -16,7 +16,9 @@ library(countrycode)
 library(tidybayes)
 
 # load events data 
-counts <- read.csv("output/idea-counts.csv") %>%
+counts <- read.csv("output/icews-aggregated.csv") %>%
+  filter(ccode != 2)  %>% # drop US; ICEWS treats differently
+  select(-Country) |>
   arrange(ccode, year) %>%
   mutate(observation_index = 1:n()) %>%
   glimpse()
@@ -103,7 +105,7 @@ fit <- mod$sample(
   iter_warmup = 5000,
   chains = 10, 
   parallel_chains = 10,
-  refresh = 100 # print update every 500 iters
+  refresh = 1000 # print update every 500 iters
 )
 ```
 
@@ -121,7 +123,7 @@ draws <- fit$draws(variables = "eta") %>%
 
 # test that seed worked properly
 as.numeric(draws[1, 1])
-as.numeric(draws[1, 1]) == -7.0471
+round(as.numeric(draws[1, 1]), 5) == -5.38761
 
 # compute dissent scores
 dissent_scores <- draws %>% 
@@ -151,26 +153,14 @@ dissent_scores <- draws %>%
   mutate(stateabb = ifelse(ccode == 260, "GFR", stateabb),
          country_name = ifelse(ccode == 260, "Germany (GFR)", country_name)) %>%
   # add version info
-  # add version info
   mutate(release = "V0.0.9999", 
          release_date = "2023-09-13", 
-         created_date = Sys.Date(), 
-         data_source = "IDEA") %>%
+         created_date = Sys.Date()) %>%
   # select variables for final data set
   select(release, release_date, country_name, ccode, stateabb, year, n_events, n_dissent_events, frac_dissent_events, avg_pi, avg_eta, dissent_score, se_dissent_score)
 
 # write latent measures to file
-write_csv(dissent_scores, "output/dissent-scores.csv")
-haven::write_dta(dissent_scores, "output/dissent-scores.dta")
-write_rds(dissent_scores, "output/dissent-scores.rds")
-```
-
-```{r}
-#| message: false
-
-# verify that just-created version matches old version
-new <- read_csv("output/dissent-scores.csv")
-dv <- read_csv("https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv")
-
-all.equal(new, dv)
+write_csv(dissent_scores, "output/dissent-scores-icews.csv")
+haven::write_dta(dissent_scores, "output/dissent-scores-icews.dta")
+write_rds(dissent_scores, "output/dissent-scores-icews.rds")
 ```

@@ -2,6 +2,7 @@
 title: "About Us"
 ---
 
+-   Nick Dietrich ([nmdietrich\@owu.edu](mailto:nmdietrich@owu.edu)) is an assistant professor of data analytics at Ohio Wesleyan University.
 -   Carlisle Rainey ([crainey\@fsu.edu](mailto:crainey@fsu.edu)) is an associate professor of political science at Florida State University.
 -   Harley Roe is a PhD student in political science at Florida State University.
 -   Qing Wang is a PhD student in political science at Florida State University.

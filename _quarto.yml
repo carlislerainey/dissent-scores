@@ -7,6 +7,7 @@ project:
     - identify-dissent-events.qmd
     - fill-with-counts.qmd
     - compute-dissent-scores.qmd
+    - make-icews-version.qmd
     - index.qmd
     - paper.qmd
     - data-details.qmd
@@ -42,6 +43,8 @@ website:
             href: fill-with-counts.qmd
           - text: "Step 5: Compute Dissent Scores"
             href: compute-dissent-scores.qmd
+          - text: "Step 6: Compute ICEWS Alternative"
+            href: make-icews-version.qmd
       - text: "Examples"  
         menu:
           - text: "Law of Coercive Responsiveness"

@@ -171,6 +171,10 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
     <a class="dropdown-item" href="./compute-dissent-scores.html" rel="" target="">
  <span class="dropdown-text">Step 5: Compute Dissent Scores</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./make-icews-version.html" rel="" target="">
+ <span class="dropdown-text">Step 6: Compute ICEWS Alternative</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -234,8 +238,8 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
 <h2 class="anchored" data-anchor-id="variable-descriptions">Variable Descriptions</h2>
 <table class="table">
 <colgroup>
-<col style="width: 19%">
-<col style="width: 80%">
+<col style="width: 23%">
+<col style="width: 76%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -246,11 +250,19 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
 <tbody>
 <tr class="odd">
 <td><code>release</code></td>
-<td>The release. Current version is V0.0.9999, an alpha release for initial testing.</td>
+<td>The release. Current version is V0.1 (Preprint).</td>
 </tr>
 <tr class="even">
 <td><code>release_date</code></td>
-<td>The release date. Latest version is 2023-09-13.</td>
+<td>The release date. Latest version is 2023-12-18. This is updated manually with changes to the data or model that create changes in the estimates.</td>
+</tr>
+<tr class="odd">
+<td><code>data_source</code></td>
+<td>The source of the events data. We have IDEA and ICEWS versions.</td>
+</tr>
+<tr class="even">
+<td><code>created_date</code></td>
+<td>The date that the dissent scores were created. This updates with every fit of the model.</td>
 </tr>
 <tr class="odd">
 <td><code>country_name</code></td>
@@ -309,9 +321,11 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(dissent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 2,775
-Columns: 13
-$ release             &lt;chr&gt; "V0.0.9999", "V0.0.9999", "V0.0.9999", "V0.0.9999"…
-$ release_date        &lt;date&gt; 2023-09-13, 2023-09-13, 2023-09-13, 2023-09-13, 2…
+Columns: 15
+$ release             &lt;chr&gt; "V0.1 (Preprint)", "V0.1 (Preprint)", "V0.1 (Prepr…
+$ release_date        &lt;date&gt; 2023-12-18, 2023-12-18, 2023-12-18, 2023-12-18, 2…
+$ data_source         &lt;chr&gt; "IDEA", "IDEA", "IDEA", "IDEA", "IDEA", "IDEA", "I…
+$ created_date        &lt;date&gt; 2023-12-18, 2023-12-18, 2023-12-18, 2023-12-18, 2…
 $ country_name        &lt;chr&gt; "United States", "United States", "United States",…
 $ ccode               &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 20, 2…
 $ stateabb            &lt;chr&gt; "USA", "USA", "USA", "USA", "USA", "USA", "USA", "…
@@ -345,7 +359,7 @@ $ se_dissent_score    &lt;dbl&gt; 0.04107096, 0.04241524, 0.03997557, 0.03736980
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Number of columns</td>
-<td style="text-align: left;">13</td>
+<td style="text-align: left;">15</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">_______________________</td>
@@ -357,11 +371,11 @@ $ se_dissent_score    &lt;dbl&gt; 0.04107096, 0.04241524, 0.03997557, 0.03736980
 </tr>
 <tr class="even">
 <td style="text-align: left;">character</td>
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">4</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Date</td>
-<td style="text-align: left;">1</td>
+<td style="text-align: left;">2</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">numeric</td>
@@ -406,13 +420,23 @@ $ se_dissent_score    &lt;dbl&gt; 0.04107096, 0.04241524, 0.03997557, 0.03736980
 <td style="text-align: left;">release</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">9</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">15</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">data_source</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">country_name</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
@@ -422,7 +446,7 @@ $ se_dissent_score    &lt;dbl&gt; 0.04107096, 0.04241524, 0.03997557, 0.03736980
 <td style="text-align: right;">195</td>
 <td style="text-align: right;">0</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">stateabb</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
@@ -461,9 +485,18 @@ $ se_dissent_score    &lt;dbl&gt; 0.04107096, 0.04241524, 0.03997557, 0.03736980
 <td style="text-align: left;">release_date</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: left;">2023-09-13</td>
-<td style="text-align: left;">2023-09-13</td>
-<td style="text-align: left;">2023-09-13</td>
+<td style="text-align: left;">2023-12-18</td>
+<td style="text-align: left;">2023-12-18</td>
+<td style="text-align: left;">2023-12-18</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">created_date</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">2023-12-18</td>
+<td style="text-align: left;">2023-12-18</td>
+<td style="text-align: left;">2023-12-18</td>
 <td style="text-align: right;">1</td>
 </tr>
 </tbody>

@@ -169,6 +169,10 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
     <a class="dropdown-item" href="./compute-dissent-scores.html" rel="" target="">
  <span class="dropdown-text">Step 5: Compute Dissent Scores</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./make-icews-version.html" rel="" target="">
+ <span class="dropdown-text">Step 6: Compute ICEWS Alternative</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -367,12 +371,12 @@ $ observation_index &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">country_name =</span> <span class="fu">ifelse</span>(ccode <span class="sc">==</span> <span class="dv">260</span>, <span class="st">"Germany (GFR)"</span>, country_name)) <span class="sc">%&gt;%</span></span>
 <span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add version info</span></span>
 <span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add version info</span></span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">release =</span> <span class="st">"V0.0.9999"</span>, </span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">release_date =</span> <span class="st">"2023-09-13"</span>, </span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">release =</span> <span class="st">"V0.1 (Preprint)"</span>, </span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">release_date =</span> <span class="st">"2023-12-18"</span>, </span>
 <span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">created_date =</span> <span class="fu">Sys.Date</span>(), </span>
 <span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">data_source =</span> <span class="st">"IDEA"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select variables for final data set</span></span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(release, release_date, country_name, ccode, stateabb, year, n_events, n_dissent_events, frac_dissent_events, avg_pi, avg_eta, dissent_score, se_dissent_score)</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(release, release_date, data_source, created_date, country_name, ccode, stateabb, year, n_events, n_dissent_events, frac_dissent_events, avg_pi, avg_eta, dissent_score, se_dissent_score)</span>
 <span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="co"># write latent measures to file</span></span>
 <span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(dissent_scores, <span class="st">"output/dissent-scores.csv"</span>)</span>
@@ -386,7 +390,32 @@ $ observation_index &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(new, dv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] TRUE</code></pre>
+<pre><code> [1] "Names: 11 string mismatches"                                                                                                
+ [2] "Attributes: &lt; Component \"spec\": Component \"cols\": Names: 11 string mismatches &gt;"                                        
+ [3] "Attributes: &lt; Component \"spec\": Component \"cols\": Length mismatch: comparison on first 13 components &gt;"                 
+ [4] "Attributes: &lt; Component \"spec\": Component \"cols\": Component 4: names for target but not for current &gt;"                  
+ [5] "Attributes: &lt; Component \"spec\": Component \"cols\": Component 4: Attributes: &lt; Component \"class\": 1 string mismatch &gt; &gt;"
+ [6] "Attributes: &lt; Component \"spec\": Component \"cols\": Component 4: Length mismatch: comparison on first 0 components &gt;"     
+ [7] "Attributes: &lt; Component \"spec\": Component \"cols\": Component 7: Attributes: &lt; Component \"class\": 1 string mismatch &gt; &gt;"
+ [8] "Length mismatch: comparison on first 13 components"                                                                         
+ [9] "Component \"release\": 2775 string mismatches"                                                                              
+[10] "Component \"release_date\": Mean relative difference: 0.004870871"                                                          
+[11] "Component 3: 2775 string mismatches"                                                                                        
+[12] "Component 4: Attributes: &lt; Modes: list, NULL &gt;"                                                                             
+[13] "Component 4: Attributes: &lt; Lengths: 1, 0 &gt;"                                                                                 
+[14] "Component 4: Attributes: &lt; names for target but not for current &gt;"                                                          
+[15] "Component 4: Attributes: &lt; current is not list-like &gt;"                                                                      
+[16] "Component 4: target is Date, current is numeric"                                                                            
+[17] "Component 5: 2775 string mismatches"                                                                                        
+[18] "Component 6: Mean relative difference: 3.356531"                                                                            
+[19] "Component 7: Modes: character, numeric"                                                                                     
+[20] "Component 7: target is character, current is numeric"                                                                       
+[21] "Component 8: Mean relative difference: 0.9950816"                                                                           
+[22] "Component 9: Mean relative difference: 0.999998"                                                                            
+[23] "Component 10: Mean relative difference: 0.9995781"                                                                          
+[24] "Component 11: Mean relative difference: 826.2721"                                                                           
+[25] "Component 12: Mean relative difference: 56.56884"                                                                           
+[26] "Component 13: Mean relative difference: 1.041171"                                                                           </code></pre>
 </div>
 </div>
 

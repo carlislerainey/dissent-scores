@@ -152,12 +152,12 @@ dissent_scores <- draws %>%
          country_name = ifelse(ccode == 260, "Germany (GFR)", country_name)) %>%
   # add version info
   # add version info
-  mutate(release = "V0.0.9999", 
-         release_date = "2023-09-13", 
+  mutate(release = "V0.1 (Preprint)", 
+         release_date = "2023-12-18", 
          created_date = Sys.Date(), 
          data_source = "IDEA") %>%
   # select variables for final data set
-  select(release, release_date, country_name, ccode, stateabb, year, n_events, n_dissent_events, frac_dissent_events, avg_pi, avg_eta, dissent_score, se_dissent_score)
+  select(release, release_date, data_source, created_date, country_name, ccode, stateabb, year, n_events, n_dissent_events, frac_dissent_events, avg_pi, avg_eta, dissent_score, se_dissent_score)
 
 # write latent measures to file
 write_csv(dissent_scores, "output/dissent-scores.csv")

@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Dissent Scores - Compute ICEWS Version of Dissent Scores</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-F57WQLHH67"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
+</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Dissent Scores</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./paper.html" rel="" target="">
+ <span class="menu-text">Paper</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about-us.html" rel="" target="">
+ <span class="menu-text">About Us</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./data-details.html" rel="" target="">
+ <span class="menu-text">Variables</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./coverage.html" rel="" target="">
+ <span class="menu-text">Country-Years</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-detailed-documentation" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Detailed Documentation</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-detailed-documentation">    
+        <li>
+    <a class="dropdown-item" href="./get-raw-data.html" rel="" target="">
+ <span class="dropdown-text">Step 1: Get the Raw Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./create-country-years.html" rel="" target="">
+ <span class="dropdown-text">Step 2: Create Country-Years</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./identify-dissent-events.html" rel="" target="">
+ <span class="dropdown-text">Step 3: Identify Dissent Events</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./fill-with-counts.html" rel="" target="">
+ <span class="dropdown-text">Step 4: Fill Country-Years with Counts</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./compute-dissent-scores.html" rel="" target="">
+ <span class="dropdown-text">Step 5: Compute Dissent Scores</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./make-icews-version.html" rel="" target="">
+ <span class="dropdown-text">Step 6: Compute ICEWS Alternative</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-examples" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Examples</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-examples">    
+        <li>
+    <a class="dropdown-item" href="./example-repression-dissent.html" rel="" target="">
+ <span class="dropdown-text">Law of Coercive Responsiveness</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./example-dissent-in-the-middle.html" rel="" target="">
+ <span class="dropdown-text">More Dissent in the Middle?</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#creating-a-dissent-events-data-set-using-icews" id="toc-creating-a-dissent-events-data-set-using-icews" class="nav-link active" data-scroll-target="#creating-a-dissent-events-data-set-using-icews">Creating a Dissent Events Data Set Using ICEWS</a>
+  <ul class="collapse">
+  <li><a href="#loading-the-icews-data" id="toc-loading-the-icews-data" class="nav-link" data-scroll-target="#loading-the-icews-data">Loading the ICEWS Data</a></li>
+  <li><a href="#defining-dissent-events" id="toc-defining-dissent-events" class="nav-link" data-scroll-target="#defining-dissent-events">Defining Dissent Events</a>
+  <ul class="collapse">
+  <li><a href="#define-the-what" id="toc-define-the-what" class="nav-link" data-scroll-target="#define-the-what">Define the “What”</a></li>
+  <li><a href="#defining-whom" id="toc-defining-whom" class="nav-link" data-scroll-target="#defining-whom">Defining “Whom”</a></li>
+  <li><a href="#identifying-dissent-events" id="toc-identifying-dissent-events" class="nav-link" data-scroll-target="#identifying-dissent-events">Identifying Dissent Events</a></li>
+  <li><a href="#aggregating-to-the-country-year-level" id="toc-aggregating-to-the-country-year-level" class="nav-link" data-scroll-target="#aggregating-to-the-country-year-level">Aggregating to the Country-Year Level</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#computing-the-dissent-scores" id="toc-computing-the-dissent-scores" class="nav-link" data-scroll-target="#computing-the-dissent-scores">Computing the Dissent Scores</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Compute ICEWS Version of Dissent Scores</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="creating-a-dissent-events-data-set-using-icews" class="level1">
+<h1>Creating a Dissent Events Data Set Using ICEWS</h1>
+<p><a href="http://journals.sagepub.com/doi/suppl/10.1177/0022002710374715">Murdie and Bassain (2011)</a> define a dissent event as follows:</p>
+<blockquote class="blockquote">
+<p>To create the new measures, we relied on the IDEA framework (Bond et al.&nbsp;2003). IDEA is a data set of all daily events in Reuters Global News Service. These data were organized in a “who” did “what” to “whom” manner for each particular event, over 10 million events in the complete data set (King and Lowe 2003).</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>For our variables, we isolated events where… (1) a domestic group or individual is the “who,” (2) the “what” is either violent or nonviolent protest, and (3) the “whom” is either a state agent or a state physical office. As mentioned earlier, violent protests are protests with the threat or use of force. Attacking a government official or office, destroying government property, or a bombing of a government official’s home are all examples of violent protest. Conversely, protest marches, demonstrations, boycotts, and sit-ins are some of the many examples of nonviolent protest.</p>
+</blockquote>
+<p>We apply this definition to the <a href="https://dataverse.harvard.edu/dataverse/icews">Integrated Crisis Early Warning System (ICEWS)</a> dataset to find the proportion of reported events that qualify as “dissent events” in each country-year.</p>
+<section id="loading-the-icews-data" class="level2">
+<h2 class="anchored" data-anchor-id="loading-the-icews-data">Loading the ICEWS Data</h2>
+<p>ICEWS event data are available on <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/28075">dataverse</a>. Each year’s events are reported in a single file. Here, I combine them into a single object of class <code>tbl</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># character vector of file names from the ICEWS repository</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>file_names <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/ICEWS"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># subset to only the yearly data files</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>file_names <span class="ot">&lt;-</span> file_names[<span class="fu">grepl</span>(<span class="st">"events"</span>, <span class="fu">substr</span>(file_names,<span class="dv">1</span>,<span class="dv">6</span>), <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># read in the data files one at a time and combine them</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>icews_list <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(file_names)){</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  icews_list[[i]] <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="fu">paste0</span>(<span class="st">"data/ICEWS/"</span>,file_names[i]))</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># a few events are reported in multiple versions of the dataset;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># remove these duplicates that match on every column</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>icews <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, icews_list) <span class="sc">%&gt;%</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_csv</span>(<span class="st">"output/combined-icews.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="defining-dissent-events" class="level2">
+<h2 class="anchored" data-anchor-id="defining-dissent-events">Defining Dissent Events</h2>
+<p>Murdie and Bassain rely on IDEA event codes. ICEWS uses CAMEO ontology, which differs slightly. CAMEO codes used by the ICEWS dataset can be found at <a href="https://eventdata.parusanalytics.com/cameo.dir/CAMEO.CDB.09b5.pdf">https://eventdata.parusanalytics.com/cameo.dir/CAMEO.CDB.09b5.pdf</a>.</p>
+<section id="define-the-what" class="level3">
+<h3 class="anchored" data-anchor-id="define-the-what">Define the “What”</h3>
+<p>Dissent events broadly fall into the categories of “Nonviolent Dissent” and “Violent Dissent.”</p>
+<section id="nonviolent-dissent" class="level4">
+<h4 class="anchored" data-anchor-id="nonviolent-dissent">Nonviolent Dissent</h4>
+<p>The following table shows the IDEA event codes and their corresponding CAMEO codes for nonviolent dissent events.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mb_si_nonviolent <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>ACTIVITY,                <span class="sc">~</span>IDEA.CODE,   <span class="sc">~</span>DEFINITION, <span class="sc">~</span>CAMEO.CODE, <span class="sc">~</span>CAMEO.DEFINITION,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Break relations"</span>,                 <span class="st">"&lt;BREL&gt;"</span>,     <span class="st">"Formal severance of ties."</span>, <span class="st">"161"</span>, <span class="st">"Reduce or break diplomatic relations"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Defy norms"</span>,                     <span class="st">"&lt;DEFY&gt;"</span>,     <span class="st">"Open defiance of laws and norms, civil disobedience."</span>, <span class="st">"128"</span>, <span class="st">"Defy norms, law"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Demonstrate"</span>,                    <span class="st">"&lt;DEMO&gt;"</span>,     <span class="st">"Demonstrations not otherwise specified."</span>, <span class="st">"141, 1411-1414"</span>, <span class="st">"Demonstrate or rally"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Formally complain"</span>,              <span class="st">"&lt;FCOM&gt;"</span>,     <span class="st">"Written and institutionalized protests and appeals, and all petition drives and recalls."</span>, <span class="st">"114"</span>, <span class="st">"Complain officially"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Informally complain"</span>,            <span class="st">"&lt;ICOM&gt;"</span>,     <span class="st">"Verbal protests and rebukes, and all other informal complaints."</span>, <span class="st">"111"</span>, <span class="st">"Criticize or denounce"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest altruism"</span>,               <span class="st">"&lt;PALT&gt;"</span>,     <span class="st">"Protest demonstrations that place the source (protestor) at risk for the sake of unity with the target."</span>, <span class="st">"141, 1411-1414"</span>, <span class="st">"Demonstrate or rally"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest demonstrations"</span>,         <span class="st">"&lt;PDEM&gt;"</span>,     <span class="st">"All protest demonstrations not otherwise specified."</span>, <span class="st">"140"</span>, <span class="st">"Engage in political dissent, not specified below"</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest procession"</span>,             <span class="st">"&lt;PMAR&gt;"</span>,     <span class="st">"Picketing and other parading protests."</span>, <span class="st">"141, 1411-1414"</span>, <span class="st">"Demonstrate or rally"</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest obstruction"</span>,            <span class="st">"&lt;POBS&gt;"</span>,     <span class="st">"Sit-ins and other non-military occupation protests."</span>, <span class="st">"144, 1441-1444"</span>, <span class="st">"Obstruct passage, block"</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Protest defacement"</span>,             <span class="st">"&lt;PPRO&gt;"</span>,     <span class="st">"Damage, sabotage and the use of graffiti to desecrate property and symbols."</span>, <span class="st">"171, 1711, 1712"</span>, <span class="st">"Seize or damage property"</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Reduce routine activity"</span>,         <span class="st">"&lt;REDR&gt;"</span>,     <span class="st">"Reduction of routine and planned activities."</span>, <span class="st">"160-165, 1621-1623"</span>, <span class="st">"Reduce relations"</span>, </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Rally support"</span>,                  <span class="st">"&lt;SRAL&gt;"</span>,     <span class="st">"Gatherings to express or demonstrate support, celebrations and all other public displays of confidence; includes protest vigils and commemorations."</span>, <span class="st">"141, 1411-1414"</span>, <span class="st">"Demonstrate or rally"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Strikes and boycotts"</span>,           <span class="st">"&lt;STRI&gt;"</span>,     <span class="st">"Labor and professional sanctions reported as strikes, general strikes, walkouts, withholding of goods or services and lockouts."</span>, <span class="st">"143, 1431-1434"</span>, <span class="st">"Conduct strike or boycott"</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten to boycott or embargo"</span>, <span class="st">"&lt;TBOE&gt;"</span>,     <span class="st">"Threaten to boycott or impose embargoes, restrict normal interactions presented explicitly as a protest or retaliatory measure."</span>, <span class="st">"1312"</span>, <span class="st">"Threaten with sanctions, boycott, embargo"</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten to reduce or break relations"</span>, <span class="st">"&lt;TRBR&gt;"</span>, <span class="st">"Threaten to reduce or formally sever ties."</span>, <span class="st">"1313"</span>, <span class="st">"Threaten to reduce or break relations"</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Sanctions threat"</span>,               <span class="st">"&lt;TSAN&gt;"</span>,     <span class="st">"Threats of non-military, non-physical force social, economic and political sanctions."</span>, <span class="st">"133"</span>, <span class="st">"Threaten with political dissent, protest"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Give ultimatum"</span>,                <span class="st">"&lt;ULTI&gt;"</span>,     <span class="st">"Threats conveyed explicitly as an ultimatum."</span>, <span class="st">"139"</span>, <span class="st">"Give ultimatum"</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TYPE =</span> <span class="st">"Nonviolent"</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># create nice table</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(mb_si_nonviolent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">ACTIVITY</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">IDEA.CODE</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">DEFINITION</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">CAMEO.CODE</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">CAMEO.DEFINITION</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">TYPE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Break relations</td>
+<td style="text-align: left;">&lt;BREL&gt;</td>
+<td style="text-align: left;">Formal severance of ties.</td>
+<td style="text-align: left;">161</td>
+<td style="text-align: left;">Reduce or break diplomatic relations</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Defy norms</td>
+<td style="text-align: left;">&lt;DEFY&gt;</td>
+<td style="text-align: left;">Open defiance of laws and norms, civil disobedience.</td>
+<td style="text-align: left;">128</td>
+<td style="text-align: left;">Defy norms, law</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Demonstrate</td>
+<td style="text-align: left;">&lt;DEMO&gt;</td>
+<td style="text-align: left;">Demonstrations not otherwise specified.</td>
+<td style="text-align: left;">141, 1411-1414</td>
+<td style="text-align: left;">Demonstrate or rally</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Formally complain</td>
+<td style="text-align: left;">&lt;FCOM&gt;</td>
+<td style="text-align: left;">Written and institutionalized protests and appeals, and all petition drives and recalls.</td>
+<td style="text-align: left;">114</td>
+<td style="text-align: left;">Complain officially</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Informally complain</td>
+<td style="text-align: left;">&lt;ICOM&gt;</td>
+<td style="text-align: left;">Verbal protests and rebukes, and all other informal complaints.</td>
+<td style="text-align: left;">111</td>
+<td style="text-align: left;">Criticize or denounce</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Protest altruism</td>
+<td style="text-align: left;">&lt;PALT&gt;</td>
+<td style="text-align: left;">Protest demonstrations that place the source (protestor) at risk for the sake of unity with the target.</td>
+<td style="text-align: left;">141, 1411-1414</td>
+<td style="text-align: left;">Demonstrate or rally</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Protest demonstrations</td>
+<td style="text-align: left;">&lt;PDEM&gt;</td>
+<td style="text-align: left;">All protest demonstrations not otherwise specified.</td>
+<td style="text-align: left;">140</td>
+<td style="text-align: left;">Engage in political dissent, not specified below</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Protest procession</td>
+<td style="text-align: left;">&lt;PMAR&gt;</td>
+<td style="text-align: left;">Picketing and other parading protests.</td>
+<td style="text-align: left;">141, 1411-1414</td>
+<td style="text-align: left;">Demonstrate or rally</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Protest obstruction</td>
+<td style="text-align: left;">&lt;POBS&gt;</td>
+<td style="text-align: left;">Sit-ins and other non-military occupation protests.</td>
+<td style="text-align: left;">144, 1441-1444</td>
+<td style="text-align: left;">Obstruct passage, block</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Protest defacement</td>
+<td style="text-align: left;">&lt;PPRO&gt;</td>
+<td style="text-align: left;">Damage, sabotage and the use of graffiti to desecrate property and symbols.</td>
+<td style="text-align: left;">171, 1711, 1712</td>
+<td style="text-align: left;">Seize or damage property</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Reduce routine activity</td>
+<td style="text-align: left;">&lt;REDR&gt;</td>
+<td style="text-align: left;">Reduction of routine and planned activities.</td>
+<td style="text-align: left;">160-165, 1621-1623</td>
+<td style="text-align: left;">Reduce relations</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rally support</td>
+<td style="text-align: left;">&lt;SRAL&gt;</td>
+<td style="text-align: left;">Gatherings to express or demonstrate support, celebrations and all other public displays of confidence; includes protest vigils and commemorations.</td>
+<td style="text-align: left;">141, 1411-1414</td>
+<td style="text-align: left;">Demonstrate or rally</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Strikes and boycotts</td>
+<td style="text-align: left;">&lt;STRI&gt;</td>
+<td style="text-align: left;">Labor and professional sanctions reported as strikes, general strikes, walkouts, withholding of goods or services and lockouts.</td>
+<td style="text-align: left;">143, 1431-1434</td>
+<td style="text-align: left;">Conduct strike or boycott</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Threaten to boycott or embargo</td>
+<td style="text-align: left;">&lt;TBOE&gt;</td>
+<td style="text-align: left;">Threaten to boycott or impose embargoes, restrict normal interactions presented explicitly as a protest or retaliatory measure.</td>
+<td style="text-align: left;">1312</td>
+<td style="text-align: left;">Threaten with sanctions, boycott, embargo</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Threaten to reduce or break relations</td>
+<td style="text-align: left;">&lt;TRBR&gt;</td>
+<td style="text-align: left;">Threaten to reduce or formally sever ties.</td>
+<td style="text-align: left;">1313</td>
+<td style="text-align: left;">Threaten to reduce or break relations</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sanctions threat</td>
+<td style="text-align: left;">&lt;TSAN&gt;</td>
+<td style="text-align: left;">Threats of non-military, non-physical force social, economic and political sanctions.</td>
+<td style="text-align: left;">133</td>
+<td style="text-align: left;">Threaten with political dissent, protest</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Give ultimatum</td>
+<td style="text-align: left;">&lt;ULTI&gt;</td>
+<td style="text-align: left;">Threats conveyed explicitly as an ultimatum.</td>
+<td style="text-align: left;">139</td>
+<td style="text-align: left;">Give ultimatum</td>
+<td style="text-align: left;">Nonviolent</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="violent-dissent" class="level4">
+<h4 class="anchored" data-anchor-id="violent-dissent">Violent Dissent</h4>
+<p>The following table shows the IDEA event codes and their corresponding CAMEO codes for nonviolent dissent events.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mb_si_violent <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>ACTIVITY,                <span class="sc">~</span>IDEA.CODE,   <span class="sc">~</span>DEFINITION, <span class="sc">~</span>CAMEO.CODE, <span class="sc">~</span>CAMEO.DEFINITION,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Abduction"</span>,                        <span class="st">"&lt;ABDU&gt;"</span>,     <span class="st">"Abducting, hijacking and capturing of people."</span>, <span class="st">"181"</span>, <span class="st">"Abduct, hijack, or take hostage"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Missile attack"</span>,                   <span class="st">"&lt;AERI&gt;"</span>,     <span class="st">"Launching of intermediate to long-range conventional ballistic missiles and aerial dropping of conventional explosive devices or bombs."</span>, <span class="st">"195"</span>, <span class="st">"Employ aerial weapons"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Assassination"</span>,                    <span class="st">"&lt;ASSA&gt;"</span>,     <span class="st">"Murder that is explicitly characterized as political killing and assassination."</span>, <span class="st">"186"</span>, <span class="st">"Assassinate"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Beatings"</span>,             <span class="st">"&lt;BEAT&gt;"</span>,     <span class="st">"Beatings (physical assaults without the use of weapons)."</span>, <span class="st">"182, 1821-1823"</span>, <span class="st">"Physically assault"</span>, </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Chem-bio attack"</span>,                  <span class="st">"&lt;CBIO&gt;"</span>,     <span class="st">"Use of chemical or biological weapons."</span>, <span class="st">"2041"</span>, <span class="st">"Use chemical, biological, or radiological weapons"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Unconventional weapons attack"</span>,     <span class="st">"&lt;CBRU&gt;"</span>,     <span class="st">"All uses of Weapons of Mass Destruction (WMD)."</span>, <span class="st">"204, 2042"</span>, <span class="st">"Use weapons of mass destruction"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed battle"</span>,                     <span class="st">"&lt;CLAS&gt;"</span>,     <span class="st">"Initiation of armed hostilities or engagement between two or more armed forces, includes truce violations (use as default for war and battles)."</span>, <span class="st">"193, 194, 196"</span>, <span class="st">"Fight with small arms and light weapons; Fight with artillery and tanks; Violate ceasefire"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bodily punishment"</span>,                <span class="st">"&lt;CORP&gt;"</span>,     <span class="st">"The infliction of bodily injury, death or pain for the explicit purpose of punishment."</span>, <span class="st">"1822"</span>, <span class="st">"Torture"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Coups and mutinies"</span>,               <span class="st">"&lt;COUP&gt;"</span>,     <span class="st">"Coups, mutiny and other rebellion by armed forces."</span>, <span class="st">""</span>, <span class="st">"None"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Declare war"</span>,                      <span class="st">"&lt;DWAR&gt;"</span>,     <span class="st">"Formal or official statement that a state of war exists."</span>, <span class="st">""</span>, <span class="st">"None"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Force Use"</span>,                        <span class="st">"&lt;FORC&gt;"</span>,     <span class="st">"All uses of physical force not otherwise specified."</span>, <span class="st">"180"</span>, <span class="st">"Use unconventional violence, not specified below"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Artillery attack"</span>,                 <span class="st">"&lt;GRPG&gt;"</span>,     <span class="st">"Use of short to intermediate range tank-mounted, ship-based or field guns and cannons, mortars and rocket-propelled grenades."</span>, <span class="st">"194, 195"</span>, <span class="st">"Fight with artillery and tanks; Employ aerial weapons"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hostage taking and kidnapping"</span>,    <span class="st">"&lt;HTAK&gt;"</span>,     <span class="st">"Hostage taking or kidnapping of people."</span>, <span class="st">"181"</span>, <span class="st">"Abduct, hijack, or take hostage"</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Hijacking"</span>,                        <span class="st">"&lt;JACK&gt;"</span>,     <span class="st">"All commandeerings of vehicles."</span>, <span class="st">"181"</span>, <span class="st">"Abduct, hijack, or take hostage"</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Torture"</span>,                          <span class="st">"&lt;MAIM&gt;"</span>,     <span class="st">"Maiming and all other reports explicitly characterized as torture."</span>, <span class="st">"1822"</span>, <span class="st">"Torture"</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed force blockade"</span>,             <span class="st">"&lt;MBLO&gt;"</span>,     <span class="st">"Use of armed forces to seal off a territory to prevent exit or entry of goods or personnel."</span>, <span class="st">"191"</span>, <span class="st">"Impose blockade, restrict movement"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Mine explosion"</span>,                   <span class="st">"&lt;MINE&gt;"</span>,     <span class="st">"Land and underwater mine explosions."</span>, <span class="st">""</span>, <span class="st">"None"</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed force occupation"</span>,           <span class="st">"&lt;MOCC&gt;"</span>,     <span class="st">"Use of armed forces to take over or occupy the whole or part of a territory."</span>, <span class="st">"192"</span>, <span class="st">"Occupy territory"</span>,</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed force threats"</span>,              <span class="st">"&lt;MTHR&gt;"</span>,     <span class="st">"All threats to use armed force."</span>, <span class="st">"1381-1385"</span>, <span class="st">"Threaten blockade; Threaten occupation; Threaten unconventional violence; Threaten conventional attack; Threaten attack with WMD"</span>,</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Other physical force threats"</span>,      <span class="st">"&lt;NMFT&gt;"</span>,     <span class="st">"All threats to use non-armed, physical force."</span>, <span class="st">"138"</span>, <span class="st">"Threaten with military force, not specified below"</span>,</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Physical assault"</span>,                 <span class="st">"&lt;PASS&gt;"</span>,     <span class="st">"All uses of non-armed physical force in assaults against people not otherwise specified."</span>, <span class="st">"182"</span>, <span class="st">"Physically assault, not specified below"</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Small arms attack"</span>,                <span class="st">"&lt;PEXE&gt;"</span>,     <span class="st">"Shooting of small arms, light weapons and small explosives, including the use of all handguns, light machine guns, rifles and hand grenades."</span>, <span class="st">"193"</span>, <span class="st">"Fight with small arms and light weapons"</span>,</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Armed actions"</span>,                    <span class="st">"&lt;RAID&gt;"</span>,     <span class="st">"Ambiguous initiation of the use of armed forces to fire upon another armed force, population or territory."</span>, <span class="st">"190"</span>, <span class="st">"Use conventional military force, not specified below"</span>,</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Riot"</span>,                             <span class="st">"&lt;RIOT&gt;"</span>,     <span class="st">"Civil or political unrest explicitly characterized as riots, as well as behavior presented as tumultuous or mob-like. This behavior includes looting, prison uprisings, crowds setting things on fire, general fighting with police (typically by protestors)."</span>, <span class="st">"145, 1451-1454"</span>, <span class="st">"Protest violently, riot"</span>,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Suicide bombing"</span>,                  <span class="st">"&lt;SBOM&gt;"</span>,     <span class="st">"A bombing in which the bomber perishes during detonation of the explosive."</span>, <span class="st">"1831"</span>, <span class="st">"Carry out suicide bombing"</span>,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Seize"</span>,                            <span class="st">"&lt;SEIZ&gt;"</span>,     <span class="st">"All seizures not otherwise specified."</span>, <span class="st">"171"</span>, <span class="st">"Seize or damage property, not specified below"</span>,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Seize possession"</span>,                 <span class="st">"&lt;SEZR&gt;"</span>,     <span class="st">"Take control of positions or possessions."</span>, <span class="st">"1711"</span>, <span class="st">"Confiscate property"</span>,</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten forceful attack"</span>,          <span class="st">"&lt;TATT&gt;"</span>,     <span class="st">"Explicit threat to use armed forces in an attack or invasion."</span>, <span class="st">"1384"</span>, <span class="st">"Threaten conventional attack"</span>,</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten forceful blockade"</span>,        <span class="st">"&lt;TBLO&gt;"</span>,     <span class="st">"Explicit threat to use armed ships, airplanes or forces to prevent entry or exit."</span>, <span class="st">"1381"</span>, <span class="st">"Threaten blockade"</span>,</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten biological or chemical attack"</span>, <span class="st">"&lt;TCBR&gt;"</span>, <span class="st">"Explicit threat to use biological or chemical weapon against armed forces, a population or territory."</span>, <span class="st">"1385"</span>, <span class="st">"Threaten attack with WMD"</span>,</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten"</span>,                         <span class="st">"&lt;THRT&gt;"</span>,     <span class="st">"All threats, coercive warnings not otherwise specified."</span>, <span class="st">"130"</span>, <span class="st">"Threaten, not specified below"</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten nuclear attack"</span>,           <span class="st">"&lt;TNUC&gt;"</span>,     <span class="st">"Explicit threat to use a nuclear or radioactive weapon against armed forces, a population or territory."</span>, <span class="st">"1385"</span>, <span class="st">"Threaten attack with WMD"</span>,</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten forceful occupation"</span>,      <span class="st">"&lt;TOCC&gt;"</span>,     <span class="st">"Explicit threat to use armed forces to occupy the whole or part of a territory."</span>, <span class="st">"1382"</span>, <span class="st">"Threaten occupation"</span>,</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Threaten war"</span>,                     <span class="st">"&lt;TWAR&gt;"</span>,     <span class="st">"Explicit threat to declare a state of (military) war."</span>, <span class="st">""</span>, <span class="st">"None"</span>,</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Vehicle bombing"</span>,                  <span class="st">"&lt;VBOM&gt;"</span>,     <span class="st">"Bombing explicitly characterized as a vehicle bombing (car bombing, etc.), except for suicide bombings, which are coded separately."</span>, <span class="st">"1831, 1832"</span>, <span class="st">"Carry out car bombing; Carry out roadside bombing"</span> </span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>)  <span class="sc">%&gt;%</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TYPE =</span> <span class="st">"Violent"</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="co"># create nice table</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(mb_si_violent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">ACTIVITY</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">IDEA.CODE</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">DEFINITION</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">CAMEO.CODE</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">CAMEO.DEFINITION</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">TYPE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Abduction</td>
+<td style="text-align: left;">&lt;ABDU&gt;</td>
+<td style="text-align: left;">Abducting, hijacking and capturing of people.</td>
+<td style="text-align: left;">181</td>
+<td style="text-align: left;">Abduct, hijack, or take hostage</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missile attack</td>
+<td style="text-align: left;">&lt;AERI&gt;</td>
+<td style="text-align: left;">Launching of intermediate to long-range conventional ballistic missiles and aerial dropping of conventional explosive devices or bombs.</td>
+<td style="text-align: left;">195</td>
+<td style="text-align: left;">Employ aerial weapons</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Assassination</td>
+<td style="text-align: left;">&lt;ASSA&gt;</td>
+<td style="text-align: left;">Murder that is explicitly characterized as political killing and assassination.</td>
+<td style="text-align: left;">186</td>
+<td style="text-align: left;">Assassinate</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Beatings</td>
+<td style="text-align: left;">&lt;BEAT&gt;</td>
+<td style="text-align: left;">Beatings (physical assaults without the use of weapons).</td>
+<td style="text-align: left;">182, 1821-1823</td>
+<td style="text-align: left;">Physically assault</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chem-bio attack</td>
+<td style="text-align: left;">&lt;CBIO&gt;</td>
+<td style="text-align: left;">Use of chemical or biological weapons.</td>
+<td style="text-align: left;">2041</td>
+<td style="text-align: left;">Use chemical, biological, or radiological weapons</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Unconventional weapons attack</td>
+<td style="text-align: left;">&lt;CBRU&gt;</td>
+<td style="text-align: left;">All uses of Weapons of Mass Destruction (WMD).</td>
+<td style="text-align: left;">204, 2042</td>
+<td style="text-align: left;">Use weapons of mass destruction</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Armed battle</td>
+<td style="text-align: left;">&lt;CLAS&gt;</td>
+<td style="text-align: left;">Initiation of armed hostilities or engagement between two or more armed forces, includes truce violations (use as default for war and battles).</td>
+<td style="text-align: left;">193, 194, 196</td>
+<td style="text-align: left;">Fight with small arms and light weapons; Fight with artillery and tanks; Violate ceasefire</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bodily punishment</td>
+<td style="text-align: left;">&lt;CORP&gt;</td>
+<td style="text-align: left;">The infliction of bodily injury, death or pain for the explicit purpose of punishment.</td>
+<td style="text-align: left;">1822</td>
+<td style="text-align: left;">Torture</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Coups and mutinies</td>
+<td style="text-align: left;">&lt;COUP&gt;</td>
+<td style="text-align: left;">Coups, mutiny and other rebellion by armed forces.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Declare war</td>
+<td style="text-align: left;">&lt;DWAR&gt;</td>
+<td style="text-align: left;">Formal or official statement that a state of war exists.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Force Use</td>
+<td style="text-align: left;">&lt;FORC&gt;</td>
+<td style="text-align: left;">All uses of physical force not otherwise specified.</td>
+<td style="text-align: left;">180</td>
+<td style="text-align: left;">Use unconventional violence, not specified below</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Artillery attack</td>
+<td style="text-align: left;">&lt;GRPG&gt;</td>
+<td style="text-align: left;">Use of short to intermediate range tank-mounted, ship-based or field guns and cannons, mortars and rocket-propelled grenades.</td>
+<td style="text-align: left;">194, 195</td>
+<td style="text-align: left;">Fight with artillery and tanks; Employ aerial weapons</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hostage taking and kidnapping</td>
+<td style="text-align: left;">&lt;HTAK&gt;</td>
+<td style="text-align: left;">Hostage taking or kidnapping of people.</td>
+<td style="text-align: left;">181</td>
+<td style="text-align: left;">Abduct, hijack, or take hostage</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hijacking</td>
+<td style="text-align: left;">&lt;JACK&gt;</td>
+<td style="text-align: left;">All commandeerings of vehicles.</td>
+<td style="text-align: left;">181</td>
+<td style="text-align: left;">Abduct, hijack, or take hostage</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Torture</td>
+<td style="text-align: left;">&lt;MAIM&gt;</td>
+<td style="text-align: left;">Maiming and all other reports explicitly characterized as torture.</td>
+<td style="text-align: left;">1822</td>
+<td style="text-align: left;">Torture</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Armed force blockade</td>
+<td style="text-align: left;">&lt;MBLO&gt;</td>
+<td style="text-align: left;">Use of armed forces to seal off a territory to prevent exit or entry of goods or personnel.</td>
+<td style="text-align: left;">191</td>
+<td style="text-align: left;">Impose blockade, restrict movement</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mine explosion</td>
+<td style="text-align: left;">&lt;MINE&gt;</td>
+<td style="text-align: left;">Land and underwater mine explosions.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Armed force occupation</td>
+<td style="text-align: left;">&lt;MOCC&gt;</td>
+<td style="text-align: left;">Use of armed forces to take over or occupy the whole or part of a territory.</td>
+<td style="text-align: left;">192</td>
+<td style="text-align: left;">Occupy territory</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Armed force threats</td>
+<td style="text-align: left;">&lt;MTHR&gt;</td>
+<td style="text-align: left;">All threats to use armed force.</td>
+<td style="text-align: left;">1381-1385</td>
+<td style="text-align: left;">Threaten blockade; Threaten occupation; Threaten unconventional violence; Threaten conventional attack; Threaten attack with WMD</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Other physical force threats</td>
+<td style="text-align: left;">&lt;NMFT&gt;</td>
+<td style="text-align: left;">All threats to use non-armed, physical force.</td>
+<td style="text-align: left;">138</td>
+<td style="text-align: left;">Threaten with military force, not specified below</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Physical assault</td>
+<td style="text-align: left;">&lt;PASS&gt;</td>
+<td style="text-align: left;">All uses of non-armed physical force in assaults against people not otherwise specified.</td>
+<td style="text-align: left;">182</td>
+<td style="text-align: left;">Physically assault, not specified below</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Small arms attack</td>
+<td style="text-align: left;">&lt;PEXE&gt;</td>
+<td style="text-align: left;">Shooting of small arms, light weapons and small explosives, including the use of all handguns, light machine guns, rifles and hand grenades.</td>
+<td style="text-align: left;">193</td>
+<td style="text-align: left;">Fight with small arms and light weapons</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Armed actions</td>
+<td style="text-align: left;">&lt;RAID&gt;</td>
+<td style="text-align: left;">Ambiguous initiation of the use of armed forces to fire upon another armed force, population or territory.</td>
+<td style="text-align: left;">190</td>
+<td style="text-align: left;">Use conventional military force, not specified below</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Riot</td>
+<td style="text-align: left;">&lt;RIOT&gt;</td>
+<td style="text-align: left;">Civil or political unrest explicitly characterized as riots, as well as behavior presented as tumultuous or mob-like. This behavior includes looting, prison uprisings, crowds setting things on fire, general fighting with police (typically by protestors).</td>
+<td style="text-align: left;">145, 1451-1454</td>
+<td style="text-align: left;">Protest violently, riot</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Suicide bombing</td>
+<td style="text-align: left;">&lt;SBOM&gt;</td>
+<td style="text-align: left;">A bombing in which the bomber perishes during detonation of the explosive.</td>
+<td style="text-align: left;">1831</td>
+<td style="text-align: left;">Carry out suicide bombing</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Seize</td>
+<td style="text-align: left;">&lt;SEIZ&gt;</td>
+<td style="text-align: left;">All seizures not otherwise specified.</td>
+<td style="text-align: left;">171</td>
+<td style="text-align: left;">Seize or damage property, not specified below</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Seize possession</td>
+<td style="text-align: left;">&lt;SEZR&gt;</td>
+<td style="text-align: left;">Take control of positions or possessions.</td>
+<td style="text-align: left;">1711</td>
+<td style="text-align: left;">Confiscate property</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Threaten forceful attack</td>
+<td style="text-align: left;">&lt;TATT&gt;</td>
+<td style="text-align: left;">Explicit threat to use armed forces in an attack or invasion.</td>
+<td style="text-align: left;">1384</td>
+<td style="text-align: left;">Threaten conventional attack</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Threaten forceful blockade</td>
+<td style="text-align: left;">&lt;TBLO&gt;</td>
+<td style="text-align: left;">Explicit threat to use armed ships, airplanes or forces to prevent entry or exit.</td>
+<td style="text-align: left;">1381</td>
+<td style="text-align: left;">Threaten blockade</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Threaten biological or chemical attack</td>
+<td style="text-align: left;">&lt;TCBR&gt;</td>
+<td style="text-align: left;">Explicit threat to use biological or chemical weapon against armed forces, a population or territory.</td>
+<td style="text-align: left;">1385</td>
+<td style="text-align: left;">Threaten attack with WMD</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Threaten</td>
+<td style="text-align: left;">&lt;THRT&gt;</td>
+<td style="text-align: left;">All threats, coercive warnings not otherwise specified.</td>
+<td style="text-align: left;">130</td>
+<td style="text-align: left;">Threaten, not specified below</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Threaten nuclear attack</td>
+<td style="text-align: left;">&lt;TNUC&gt;</td>
+<td style="text-align: left;">Explicit threat to use a nuclear or radioactive weapon against armed forces, a population or territory.</td>
+<td style="text-align: left;">1385</td>
+<td style="text-align: left;">Threaten attack with WMD</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Threaten forceful occupation</td>
+<td style="text-align: left;">&lt;TOCC&gt;</td>
+<td style="text-align: left;">Explicit threat to use armed forces to occupy the whole or part of a territory.</td>
+<td style="text-align: left;">1382</td>
+<td style="text-align: left;">Threaten occupation</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Threaten war</td>
+<td style="text-align: left;">&lt;TWAR&gt;</td>
+<td style="text-align: left;">Explicit threat to declare a state of (military) war.</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">None</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vehicle bombing</td>
+<td style="text-align: left;">&lt;VBOM&gt;</td>
+<td style="text-align: left;">Bombing explicitly characterized as a vehicle bombing (car bombing, etc.), except for suicide bombings, which are coded separately.</td>
+<td style="text-align: left;">1831, 1832</td>
+<td style="text-align: left;">Carry out car bombing; Carry out roadside bombing</td>
+<td style="text-align: left;">Violent</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+</section>
+<section id="defining-whom" class="level3">
+<h3 class="anchored" data-anchor-id="defining-whom">Defining “Whom”</h3>
+<p>The target of a dissent event must be an agent of the state or a physical office of the state. Event targets can have multiple values in ICEWS; state-affiliated are tagged as “Government,” with more specifics included as additional tags.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>whom <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Government"</span>,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Police"</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Military"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="identifying-dissent-events" class="level3">
+<h3 class="anchored" data-anchor-id="identifying-dissent-events">Identifying Dissent Events</h3>
+<p>A dissent event is one in which a domestic actor uses one of the specified dissent actions against an agent of the state or a state physical office. I operationalize a “domestic actor” as one that is (1) located in the same country as the event and (2) located in the same country as the target, if the country of the target is known.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to parse cameo codes</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># takes: a character vector of codes to be parsed</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># returns: a numeric vector of codes</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>code_parse <span class="ot">&lt;-</span> <span class="cf">function</span>(input_vector) {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(input_vector)){</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(input_vector[i]<span class="sc">==</span><span class="st">""</span>) <span class="cf">next</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      this_values <span class="ot">&lt;-</span> <span class="fu">eval</span>(<span class="fu">parse</span>(<span class="at">text=</span>input_vector[i]))</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span>(<span class="fu">exists</span>(<span class="st">"codes_vector"</span>) <span class="sc">==</span> <span class="cn">FALSE</span>) {</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        codes_vector <span class="ot">&lt;-</span> this_values</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>      codes_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(codes_vector, this_values)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(codes_vector)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># format the cameo code list from the tables into a numeric vector</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>cameo_codes <span class="ot">&lt;-</span> <span class="fu">str_split</span>(<span class="fu">c</span>(mb_si_violent<span class="sc">$</span>CAMEO.CODE,mb_si_nonviolent<span class="sc">$</span>CAMEO.CODE),<span class="st">","</span>) <span class="sc">%&gt;%</span> <span class="fu">unlist</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_replace_all</span>(<span class="st">"-"</span>,<span class="st">":"</span>) <span class="sc">%&gt;%</span> <span class="fu">str_replace_all</span>(<span class="st">" "</span>,<span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">code_parse</span>()</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="do">### Read ICEWS data</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>icews <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"output/combined-icews.csv"</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="do">### Identify dissent events</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>icews_dissent <span class="ot">&lt;-</span> icews <span class="sc">%&gt;%</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Identify events with domestic actors (who)</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># A domestic actor is located in the same country as the action and the target (if known)</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(((<span class="st">`</span><span class="at">Source Country</span><span class="st">`</span><span class="sc">==</span><span class="st">`</span><span class="at">Target Country</span><span class="st">`</span>)<span class="sc">|</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>                             <span class="fu">is.na</span>(<span class="st">`</span><span class="at">Target Country</span><span class="st">`</span> <span class="sc">==</span> <span class="cn">TRUE</span>))<span class="sc">&amp;</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>                            (<span class="st">`</span><span class="at">Source Country</span><span class="st">`</span><span class="sc">==</span><span class="st">`</span><span class="at">Country</span><span class="st">`</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Identify events with state agent targets (whom)</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">sapply</span>(<span class="fu">lapply</span>(<span class="st">`</span><span class="at">Target Sectors</span><span class="st">`</span>,str_detect,whom),any)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Identify qualifying events (what)</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">CAMEO Code</span><span class="st">`</span><span class="sc">%in%</span>cameo_codes) <span class="sc">%&gt;%</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dissent_event=</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">Event ID</span><span class="st">`</span>, <span class="st">`</span><span class="at">Event Date</span><span class="st">`</span>, dissent_event)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After identifying dissent events, merge them back into the ICEWS data. The new variable <code>dissent_event</code> is coded 1 for dissent events and 0 for all other events.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># merge dissent information back into the dataset.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># note: ICEWS sometimes re-uses Event IDs;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># it is necessary to uniquely identify events</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>icews <span class="ot">&lt;-</span> <span class="fu">left_join</span>(icews,icews_dissent,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">by=</span><span class="fu">c</span>(<span class="st">'Event ID'</span>,<span class="st">'Event Date'</span>))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># events not included in the list of dissent events should have dissent_event = 0</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>icews <span class="ot">&lt;-</span> icews <span class="sc">%&gt;%</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dissent_event=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(dissent_event),<span class="dv">0</span>,dissent_event))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="aggregating-to-the-country-year-level" class="level3">
+<h3 class="anchored" data-anchor-id="aggregating-to-the-country-year-level">Aggregating to the Country-Year Level</h3>
+<p>Calculate the total number of events and the total number of dissent events for each country-year in the dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add a year variable</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>icews <span class="ot">&lt;-</span> icews <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year=</span><span class="fu">as.numeric</span>(<span class="fu">substr</span>(<span class="st">`</span><span class="at">Event Date</span><span class="st">`</span>,<span class="dv">1</span>,<span class="dv">4</span>)))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># aggregate by country/year</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>icews_aggregated <span class="ot">&lt;-</span> icews <span class="sc">%&gt;%</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Country, year) <span class="sc">%&gt;%</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n_events=</span><span class="fu">n</span>(),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">n_dissent_events=</span><span class="fu">sum</span>(dissent_event,<span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After aggregating to the country-year level, add unique country codes to match the aggregated ICEWS data to other datasets. We use the Correlates of War (COW) country codes. ICEWS only reports countries by name, so I use the <code>countrycode</code> package to match names to COW codes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>icews_aggregated <span class="ot">&lt;-</span> icews_aggregated <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cowcode=</span><span class="fu">countrycode</span>(Country,<span class="st">"country.name"</span>,<span class="st">"cown"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Check the countries that were not matched unambiguously by the <code>countrycode</code> list of country names.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>missing_codes <span class="ot">&lt;-</span> icews_aggregated <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(cowcode)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Country, cowcode)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">unique</span>(missing_codes))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Country</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">cowcode</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Aeolian Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">American Samoa</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Anguilla</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Antarctica</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Aruba</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bermuda</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bonaire</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">British Indian Ocean Territory</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">British Virgin Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cayman Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Christmas Island</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Cocos (Keeling) Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cook Island</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CuraÃ§ao</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Curaçao</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Falkland Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Faroe Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">French Guiana</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">French Polynesia</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">French Southern Territories</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gibraltar</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Greenland</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Guadeloupe</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Guam</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Guernsey</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Heard Island and McDonald Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hong Kong</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Isle Of Man</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Jersey</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Macao</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Martinique</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mayotte</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Micronesia</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Montserrat</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NULL</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Netherlands Antilles</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">New Caledonia</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Niue</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Norfolk Island</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Northern Mariana Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Occupied Palestinian Territory</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pitcairn</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Puerto Rico</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Reunion</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Saint Barthelemy</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Saint Helena</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Saint Martin (French part)</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Saint Pierre and Miquelon</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Serbia</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sint Maarten</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">South Georgia and the South Sandwich Isla</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">South Georgia and the South Sandwich Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Svalbard and Jan Mayen</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tokelau</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Turks and Caicos Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">U.S. Virgin Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United States Minor Outlying Islands</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Wallis and Futuna</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Western Sahara</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Most of these entities are non-country entities. “NULL” is a category of ICEWS events for which the location of the event is not known precisely enough to identify a country.</p>
+<p>For the remaining entities, check against the COW system list. Load in <code>system2016.csv</code> from COW, filter to only the years covered by the ICEWS dataset, and add country names to the COW system membership list. Then, subset to only COW countries whose codes have not been matched to an entity in the ICEWS dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cow <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/system2016.csv"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cow_missing <span class="ot">&lt;-</span> cow <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">&gt;=</span><span class="fu">min</span>(icews_aggregated<span class="sc">$</span>year)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">name=</span><span class="fu">countrycode</span>(<span class="at">sourcevar=</span>stateabb,<span class="at">origin=</span><span class="st">"cowc"</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">destination=</span><span class="st">"country.name"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(stateabb,ccode,name) <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ccode <span class="sc">%in%</span> icews_aggregated<span class="sc">$</span>cowcode <span class="sc">==</span> F)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(cow_missing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">stateabb</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">ccode</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">YUG</td>
+<td style="text-align: right;">345</td>
+<td style="text-align: left;">Yugoslavia</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">FSM</td>
+<td style="text-align: right;">987</td>
+<td style="text-align: left;">Micronesia (Federated States of)</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>Most of the entities without matches do not meet the COW definition of a country. The exceptions are Yugoslavia and Micronesia. Yugoslavia is listed as Serbia in ICEWS. Micronesia is simply named differently between the two sources.</p>
+<p>I change the codes for those countries in the ICEWS data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>icews_aggregated <span class="ot">&lt;-</span> icews_aggregated <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cowcode=</span><span class="fu">if_else</span>(Country<span class="sc">==</span><span class="st">"Micronesia"</span>,<span class="dv">987</span>,cowcode)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">cowcode=</span><span class="fu">if_else</span>(Country<span class="sc">==</span><span class="st">"Serbia"</span>,<span class="dv">345</span>,cowcode))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now every COW entity has a matching code in the ICEWS data.</p>
+<p>As a final data cleaning step, ensure that every country in the dataset has an entry for each year in our time period. I accomplish this by merging the aggregated ICEWS data into the COW system list. The COW system list ends in 2016, so I extend it to match the coverage of ICEWS. I also remove country-years prior to the beginning of the ICEWS data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>system_list <span class="ot">&lt;-</span> cow <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year<span class="sc">&gt;=</span><span class="fu">min</span>(icews_aggregated<span class="sc">$</span>year)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ccode,year) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_row</span>(<span class="fu">crossing</span>(<span class="at">ccode=</span><span class="fu">unique</span>(cow<span class="sc">$</span>ccode),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">year=</span><span class="dv">2017</span><span class="sc">:</span><span class="fu">max</span>(icews_aggregated<span class="sc">$</span>year))) <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ccode,year) </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># join aggregated ICEWS with the system list</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(system_list,icews_aggregated,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                         <span class="at">by=</span><span class="fu">c</span>(<span class="st">"ccode"</span><span class="ot">=</span><span class="st">"cowcode"</span>,<span class="st">"year"</span>))</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># find the ICEWS names for each COW code</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>name_df <span class="ot">&lt;-</span> icews_aggregated <span class="sc">%&gt;%</span> <span class="fu">select</span>(Country,cowcode) <span class="sc">%&gt;%</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(cowcode)<span class="sc">==</span>F) <span class="sc">%&gt;%</span> <span class="fu">distinct</span>()</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># replace missing values in country names</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(<span class="fu">select</span>(merged_data,<span class="sc">-</span>Country),</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                         name_df,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                         <span class="at">by=</span><span class="fu">c</span>(<span class="st">"ccode"</span><span class="ot">=</span><span class="st">"cowcode"</span>))</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co"># replace missing values in event counts</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> merged_data <span class="sc">%&gt;%</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_events=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(n_events),</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>                          <span class="dv">0</span>,n_events),</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">n_dissent_events=</span><span class="fu">if_else</span>(<span class="fu">is.na</span>(n_dissent_events),</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>                                  <span class="dv">0</span>,n_dissent_events)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(Country) <span class="sc">==</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>One note of caution: ICEWS states in its documentation that it does not include all U.S.-based domestic events in its data releases. The event counts for the United States are not comparable to the counts from other countries.</p>
+<p>Finally, save the output to a new file.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(merged_data,<span class="st">"output/icews-aggregated.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="computing-the-dissent-scores" class="level1">
+<h1>Computing the Dissent Scores</h1>
+<p>We begin by setting up the data for Stan.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cmdstanr)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(countrycode)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># load events data </span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"output/icews-aggregated.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(ccode <span class="sc">!=</span> <span class="dv">2</span>)  <span class="sc">%&gt;%</span> <span class="co"># drop US; ICEWS treats differently</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Country) <span class="sc">|&gt;</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(ccode, year) <span class="sc">%&gt;%</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observation_index =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 5,380
+Columns: 5
+$ ccode             &lt;int&gt; 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, …
+$ year              &lt;int&gt; 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003…
+$ n_events          &lt;int&gt; 2713, 2187, 2709, 1463, 2195, 3543, 4923, 5808, 5072…
+$ n_dissent_events  &lt;int&gt; 89, 76, 84, 20, 22, 76, 129, 122, 92, 182, 224, 204,…
+$ observation_index &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create data set with lengths of time-series for each country</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> counts <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ccode) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">size =</span> <span class="fu">n</span>()) </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># setup data for stan</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(counts)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="fu">nrow</span>(s)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> s<span class="sc">$</span>size</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>stan_data <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">N =</span> N,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">J =</span> J, </span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">s =</span> s,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">n_dissent_events =</span> counts<span class="sc">$</span>n_dissent_events, </span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>                  <span class="at">n_events =</span> counts<span class="sc">$</span>n_events)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, we fit the model in Stan.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; N; <span class="co">// number of observations</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; J; <span class="co">// number of groups</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[J] <span class="dt">int</span> s; <span class="co">// number of time periods for each group; trick for ragged arrays</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_dissent_events; <span class="co">// number of dissent events</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; n_events; <span class="co">// total number of events</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> Mu;</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_mu;</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma_alpha;</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; nu_mu;</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; nu_alpha;</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">real</span> alpha; <span class="co">// innovations on logit scale</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[J] <span class="dt">real</span> mu;    <span class="co">// group-level mean intensity on logit scale</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">real</span> eta;</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  {  <span class="co">// bracket is a trick to "hide" this unallowed integer from the block</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">// below, I use a trick for ragged arrays</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> pos;</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  pos = <span class="dv">1</span>;</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span>:J) {</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (t <span class="cf">in</span> <span class="dv">1</span>:s[j]) {</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>      eta[(pos - <span class="dv">1</span>) + t] = mu[j] + alpha[(pos - <span class="dv">1</span>) + t]; </span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    pos = pos + s[j];</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>  sigma_mu ~ cauchy(<span class="dv">0</span>, <span class="dv">3</span>);</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>  sigma_alpha ~ cauchy(<span class="dv">0</span>, <span class="dv">3</span>);</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>  nu_mu ~ gamma(<span class="dv">2</span>, <span class="fl">0.1</span>);</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>  nu_alpha ~ gamma(<span class="dv">2</span>, <span class="fl">0.1</span>);</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>  mu ~ student_t(nu_mu, Mu, sigma_mu);</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>  alpha ~ student_t(nu_alpha, <span class="dv">0</span>, sigma_alpha);</span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>  n_dissent_events ~ binomial_logit(n_events, eta);</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] log_lik;</span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N) {</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a>    log_lik[i] = binomial_logit_lpmf(n_dissent_events[i] | n_events[i], eta[i]);</span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit model</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"src/dissent.stan"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> mod<span class="sc">$</span><span class="fu">sample</span>(</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> stan_data, </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> <span class="dv">50786</span>, </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_sampling =</span> <span class="dv">15000</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter_warmup =</span> <span class="dv">5000</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">thin =</span> <span class="dv">10</span>,  <span class="co"># for memory purposes</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">10</span>, </span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">10</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">refresh =</span> <span class="dv">1000</span> <span class="co"># print update every 1,000 iters</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we do the post-processing of the simulations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract posterior simulations</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4238</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>draws <span class="ot">&lt;-</span> fit<span class="sc">$</span><span class="fu">draws</span>(<span class="at">variables =</span> <span class="st">"eta"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  posterior<span class="sc">::</span><span class="fu">as_draws_df</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sample_n</span>(<span class="dv">5000</span>) </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># test that seed worked properly</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(draws[<span class="dv">1</span>, <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -3.34981</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">as.numeric</span>(draws[<span class="dv">1</span>, <span class="dv">1</span>]), <span class="dv">5</span>) <span class="sc">==</span> <span class="sc">-</span><span class="fl">3.34981</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compute dissent scores</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>dissent_scores <span class="ot">&lt;-</span> draws <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># pivot data set into long format with columns for the eta index</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"eta["</span>), <span class="at">names_to =</span> <span class="st">"par"</span>, <span class="at">values_to =</span> <span class="st">"eta"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># extract observation index (i.e., country-year) from par</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">observation_index =</span> <span class="fu">str_remove_all</span>(par, <span class="st">"[^[:digit:]]"</span>),</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">observation_index =</span> <span class="fu">as.numeric</span>(observation_index)) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># compute posterior averages and se</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(observation_index) <span class="sc">%&gt;%</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg_eta =</span> <span class="fu">mean</span>(eta), </span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">se_eta =</span> <span class="fu">sd</span>(eta),</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">avg_pi =</span> <span class="fu">mean</span>(<span class="fu">plogis</span>(eta))) <span class="sc">%&gt;%</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># rescale posterior average of eta to create dissent score</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dissent_score =</span> (avg_eta <span class="sc">-</span> <span class="fu">mean</span>(avg_eta))<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(avg_eta)),</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">se_dissent_score =</span> se_eta<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(avg_eta))) <span class="sc">%&gt;%</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># join in raw counts data</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(counts) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">frac_dissent_events =</span> <span class="fu">ifelse</span>(n_events <span class="sc">==</span> <span class="dv">0</span>, <span class="dv">0</span>, n_dissent_events<span class="sc">/</span>n_events)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add in additional country names</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   - country_name: country.name from {countrycode}</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   - stateabb: COW 3-digit alpha from {countrycode} </span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stateabb =</span> <span class="fu">countrycode</span>(ccode, <span class="st">"cown"</span>, <span class="st">"cowc"</span>),</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">country_name =</span> <span class="fu">countrycode</span>(ccode, <span class="st">"cown"</span>, <span class="st">"country.name.en"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># make repairs for german case</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stateabb =</span> <span class="fu">ifelse</span>(ccode <span class="sc">==</span> <span class="dv">260</span>, <span class="st">"GFR"</span>, stateabb),</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>         <span class="at">country_name =</span> <span class="fu">ifelse</span>(ccode <span class="sc">==</span> <span class="dv">260</span>, <span class="st">"Germany (GFR)"</span>, country_name)) <span class="sc">%&gt;%</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add version info</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">release =</span> <span class="st">"V0.1 (Preprint)"</span>, </span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>         <span class="at">release_date =</span> <span class="st">"2023-12-18"</span>, </span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">created_date =</span> <span class="fu">Sys.Date</span>(), </span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">data_source =</span> <span class="st">"ICEWS"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select variables for final data set</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(release, release_date, data_source, created_date, country_name, ccode, stateabb, year, n_events, n_dissent_events, frac_dissent_events, avg_pi, avg_eta, dissent_score, se_dissent_score)</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a><span class="co"># write latent measures to file</span></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(dissent_scores, <span class="st">"output/dissent-scores-icews.csv"</span>)</span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>haven<span class="sc">::</span><span class="fu">write_dta</span>(dissent_scores, <span class="st">"output/dissent-scores-icews.dta"</span>)</span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(dissent_scores, <span class="st">"output/dissent-scores-icews.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

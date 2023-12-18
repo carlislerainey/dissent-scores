@@ -1,9 +1,6 @@
 ---
-title: "ICEWS Aggregation for Latent Dissent"
-author: "Nick Dietrich"
-output:
-  html_document:
-    df_print: paged
+title: "Compute ICEWS Version of Dissent Scores"
+freeze: true
 ---
 
 ```{r, include=F}
@@ -14,17 +11,17 @@ library(countrycode)
 library(kableExtra)
 ```
 
-### Dissent Events
+# Creating a Dissent Events Data Set Using ICEWS
 
-[Murdie and Bassain (2011)](https://urldefense.com/v3/__http://journals.sagepub.com/doi/suppl/10.1177/0022002710374715__;!!PhOWcWs!3oRWa1NpA6pXyjcJm6YqdWwFMScMONteMbhyFgn-29dIrDEXhY0M64K38mPtTvc0YF2J_IpKtgb3GRYEF0qDYZ0m0A$ ) define a dissent event as follows:
+[Murdie and Bassain (2011)](http://journals.sagepub.com/doi/suppl/10.1177/0022002710374715) define a dissent event as follows:
 
->To create the new measures, we relied on the IDEA framework (Bond et al. 2003). IDEA is a data set of all daily events in Reuters Global News Service. These data were organized in a “who” did “what” to “whom” manner for each particular event, over 10 million events in the complete data set (King and Lowe 2003). 
+> To create the new measures, we relied on the IDEA framework (Bond et al. 2003). IDEA is a data set of all daily events in Reuters Global News Service. These data were organized in a "who" did "what" to "whom" manner for each particular event, over 10 million events in the complete data set (King and Lowe 2003).
 
-> For our variables, we isolated events where… (1) a domestic group or individual is the “who,” (2) the “what” is either violent or nonviolent protest, and (3) the “whom” is either a state agent or a state physical office. As mentioned earlier, violent protests are protests with the threat or use of force. Attacking a government official or office, destroying government property, or a bombing of a government official’s home are all examples of violent protest. Conversely, protest marches, demonstrations, boycotts, and sit-ins are some of the many examples of nonviolent protest.
+> For our variables, we isolated events where... (1) a domestic group or individual is the "who," (2) the "what" is either violent or nonviolent protest, and (3) the "whom" is either a state agent or a state physical office. As mentioned earlier, violent protests are protests with the threat or use of force. Attacking a government official or office, destroying government property, or a bombing of a government official's home are all examples of violent protest. Conversely, protest marches, demonstrations, boycotts, and sit-ins are some of the many examples of nonviolent protest.
 
-We apply this definition to the [Integrated Crisis Early Warning System (ICEWS)](https://urldefense.com/v3/__https://dataverse.harvard.edu/dataverse/icews__;!!PhOWcWs!3oRWa1NpA6pXyjcJm6YqdWwFMScMONteMbhyFgn-29dIrDEXhY0M64K38mPtTvc0YF2J_IpKtgb3GRYEF0qVPZsfeA$ ) dataset to find the proportion of reported events that qualify as "dissent events" in each country-year.
+We apply this definition to the [Integrated Crisis Early Warning System (ICEWS)](https://dataverse.harvard.edu/dataverse/icews) dataset to find the proportion of reported events that qualify as "dissent events" in each country-year.
 
-### Loading the ICEWS Data
+## Loading the ICEWS Data
 
 ICEWS event data are available on [dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/28075). Each year's events are reported in a single file. Here, I combine them into a single object of class `tbl`.
 
@@ -46,9 +43,9 @@ icews <- do.call(rbind, icews_list) %>%
   write_csv("output/combined-icews.csv")
 ```
 
-### Defining Dissent Events
+## Defining Dissent Events
 
-Murdie and Bassain rely on IDEA event codes. ICEWS uses CAMEO ontology, which differs slightly. CAMEO codes used by the ICEWS dataset can be found at[https://urldefense.com/v3/__https://eventdata.parusanalytics.com/cameo.dir/CAMEO.CDB.09b5.pdf*(https:/*eventdata.parusanalytics.com/cameo.dir/CAMEO.CDB.09b5.pdf)__;XS8!!PhOWcWs!3oRWa1NpA6pXyjcJm6YqdWwFMScMONteMbhyFgn-29dIrDEXhY0M64K38mPtTvc0YF2J_IpKtgb3GRYEF0pqZ7Sphg$ .
+Murdie and Bassain rely on IDEA event codes. ICEWS uses CAMEO ontology, which differs slightly. CAMEO codes used by the ICEWS dataset can be found at [https://eventdata.parusanalytics.com/cameo.dir/CAMEO.CDB.09b5.pdf](https://eventdata.parusanalytics.com/cameo.dir/CAMEO.CDB.09b5.pdf).
 
 ### Define the "What"
 
@@ -201,7 +198,7 @@ icews <- icews %>%
   mutate(dissent_event=if_else(is.na(dissent_event),0,dissent_event))
 ```
 
-### Aggregate to the country-year level
+### Aggregating to the Country-Year Level
 
 Calculate the total number of events and the total number of dissent events for each country-year in the dataset.
 
@@ -234,7 +231,7 @@ missing_codes <- icews_aggregated %>%
 kableExtra::kable(unique(missing_codes))
 ```
 
-Most of these entities are non-country entities. "NULL" is a category of ICEWS events for which the location of the event is not known precisely enough to identify a country. 
+Most of these entities are non-country entities. "NULL" is a category of ICEWS events for which the location of the event is not known precisely enough to identify a country.
 
 For the remaining entities, check against the COW system list. Load in `system2016.csv` from COW, filter to only the years covered by the ICEWS dataset, and add country names to the COW system membership list. Then, subset to only COW countries whose codes have not been matched to an entity in the ICEWS dataset.
 
@@ -302,3 +299,168 @@ Finally, save the output to a new file.
 write_csv(merged_data,"output/icews-aggregated.csv")
 ```
 
+# Computing the Dissent Scores
+
+We begin by setting up the data for Stan.
+
+```{r, "create data for Stan"}
+#| message: false
+#| warning: false
+
+# load packages
+library(tidyverse)
+library(cmdstanr)
+library(countrycode)
+library(tidybayes)
+
+# load events data 
+counts <- read.csv("output/icews-aggregated.csv") %>%
+  filter(ccode != 2)  %>% # drop US; ICEWS treats differently
+  select(-Country) |>
+  arrange(ccode, year) %>%
+  mutate(observation_index = 1:n()) %>%
+  glimpse()
+
+# create data set with lengths of time-series for each country
+s <- counts %>%
+  group_by(ccode) %>%
+  summarize(size = n()) 
+
+# setup data for stan
+N <- nrow(counts)
+J <- nrow(s)
+s <- s$size
+stan_data <- list(N = N,
+                  J = J, 
+                  s = s,
+                  n_dissent_events = counts$n_dissent_events, 
+                  n_events = counts$n_events)
+```
+
+Next, we fit the model in Stan.
+
+``` stan
+data {
+  int<lower=1> N; // number of observations
+  int<lower=1> J; // number of groups
+  array[J] int s; // number of time periods for each group; trick for ragged arrays
+  array[N] int<lower=0> n_dissent_events; // number of dissent events
+  array[N] int<lower=0> n_events; // total number of events
+}
+
+parameters {
+  real Mu;
+  real<lower=0> sigma_mu;
+  real<lower=0> sigma_alpha;
+  real<lower=1> nu_mu;
+  real<lower=1> nu_alpha;
+  array[N] real alpha; // innovations on logit scale
+  array[J] real mu;    // group-level mean intensity on logit scale
+}
+
+transformed parameters {
+  array[N] real eta;
+  {  // bracket is a trick to "hide" this unallowed integer from the block
+  // below, I use a trick for ragged arrays
+  int pos;
+  pos = 1;
+  for (j in 1:J) {
+    for (t in 1:s[j]) {
+      eta[(pos - 1) + t] = mu[j] + alpha[(pos - 1) + t]; 
+    }
+    pos = pos + s[j];
+  }
+  }
+}
+
+model {
+  sigma_mu ~ cauchy(0, 3);
+  sigma_alpha ~ cauchy(0, 3);
+  nu_mu ~ gamma(2, 0.1);
+  nu_alpha ~ gamma(2, 0.1);
+  mu ~ student_t(nu_mu, Mu, sigma_mu);
+  alpha ~ student_t(nu_alpha, 0, sigma_alpha);
+  n_dissent_events ~ binomial_logit(n_events, eta);
+}
+
+generated quantities {
+  vector[N] log_lik;
+  for (i in 1:N) {
+    log_lik[i] = binomial_logit_lpmf(n_dissent_events[i] | n_events[i], eta[i]);
+  }
+}
+```
+
+```{r,  "fit Stan model"}
+#| output: false
+
+# fit model
+mod <- cmdstan_model("src/dissent.stan")
+fit <- mod$sample(
+  data = stan_data, 
+  seed = 50786, 
+  iter_sampling = 15000,
+  iter_warmup = 5000,
+  thin = 10,  # for memory purposes
+  chains = 10, 
+  parallel_chains = 10,
+  refresh = 1000 # print update every 1,000 iters
+)
+```
+
+Finally, we do the post-processing of the simulations.
+
+```{r, "post-process the simulations"}
+#| message: false
+#| warning: false
+
+# extract posterior simulations
+set.seed(4238)
+draws <- fit$draws(variables = "eta") %>%
+  posterior::as_draws_df() %>% 
+  sample_n(5000) 
+
+# test that seed worked properly
+as.numeric(draws[1, 1])
+round(as.numeric(draws[1, 1]), 5) == -3.34981
+
+# compute dissent scores
+dissent_scores <- draws %>% 
+  # pivot data set into long format with columns for the eta index
+  pivot_longer(cols = starts_with("eta["), names_to = "par", values_to = "eta") %>% 
+  # extract observation index (i.e., country-year) from par
+  mutate(observation_index = str_remove_all(par, "[^[:digit:]]"),
+         observation_index = as.numeric(observation_index)) %>% 
+  # compute posterior averages and se
+  group_by(observation_index) %>%
+  summarize(avg_eta = mean(eta), 
+            se_eta = sd(eta),
+            avg_pi = mean(plogis(eta))) %>%
+  ungroup() %>%
+  # rescale posterior average of eta to create dissent score
+  mutate(dissent_score = (avg_eta - mean(avg_eta))/(2*sd(avg_eta)),
+         se_dissent_score = se_eta/(2*sd(avg_eta))) %>%
+  # join in raw counts data
+  left_join(counts) %>% 
+  mutate(frac_dissent_events = ifelse(n_events == 0, 0, n_dissent_events/n_events)) %>%
+  # add in additional country names
+  #   - country_name: country.name from {countrycode}
+  #   - stateabb: COW 3-digit alpha from {countrycode} 
+  mutate(stateabb = countrycode(ccode, "cown", "cowc"),
+         country_name = countrycode(ccode, "cown", "country.name.en")) %>%
+  # make repairs for german case
+  mutate(stateabb = ifelse(ccode == 260, "GFR", stateabb),
+         country_name = ifelse(ccode == 260, "Germany (GFR)", country_name)) %>%
+  # add version info
+  mutate(release = "V0.1 (Preprint)", 
+         release_date = "2023-12-18", 
+         created_date = Sys.Date(), 
+         data_source = "ICEWS") %>%
+  # select variables for final data set
+  select(release, release_date, data_source, created_date, country_name, ccode, stateabb, year, n_events, n_dissent_events, frac_dissent_events, avg_pi, avg_eta, dissent_score, se_dissent_score)
+
+# write latent measures to file
+write_csv(dissent_scores, "output/dissent-scores-icews.csv")
+haven::write_dta(dissent_scores, "output/dissent-scores-icews.dta")
+write_rds(dissent_scores, "output/dissent-scores-icews.rds")
+```

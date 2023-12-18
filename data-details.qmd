@@ -5,9 +5,11 @@ title: "Data Details"
 ## Variable Descriptions
 
 | Variable Name      | Description                                                                      |
-|--------------------|----------------------------------------------------------------------------------|
-| `release`          | The release. Current version is V0.0.9999, an alpha release for initial testing. |
-| `release_date`     | The release date. Latest version is 2023-09-13.                                  |
+|-----------------|-------------------------------------------------------|
+| `release`          | The release. Current version is V0.1 (Preprint). |
+| `release_date`     | The release date. Latest version is 2023-12-18. This is updated manually with changes to the data or model that create changes in the estimates.   |
+| `data_source`      | The source of the events data. We have IDEA and ICEWS versions.                                       |
+| `created_date`     | The date that the dissent scores were created. This updates with every fit of the model. |
 | `country_name`     | The name of the country.                                                         |
 | `ccode`            | The numeric COW code for the country.                                            |
 | `stateabb`         | The 3-digit alpha COW code for the country.                                      |

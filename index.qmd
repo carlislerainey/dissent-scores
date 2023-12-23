@@ -2,7 +2,7 @@
 title: "The Dissent Score Data Set"
 ---
 
-The dissent score data set provides a standardized, public, ready-to-use data set with a measure of dissent at the country-year level based on . On this webpage, we supply [the preprint](https://osf.io/preprints/socarxiv/dw7np) describing the data, the [data sets](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/CL4CA8), and a careful description of how we wrangled the IDEA data into our dissent score.
+The dissent score data set provides a standardized, public, ready-to-use data set with a measure of dissent at the country-year level Rainey, Roe, Wang, and Dietrich's "[The Dissent Score: Using Events Data to Measure Dissent](https://osf.io/preprints/socarxiv/dw7np)." On this webpage, we supply [the preprint](https://osf.io/preprints/socarxiv/dw7np) describing the data, the [data sets](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/CL4CA8), and a careful description of how we wrangled the IDEA data into our dissent score.
 
 ## Get the Data
 

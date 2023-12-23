@@ -46,7 +46,7 @@
     "href": "index.html",
     "title": "The Dissent Score Data Set",
     "section": "",
-    "text": "The dissent score data set provides a standardized, public, ready-to-use data set with a measure of dissent at the country-year level based on . On this webpage, we supply the preprint describing the data, the data sets, and a careful description of how we wrangled the IDEA data into our dissent score."
+    "text": "The dissent score data set provides a standardized, public, ready-to-use data set with a measure of dissent at the country-year level Rainey, Roe, Wang, and Dietrich’s “The Dissent Score: Using Events Data to Measure Dissent.” On this webpage, we supply the preprint describing the data, the data sets, and a careful description of how we wrangled the IDEA data into our dissent score."
   },
   {
     "objectID": "index.html#get-the-data",

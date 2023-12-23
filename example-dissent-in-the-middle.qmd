@@ -1,8 +1,12 @@
 ---
-title: "Example: Law of Coercive Responsiveness"
+title: "Example: More Violence in the Middle?"
 ---
 
-In this example, download the V-Dem electoral democracy index, we download the dissent scores, and we plot the correlation between the two.
+In this example, we...
+
+1. download the V-Dem electoral democracy index, 
+2. download the dissent scores, and 
+3. plot the correlation between the two.
 
 Orienting this correlation theoretically, we quote [Muller (1985)](https://doi.org/10.2307/2095339):
 
@@ -15,6 +19,8 @@ In brief, Muller points out that we should expect dissent in middling regimes. A
 ```{r}
 #| message: false
 #| warning: false
+#| fig-width: 6
+#| fig-height: 8
 
 # load packages
 library(tidyverse)
@@ -36,11 +42,27 @@ dissent <- get_dataframe_by_name(
   glimpse()
 
 # join the two by ccode and year
-joined <- left_join(dissent, vdem) |>
-  glimpse()
+joined <- left_join(dissent, vdem)
 
 # plot the relationship between electoral democracy index and dissent scores
 ggplot(joined, aes(x = v2x_polyarchy, y = dissent_score)) + 
   geom_point() + 
-  geom_smooth()
+  geom_smooth() + 
+  facet_wrap(vars(year))
+```
+
+When using the number of dissent events, the pattern is not what we would expect.
+
+```{r}
+#| message: false
+#| warning: false
+#| fig-width: 6
+#| fig-height: 8
+
+# plot the relationship between electoral democracy index and the number of dissent events
+ggplot(joined, aes(x = v2x_polyarchy, y = n_dissent_events)) + 
+  geom_point() + 
+  geom_smooth() + 
+  facet_wrap(vars(year)) + 
+  scale_y_log10()
 ```

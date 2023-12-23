@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Dissent Scores - Example: Law of Coercive Responsiveness</title>
+<title>Dissent Scores - Example: More Violence in the Middle?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -205,7 +205,7 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Example: Law of Coercive Responsiveness</h1>
+<h1 class="title">Example: More Violence in the Middle?</h1>
 </div>
 
 
@@ -220,7 +220,12 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
 
 </header>
 
-<p>In this example, download the V-Dem electoral democracy index, we download the dissent scores, and we plot the correlation between the two.</p>
+<p>In this example, we…</p>
+<ol type="1">
+<li>download the V-Dem electoral democracy index,</li>
+<li>download the dissent scores, and</li>
+<li>plot the correlation between the two.</li>
+</ol>
 <p>Orienting this correlation theoretically, we quote <a href="https://doi.org/10.2307/2095339">Muller (1985)</a>:</p>
 <blockquote class="blockquote">
 <p>An extremely repressive “closed”-regime structure offers little or no opportunity for dissident groups to engage in collective action of any kind. Moreover, the presence of an extremely repressive regime also affects the first and second variables in the political-process model, since, on the one hand, belief in the likelihood of success of collective protest probably will be low under this condition, and, on the other hand, it surely will be difficult for dissident groups to develop an effective organization. An “open” or democratic regime structure, by contrast, will offer considerable opportunity for dissident groups to participate in a variety of ways in the political process. In addition, belief in the likelihood of success of collective action should be enhanced, as well as ability to organize. In fact, under an open-regime structure, where rights of citizen participation are legally protected, violent collective action should be relatively unlikely, since there are many feasible nonviolent alternatives.</p>
@@ -274,34 +279,27 @@ $ dissent_score       &lt;dbl&gt; -0.62807636, -0.67911036, -0.65318394, -0.6764
 $ se_dissent_score    &lt;dbl&gt; 0.04107096, 0.04241524, 0.03997557, 0.03736980, 0.…</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># join the two by ccode and year</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(dissent, vdem) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 2,775
-Columns: 16
-$ release             &lt;chr&gt; "V0.1 (Preprint)", "V0.1 (Preprint)", "V0.1 (Prepr…
-$ release_date        &lt;date&gt; 2023-12-18, 2023-12-18, 2023-12-18, 2023-12-18, 2…
-$ data_source         &lt;chr&gt; "IDEA", "IDEA", "IDEA", "IDEA", "IDEA", "IDEA", "I…
-$ created_date        &lt;date&gt; 2023-12-18, 2023-12-18, 2023-12-18, 2023-12-18, 2…
-$ country_name        &lt;chr&gt; "United States", "United States", "United States",…
-$ ccode               &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 20, 2…
-$ stateabb            &lt;chr&gt; "USA", "USA", "USA", "USA", "USA", "USA", "USA", "…
-$ year                &lt;dbl&gt; 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 19…
-$ n_events            &lt;dbl&gt; 135537, 140735, 151180, 177717, 194368, 195981, 20…
-$ n_dissent_events    &lt;dbl&gt; 118, 109, 124, 138, 127, 117, 123, 130, 147, 121, …
-$ frac_dissent_events &lt;dbl&gt; 0.0008706110, 0.0007745053, 0.0008202143, 0.000776…
-$ avg_pi              &lt;dbl&gt; 0.0008690543, 0.0007750752, 0.0008211722, 0.000779…
-$ avg_eta             &lt;dbl&gt; -7.051493, -7.166315, -7.107983, -7.160229, -7.331…
-$ dissent_score       &lt;dbl&gt; -0.62807636, -0.67911036, -0.65318394, -0.67640508…
-$ se_dissent_score    &lt;dbl&gt; 0.04107096, 0.04241524, 0.03997557, 0.03736980, 0.…
-$ v2x_polyarchy       &lt;dbl&gt; 0.866, 0.866, 0.871, 0.872, 0.872, 0.872, 0.872, 0…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the relationship between electoral democracy index and dissent scores</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(joined, <span class="fu">aes</span>(<span class="at">x =</span> v2x_polyarchy, <span class="at">y =</span> dissent_score)) <span class="sc">+</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(dissent, vdem)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the relationship between electoral democracy index and dissent scores</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(joined, <span class="fu">aes</span>(<span class="at">x =</span> v2x_polyarchy, <span class="at">y =</span> dissent_score)) <span class="sc">+</span> </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="example-dissent-in-the-middle_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<p><img src="example-dissent-in-the-middle_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>When using the number of dissent events, the pattern is not what we would expect.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the relationship between electoral democracy index and the number of dissent events</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(joined, <span class="fu">aes</span>(<span class="at">x =</span> v2x_polyarchy, <span class="at">y =</span> n_dissent_events)) <span class="sc">+</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(year)) <span class="sc">+</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="example-dissent-in-the-middle_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="576"></p>
 </div>
 </div>
 

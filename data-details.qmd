@@ -4,22 +4,22 @@ title: "Data Details"
 
 ## Variable Descriptions
 
-| Variable Name      | Description                                                                      |
-|-----------------|-------------------------------------------------------|
-| `release`          | The release. Current version is V0.1 (Preprint). |
-| `release_date`     | The release date. Latest version is 2023-12-18. This is updated manually with changes to the data or model that create changes in the estimates.   |
-| `data_source`      | The source of the events data. We have IDEA and ICEWS versions.                                       |
-| `created_date`     | The date that the dissent scores were created. This updates with every fit of the model. |
-| `country_name`     | The name of the country.                                                         |
-| `ccode`            | The numeric COW code for the country.                                            |
-| `stateabb`         | The 3-digit alpha COW code for the country.                                      |
-| `year`             | The year.                                                                        |
-| `n_events`         | The total number of events (dissent and not-dissent).                            |
-| `n_dissent_events` | The total number of *dissent* events in the country-year.                        |
-| `avg_pi`           | The posterior average of the parameter $\pi$ from the statistical model.         |
-| `avg_eta`          | The posterior average of the parameter $\eta$ from the statistical model.        |
-| `dissent_score`    | The dissent score. This is $\eta$ rescaled to have mean = 0 and SD = 0.5.        |
-| `se_dissent_score` | The posterior SD of the dissent score.                                           |
+| Variable Name      | Description                                                                                                                                      |
+|--------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|
+| `release`          | The release. Current version is V0.1 (Preprint).                                                                                                 |
+| `release_date`     | The release date. Latest version is 2023-12-18. This is updated manually with changes to the data or model that create changes in the estimates. |
+| `data_source`      | The source of the events data. We have IDEA and ICEWS versions.                                                                                  |
+| `created_date`     | The date that the dissent scores were created. This updates with every fit of the model.                                                         |
+| `country_name`     | The name of the country.                                                                                                                         |
+| `ccode`            | The numeric COW code for the country.                                                                                                            |
+| `stateabb`         | The 3-digit alpha COW code for the country.                                                                                                      |
+| `year`             | The year.                                                                                                                                        |
+| `n_events`         | The total number of events (dissent and not-dissent).                                                                                            |
+| `n_dissent_events` | The total number of *dissent* events in the country-year.                                                                                        |
+| `avg_pi`           | The posterior average of the parameter $\pi$ from the statistical model.                                                                         |
+| `avg_eta`          | The posterior average of the parameter $\eta$ from the statistical model.                                                                        |
+| `dissent_score`    | The dissent score. This is $\eta$ rescaled to have mean = 0 and SD = 0.5.                                                                        |
+| `se_dissent_score` | The posterior SD of the dissent score.                                                                                                           |
 
 ## Summary Using `glimpse()`
 
@@ -28,10 +28,15 @@ title: "Data Details"
 
 # load packages
 library(tidyverse)
+library(dataverse)
 
-# read csv directly from github
-gh_url <- "output/dissent-scores.csv"
-dissent <- read_csv(gh_url)
+# get dissent scores from dataverse
+dissent <- get_dataframe_by_name(
+  filename = "dissent-scores.tab",
+  dataset  = "doi:10.7910/DVN/CL4CA8",
+  server   = "dataverse.harvard.edu", 
+  original = TRUE, 
+  .f = readr::read_csv)
 
 # quick look
 glimpse(dissent)

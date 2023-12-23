@@ -18,6 +18,7 @@ In brief, Muller points out that we should expect dissent in middling regimes. A
 
 # load packages
 library(tidyverse)
+library(dataverse)
 
 # download latest vdem data
 remotes::install_github("xmarquez/democracyData")
@@ -25,13 +26,17 @@ vdem <- democracyData::vdem_simple %>%
   select(year, ccode = vdem_cowcode, v2x_polyarchy) %>%
   glimpse()
 
-# download latest version of dissent scores
-gh_url <- "https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv"
-dissent_scores <- read_csv(gh_url) |>
+# get dissent scores from dataverse
+dissent <- get_dataframe_by_name(
+  filename = "dissent-scores.tab",
+  dataset  = "doi:10.7910/DVN/CL4CA8",
+  server   = "dataverse.harvard.edu", 
+  original = TRUE, 
+  .f = readr::read_csv) |>
   glimpse()
 
 # join the two by ccode and year
-joined <- left_join(dissent_scores, vdem) |>
+joined <- left_join(dissent, vdem) |>
   glimpse()
 
 # plot the relationship between electoral democracy index and dissent scores

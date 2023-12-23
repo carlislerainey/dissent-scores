@@ -133,10 +133,6 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
  <span class="menu-text">Paper</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about-us.html" rel="" target="">
- <span class="menu-text">About Us</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./data-details.html" rel="" target="">
  <span class="menu-text">Variables</span></a>
   </li>  
@@ -236,12 +232,13 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># download latest vdem data</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"xmarquez/democracyData"</span>)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>vdem <span class="ot">&lt;-</span> democracyData<span class="sc">::</span>vdem_simple <span class="sc">%&gt;%</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, <span class="at">ccode =</span> vdem_cowcode, v2x_polyarchy) <span class="sc">%&gt;%</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dataverse)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># download latest vdem data</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"xmarquez/democracyData"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>vdem <span class="ot">&lt;-</span> democracyData<span class="sc">::</span>vdem_simple <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year, <span class="at">ccode =</span> vdem_cowcode, v2x_polyarchy) <span class="sc">%&gt;%</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 27,555
 Columns: 3
@@ -249,15 +246,21 @@ $ year          &lt;dbl&gt; 1789, 1790, 1791, 1792, 1793, 1794, 1795, 1796, 1797
 $ ccode         &lt;dbl&gt; 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, …
 $ v2x_polyarchy &lt;dbl&gt; 0.028, 0.028, 0.028, 0.028, 0.028, 0.028, 0.028, 0.028, …</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># download latest version of dissent scores</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>gh_url <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dissent_scores <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(gh_url) <span class="sc">|&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get dissent scores from dataverse</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>dissent <span class="ot">&lt;-</span> <span class="fu">get_dataframe_by_name</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">"dissent-scores.tab"</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">dataset  =</span> <span class="st">"doi:10.7910/DVN/CL4CA8"</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">server   =</span> <span class="st">"dataverse.harvard.edu"</span>, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">original =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f =</span> readr<span class="sc">::</span>read_csv) <span class="sc">|&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 2,775
-Columns: 13
-$ release             &lt;chr&gt; "V0.0.9999", "V0.0.9999", "V0.0.9999", "V0.0.9999"…
-$ release_date        &lt;date&gt; 2023-09-13, 2023-09-13, 2023-09-13, 2023-09-13, 2…
+Columns: 15
+$ release             &lt;chr&gt; "V0.1 (Preprint)", "V0.1 (Preprint)", "V0.1 (Prepr…
+$ release_date        &lt;date&gt; 2023-12-18, 2023-12-18, 2023-12-18, 2023-12-18, 2…
+$ data_source         &lt;chr&gt; "IDEA", "IDEA", "IDEA", "IDEA", "IDEA", "IDEA", "I…
+$ created_date        &lt;date&gt; 2023-12-18, 2023-12-18, 2023-12-18, 2023-12-18, 2…
 $ country_name        &lt;chr&gt; "United States", "United States", "United States",…
 $ ccode               &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 20, 2…
 $ stateabb            &lt;chr&gt; "USA", "USA", "USA", "USA", "USA", "USA", "USA", "…
@@ -271,13 +274,15 @@ $ dissent_score       &lt;dbl&gt; -0.62807636, -0.67911036, -0.65318394, -0.6764
 $ se_dissent_score    &lt;dbl&gt; 0.04107096, 0.04241524, 0.03997557, 0.03736980, 0.…</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># join the two by ccode and year</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(dissent_scores, vdem) <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>joined <span class="ot">&lt;-</span> <span class="fu">left_join</span>(dissent, vdem) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 2,775
-Columns: 14
-$ release             &lt;chr&gt; "V0.0.9999", "V0.0.9999", "V0.0.9999", "V0.0.9999"…
-$ release_date        &lt;date&gt; 2023-09-13, 2023-09-13, 2023-09-13, 2023-09-13, 2…
+Columns: 16
+$ release             &lt;chr&gt; "V0.1 (Preprint)", "V0.1 (Preprint)", "V0.1 (Prepr…
+$ release_date        &lt;date&gt; 2023-12-18, 2023-12-18, 2023-12-18, 2023-12-18, 2…
+$ data_source         &lt;chr&gt; "IDEA", "IDEA", "IDEA", "IDEA", "IDEA", "IDEA", "I…
+$ created_date        &lt;date&gt; 2023-12-18, 2023-12-18, 2023-12-18, 2023-12-18, 2…
 $ country_name        &lt;chr&gt; "United States", "United States", "United States",…
 $ ccode               &lt;dbl&gt; 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 20, 2…
 $ stateabb            &lt;chr&gt; "USA", "USA", "USA", "USA", "USA", "USA", "USA", "…

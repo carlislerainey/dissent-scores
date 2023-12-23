@@ -2,18 +2,17 @@
 title: "Paper"
 ---
 
-
 <!-- Download the latest version of the preprint [here](), or see below. The paper is hosted on OSF with DOI [TBA](https://doi.org/TBA). -->
 
 ```{=html}
-<a class="btn btn-primary" href="https://www.dropbox.com/scl/fi/g9zwstiij5znxawvifhj3/dissent-scores-paper.pdf?rlkey=al30ihozbqnophbbxq7r8uiwa&dl=1" role="button">Dowload Paper from Dropbox</a>  
-<a class="btn btn-primary" href="https://www.dropbox.com/scl/fi/g9zwstiij5znxawvifhj3/dissent-scores-paper.pdf?rlkey=al30ihozbqnophbbxq7r8uiwa&dl=0" role="button">View Paper on Dropbox</a>    
+<a class="btn btn-primary" href="https://osf.io/dw7np/download/" role="button">Dowload Paper from SocArXiv</a>  
+<a class="btn btn-primary" href="https://osf.io/preprints/socarxiv/dw7np" role="button">View Paper on SocArXiv</a>    
 ```
 
 ------------------------------------------------------------------------
 
 ```{=html}
     <div style="text-align: center;">
-        <iframe src="https://www.dropbox.com/scl/fi/g9zwstiij5znxawvifhj3/dissent-scores-paper.pdf?rlkey=al30ihozbqnophbbxq7r8uiwa&raw=1" frameborder="0" width="800" height="1000"></iframe>
+        <iframe src="https://mfr.osf.io/render?url=https%3A%2F%2Fosf.io%2Fdownload%2F65817d67f31e13068e82dd73%2F%3Fdirect%3D%26mode%3Drender" frameborder="0" width="800" height="1000"></iframe>
     </div>
 ```

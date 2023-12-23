@@ -16,3 +16,7 @@ output/idea-counts.csv
 output/idea-dissent-events.csv
 output/murdie-bhasin-events.csv
 src/dissent
+-old/
+output/icews-aggregated.csv
+output/combined-icews.csv
+data/icews_aggregated.csv

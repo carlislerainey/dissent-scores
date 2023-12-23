@@ -168,9 +168,16 @@ write_rds(dissent_scores, "output/dissent-scores.rds")
 ```{r}
 #| message: false
 
-# verify that just-created version matches old version
-new <- read_csv("output/dissent-scores.csv")
-dv <- read_csv("https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv")
+# verify that just-created version matches dataverse version
+new <- read_csv("output/dissent-scores.csv") %>% 
+  select(release, release_date, ccode, year, dissent_score)
+dv <- dataverse::get_dataframe_by_name(
+  filename = "dissent-scores.tab",
+  dataset  = "doi:10.7910/DVN/CL4CA8",
+  server   = "dataverse.harvard.edu", 
+  original = TRUE, 
+  .f = readr::read_csv) %>% 
+  select(release, release_date, ccode, year, dissent_score)
 
 all.equal(new, dv)
 ```

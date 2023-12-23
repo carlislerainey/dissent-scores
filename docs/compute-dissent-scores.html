@@ -133,10 +133,6 @@ gtag('config', 'G-F57WQLHH67', { 'anonymize_ip': true});
  <span class="menu-text">Paper</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about-us.html" rel="" target="">
- <span class="menu-text">About Us</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="./data-details.html" rel="" target="">
  <span class="menu-text">Variables</span></a>
   </li>  
@@ -384,38 +380,20 @@ $ observation_index &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 1
 <span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="fu">write_rds</span>(dissent_scores, <span class="st">"output/dissent-scores.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># verify that just-created version matches old version</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>new <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"output/dissent-scores.csv"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>dv <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/carlislerainey/dissent-scores/main/output/dissent-scores.csv"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(new, dv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># verify that just-created version matches dataverse version</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>new <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"output/dissent-scores.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(release, release_date, ccode, year, dissent_score)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>dv <span class="ot">&lt;-</span> dataverse<span class="sc">::</span><span class="fu">get_dataframe_by_name</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">"dissent-scores.tab"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">dataset  =</span> <span class="st">"doi:10.7910/DVN/CL4CA8"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">server   =</span> <span class="st">"dataverse.harvard.edu"</span>, </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">original =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">.f =</span> readr<span class="sc">::</span>read_csv) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(release, release_date, ccode, year, dissent_score)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(new, dv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] "Names: 11 string mismatches"                                                                                                
- [2] "Attributes: &lt; Component \"spec\": Component \"cols\": Names: 11 string mismatches &gt;"                                        
- [3] "Attributes: &lt; Component \"spec\": Component \"cols\": Length mismatch: comparison on first 13 components &gt;"                 
- [4] "Attributes: &lt; Component \"spec\": Component \"cols\": Component 4: names for target but not for current &gt;"                  
- [5] "Attributes: &lt; Component \"spec\": Component \"cols\": Component 4: Attributes: &lt; Component \"class\": 1 string mismatch &gt; &gt;"
- [6] "Attributes: &lt; Component \"spec\": Component \"cols\": Component 4: Length mismatch: comparison on first 0 components &gt;"     
- [7] "Attributes: &lt; Component \"spec\": Component \"cols\": Component 7: Attributes: &lt; Component \"class\": 1 string mismatch &gt; &gt;"
- [8] "Length mismatch: comparison on first 13 components"                                                                         
- [9] "Component \"release\": 2775 string mismatches"                                                                              
-[10] "Component \"release_date\": Mean relative difference: 0.004870871"                                                          
-[11] "Component 3: 2775 string mismatches"                                                                                        
-[12] "Component 4: Attributes: &lt; Modes: list, NULL &gt;"                                                                             
-[13] "Component 4: Attributes: &lt; Lengths: 1, 0 &gt;"                                                                                 
-[14] "Component 4: Attributes: &lt; names for target but not for current &gt;"                                                          
-[15] "Component 4: Attributes: &lt; current is not list-like &gt;"                                                                      
-[16] "Component 4: target is Date, current is numeric"                                                                            
-[17] "Component 5: 2775 string mismatches"                                                                                        
-[18] "Component 6: Mean relative difference: 3.356531"                                                                            
-[19] "Component 7: Modes: character, numeric"                                                                                     
-[20] "Component 7: target is character, current is numeric"                                                                       
-[21] "Component 8: Mean relative difference: 0.9950816"                                                                           
-[22] "Component 9: Mean relative difference: 0.999998"                                                                            
-[23] "Component 10: Mean relative difference: 0.9995781"                                                                          
-[24] "Component 11: Mean relative difference: 826.2721"                                                                           
-[25] "Component 12: Mean relative difference: 56.56884"                                                                           
-[26] "Component 13: Mean relative difference: 1.041171"                                                                           </code></pre>
+<pre><code>[1] TRUE</code></pre>
 </div>
 </div>
 
